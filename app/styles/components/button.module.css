@@ -1,0 +1,31 @@
+.btnContainer {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  padding: 0 8px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.svgBorder {
+  border: 0 solid transparent;
+  padding: 10px 11px;
+  border-image: url("/visuals/button.svg") 18 fill stretch;
+  border-image-outset: 2px;
+  cursor: pointer;
+}
+
+.btnText {
+  color: var(--content);
+  font-family: "Jetbrains";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+  padding: 5px 5px 10px;
+}
+
+.btnIcon {
+  padding-bottom: 5px;
+}

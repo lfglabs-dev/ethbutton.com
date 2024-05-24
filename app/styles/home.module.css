@@ -1,0 +1,206 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: var(--background);
+  min-height: 100vh;
+  margin: auto;
+  padding: 20px;
+}
+
+.leftContainer {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 200px;
+  gap: 0;
+  margin-top: 200px;
+}
+
+.centralSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 900px;
+  position: relative;
+  height: 600px;
+  margin: auto;
+}
+
+.background {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: auto;
+  z-index: 0;
+}
+
+.backgroundLines {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: auto;
+  z-index: 1;
+}
+
+.leftSquares {
+  position: absolute;
+  z-index: 3;
+  left: 20px;
+  top: 47%;
+  transform: translateY(-50%);
+}
+
+.rightSquares {
+  position: absolute;
+  z-index: 3;
+  right: 20px;
+  top: 47%;
+  transform: translateY(-50%);
+}
+
+.bottomSquares {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 25px;
+  transform: translateX(-50%);
+}
+
+.radialGradient {
+  position: absolute;
+  left: 26%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  width: 165px;
+  height: 9px;
+  z-index: 2;
+  background: radial-gradient(
+    49.98% 49.99% at 49.98% 49.99%,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.radialGradientLeft {
+  position: absolute;
+  left: 45px;
+  bottom: 43px;
+  width: 9px;
+  height: 165px;
+  z-index: 2;
+  background: radial-gradient(
+    49.98% 49.99% at 49.98% 49.99%,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.radialGradientRight {
+  position: absolute;
+  right: 45px;
+  top: 47%;
+  transform: translateY(-50%);
+  width: 9px;
+  height: 252px;
+  z-index: 2;
+  background: radial-gradient(
+    49.98% 49.99% at 49.98% 49.99%,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.coloredTrapeze {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+  z-index: 2;
+  min-width: 630px;
+  height: 100px;
+  background: linear-gradient(
+    257.5deg,
+    #109ae4 -31.33%,
+    #27abf1 -19.3%,
+    #2baaee -4.45%,
+    #3bb1f0 11.89%,
+    #7581f7 29.28%,
+    #ef30a2 47.54%,
+    #f276c0 66.2%,
+    #ffadde 81.84%
+  );
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%);
+}
+
+.darkTrapeze {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 92%;
+  height: 90%;
+  background: var(--background-dark);
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%);
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--content);
+  text-align: center;
+  z-index: 2;
+  font-family: "Airstrike-platinium";
+  text-transform: uppercase;
+  font-size: 60px;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: 0.04em;
+}
+
+.pinkTitle {
+  color: var(--primary);
+  font-family: "Airstrike";
+}
+
+.blueTitle {
+  color: var(--secondary);
+}
+
+.ethBtnContainer {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  z-index: 3;
+  width: 161px;
+  height: 161px;
+  cursor: pointer;
+}
+
+.countdownContainer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--content);
+  z-index: 3;
+  font-family: "Airstrike";
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 42px;
+}

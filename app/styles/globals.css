@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Airstrike-platinium";
+    src: url(../../public/fonts/Airstrike/airstrikeplat.ttf);
+  }
+
+  @font-face {
+    font-family: "Airstrike";
+    src: url(../../public/fonts/Airstrike/airstrike.ttf);
+  }
+
+  @font-face {
+    font-family: "Jetbrains";
+    src: url(../../public/fonts/JetBrainsMono-Medium.ttf);
+  }
+}
+
+:root {
+  --background: #0f182a;
+  --background-dark: #111827;
+  --primary: #ffadde;
+  --secondary: #67c4fa;
+  --content: #c8ccd3;
+  --gradient-color: linear-gradient(
+    77.5deg,
+    #109ae4 -31.33%,
+    #27abf1 -19.3%,
+    #2baaee -4.45%,
+    #3bb1f0 11.89%,
+    #7581f7 29.28%,
+    #ef30a2 47.54%,
+    #f276c0 66.2%,
+    #ffadde 81.84%
+  );
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Jetbrains";
+  scrollbar-color: var(--primary) var(--background);
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--secondary);
+  color: var(--content);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--content);
+  background: var(--background);
+}
+
+.mainContainer {
+  position: relative;
+  width: 100%;
+}
+
+a:hover {
+  color: var(--secondary);
+  transition: all 0.3s ease-in-out;
+}
