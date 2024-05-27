@@ -10,22 +10,18 @@ import {
 import { getConnectors } from "@/utils/starknetConnectorsWrapper";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { WagmiProvider, createConfig, http } from "wagmi";
+import { WagmiProvider } from "wagmi";
 import {
   mainnet as EthMainnet,
   sepolia as EthSepolia,
   arbitrum,
   base,
   blast,
-  linea,
-  manta,
-  mantle,
-  metis,
-  mode,
   optimism,
   polygon,
   zkSync,
   scroll,
+  gnosis,
 } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
@@ -52,13 +48,9 @@ export function Providers({ children }: any) {
       polygon,
       base,
       blast,
-      mantle,
-      linea,
       zkSync,
-      manta,
-      mode,
-      metis,
       scroll,
+      gnosis,
     ],
   });
   const queryClient = new QueryClient();
