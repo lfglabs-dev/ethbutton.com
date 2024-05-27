@@ -8,6 +8,26 @@ import {
   jsonRpcProvider,
 } from "@starknet-react/core";
 import { getConnectors } from "@/utils/starknetConnectorsWrapper";
+import "@rainbow-me/rainbowkit/styles.css";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiProvider, createConfig, http } from "wagmi";
+import {
+  mainnet as EthMainnet,
+  sepolia as EthSepolia,
+  arbitrum,
+  base,
+  blast,
+  linea,
+  manta,
+  mantle,
+  metis,
+  mode,
+  optimism,
+  polygon,
+  zkSync,
+  scroll,
+} from "wagmi/chains";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Providers({ children }: any) {
@@ -19,13 +39,43 @@ export function Providers({ children }: any) {
       nodeUrl: process.env.NEXT_PUBLIC_RPC_URL as string,
     }),
   });
+
+  // ethereum connection
+  const config = getDefaultConfig({
+    appName: "Eth Button",
+    projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_APP_ID as string,
+    chains: [
+      EthMainnet,
+      EthSepolia,
+      arbitrum,
+      optimism,
+      polygon,
+      base,
+      blast,
+      mantle,
+      linea,
+      zkSync,
+      manta,
+      mode,
+      metis,
+      scroll,
+    ],
+  });
+  const queryClient = new QueryClient();
+
   return (
-    <StarknetConfig
-      chains={chains}
-      provider={provider}
-      connectors={getConnectors() as Connector[]}
-    >
-      {children}
-    </StarknetConfig>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <StarknetConfig
+            chains={chains}
+            provider={provider}
+            connectors={getConnectors() as Connector[]}
+          >
+            {children}
+          </StarknetConfig>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

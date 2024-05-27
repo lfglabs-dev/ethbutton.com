@@ -6,6 +6,7 @@ import Button from "./components/button";
 import EthButton from "./components/ethButton";
 import Stats from "./components/stats";
 import Countdown from "./components/countdown";
+import EthereumConnect from "./components/ethereumConnect";
 
 export default function Home() {
   return (
@@ -18,6 +19,10 @@ export default function Home() {
           >
             Connect wallet
           </Button>
+          <EthereumConnect
+            title="Connect with Ethereum"
+            updateEthStatus={() => console.log("update status")}
+          />
           <Button
             onClick={() => console.log("clicked")}
             icon={<img src="/visuals/eth.svg" width={14} />}
