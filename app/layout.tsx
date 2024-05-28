@@ -1,7 +1,7 @@
 import React from "next";
-import type { Metadata } from "next";
 import "./styles/globals.css";
 import { Providers } from "./provider";
+// import type { Metadata } from "next";
 
 // todo: update with right values
 // export const metadata: Metadata = {
