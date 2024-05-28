@@ -1,3 +1,4 @@
+import React from "next";
 import type { Metadata } from "next";
 import "./styles/globals.css";
 import { Providers } from "./provider";
