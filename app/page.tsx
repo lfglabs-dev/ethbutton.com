@@ -31,47 +31,59 @@ export default function Home() {
           </Button>
         </div>
         <div className={styles.centralSection}>
-          <img
-            alt="background"
-            src="/visuals/background.svg"
-            className={styles.background}
-          />
-          <img
-            alt="background lines"
-            src="/visuals/backgroundLines.svg"
-            className={styles.backgroundLines}
-          />
-          <img
-            alt="left squares"
-            src="/visuals/leftSquares.svg"
-            className={styles.leftSquares}
-          />
-          <img
-            alt="right squares"
-            src="/visuals/rightSquares.svg"
-            className={styles.rightSquares}
-          />
-          <img
-            alt="bottom squares"
-            src="/visuals/bottomSquares.svg"
-            className={styles.bottomSquares}
-          />
-          <div className={styles.radialGradient} />
-          <div className={styles.radialGradientLeft} />
-          <div className={styles.radialGradientRight} />
-          <div className={styles.coloredTrapeze}>
-            <div className={styles.darkTrapeze}>
-              <h1 className={styles.title}>
-                WIN <span className={styles.pinkTitle}>Five</span>{" "}
-                <span className={styles.blueTitle}>ETH</span> !
-              </h1>
+          <div className={styles.backgroundWrapper}>
+            <img
+              alt="background"
+              src="/visuals/background.svg"
+              className={styles.background}
+            />
+            <img
+              alt="background lines"
+              src="/visuals/backgroundLines.svg"
+              className={styles.backgroundLines}
+            />
+            <img
+              alt="left squares"
+              src="/visuals/leftSquares.svg"
+              className={styles.leftSquares}
+            />
+            <img
+              alt="right squares"
+              src="/visuals/rightSquares.svg"
+              className={styles.rightSquares}
+            />
+            <img
+              alt="bottom squares"
+              src="/visuals/bottomSquares.svg"
+              className={styles.bottomSquares}
+            />
+            <img
+              alt="vertical group"
+              src="/visuals/verticalGroup.svg"
+              className={styles.verticalGroupLeft}
+            />
+            <img
+              alt="vertical group"
+              src="/visuals/verticalGroup.svg"
+              className={styles.verticalGroupRight}
+            />
+            <div className={styles.radialGradient} />
+            <div className={styles.radialGradientLeft} />
+            <div className={styles.radialGradientRight} />
+            <div className={styles.coloredTrapeze}>
+              <div className={styles.darkTrapeze}>
+                <h1 className={styles.title}>
+                  WIN <span className={styles.pinkTitle}>Five</span>{" "}
+                  <span className={styles.blueTitle}>ETH</span> !
+                </h1>
+              </div>
             </div>
-          </div>
-          <div className={styles.countdownContainer}>
-            <Countdown />
-          </div>
-          <div className={styles.ethBtnContainer}>
-            <EthButton onClick={() => console.log("eth button clicked")} />
+            <div className={styles.countdownContainer}>
+              <Countdown />
+            </div>
+            <div className={styles.ethBtnContainer}>
+              <EthButton onClick={() => console.log("eth button clicked")} />
+            </div>
           </div>
         </div>
         <Stats />

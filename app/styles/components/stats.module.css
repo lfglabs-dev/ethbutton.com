@@ -16,3 +16,15 @@
   align-items: flex-start;
   gap: 8px;
 }
+
+@media (max-width: 1280px) {
+  .statsSections {
+    margin: 24px auto;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+  }
+  .statsSection {
+    align-items: center;
+  }
+}

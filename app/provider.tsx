@@ -41,8 +41,7 @@ export function Providers({ children }: any) {
     appName: "Eth Button",
     projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_APP_ID as string,
     chains: [
-      EthMainnet,
-      EthSepolia,
+      process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? EthSepolia : EthMainnet,
       arbitrum,
       optimism,
       polygon,

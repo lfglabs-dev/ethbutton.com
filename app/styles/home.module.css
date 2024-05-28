@@ -29,11 +29,21 @@
   margin: auto;
 }
 
-.background {
+.backgroundWrapper {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  width: 900px;
+  height: 600px;
+  z-index: 0;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   height: auto;
   z-index: 0;
@@ -42,8 +52,8 @@
 .backgroundLines {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+  top: 48px;
   width: 85%;
   height: auto;
   z-index: 1;
@@ -71,6 +81,20 @@
   left: 50%;
   bottom: 25px;
   transform: translateX(-50%);
+}
+
+.verticalGroupLeft {
+  position: absolute;
+  left: 60px;
+  bottom: 70px;
+  z-index: 3;
+}
+
+.verticalGroupRight {
+  position: absolute;
+  right: 60px;
+  bottom: 70px;
+  z-index: 3;
 }
 
 .radialGradient {
@@ -203,4 +227,30 @@
   font-weight: 400;
   font-size: 50px;
   line-height: 42px;
+}
+
+@media (max-width: 1280px) {
+  .main {
+    justify-content: center;
+    flex-direction: column-reverse;
+  }
+
+  .leftContainer {
+    margin: 24px auto;
+    align-items: center;
+  }
+
+  .backgroundWrapper {
+    width: 900px;
+    height: 600px;
+  }
+}
+
+/* 1280px, 1024px, 768px, 640px */
+
+@media (max-width: 900px) {
+  .backgroundWrapper {
+    width: 900px;
+    height: 600px;
+  }
 }
