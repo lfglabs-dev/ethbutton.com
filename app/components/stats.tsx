@@ -3,9 +3,9 @@
 import React, { FunctionComponent } from "react";
 import styles from "../styles/components/stats.module.css";
 
-type StatsProps = {};
+// type StatsProps = {};
 
-const Stats: FunctionComponent<StatsProps> = ({}) => {
+const Stats: FunctionComponent = () => {
   const clickNumber: number = 0;
   const timeClicked: number = 0;
   const totalParticipants = 126702;

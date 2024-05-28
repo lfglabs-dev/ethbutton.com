@@ -4,9 +4,9 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../styles/components/countdown.module.css";
 import { formatTime } from "@/utils/stringService";
 
-type CountdownProps = {};
+// type CountdownProps = {};
 
-const Countdown: FunctionComponent<CountdownProps> = ({}) => {
+const Countdown: FunctionComponent = () => {
   const [timeRemaining, setTimeRemaining] = useState(120); // in seconds
   const formattedTime = formatTime(timeRemaining);
   const [minutes, seconds] = formattedTime.split(":");
