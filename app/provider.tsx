@@ -14,14 +14,14 @@ import { WagmiProvider } from "wagmi";
 import {
   mainnet as EthMainnet,
   sepolia as EthSepolia,
-  arbitrum,
-  base,
-  blast,
-  optimism,
-  polygon,
-  zkSync,
-  scroll,
-  gnosis,
+  // arbitrum,
+  // base,
+  // blast,
+  // optimism,
+  // polygon,
+  // zkSync,
+  // scroll,
+  // gnosis,
 } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
@@ -39,34 +39,33 @@ export function Providers({ children }: any) {
   // ethereum connection
   const config = getDefaultConfig({
     appName: "Eth Button",
-    projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_APP_ID as string,
+    // projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_APP_ID as string,
+    projectId: "a570f8b4f3efe77edb1bf47f2be11495",
     chains: [
       process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? EthSepolia : EthMainnet,
-      arbitrum,
-      optimism,
-      polygon,
-      base,
-      blast,
-      zkSync,
-      scroll,
-      gnosis,
+      // arbitrum,
+      // optimism,
+      // polygon,
+      // base,
+      // blast,
+      // zkSync,
+      // scroll,
+      // gnosis,
     ],
   });
   const queryClient = new QueryClient();
 
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
-          <StarknetConfig
-            chains={chains}
-            provider={provider}
-            connectors={getConnectors() as Connector[]}
-          >
-            {children}
-          </StarknetConfig>
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <StarknetConfig
+      chains={chains}
+      provider={provider}
+      connectors={getConnectors() as Connector[]}
+    >
+      <WagmiProvider config={config} reconnectOnMount={false}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider>{children}</RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </StarknetConfig>
   );
 }

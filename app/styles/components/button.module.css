@@ -2,22 +2,30 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  padding: 0 8px;
+  padding: 0 10px;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 2px;
 }
 
 .svgBorder {
   border: 0 solid transparent;
   padding: 10px 11px;
-  border-image: url("/visuals/button.svg") 18 fill stretch;
   border-image-outset: 2px;
   cursor: pointer;
 }
 
-.btnText {
+.default {
+  border-image: url("/visuals/button.svg") 18 fill stretch;
   color: var(--content);
+}
+
+.white {
+  border-image: url("/visuals/buttonWhite.svg") 18 fill stretch;
+  color: var(--content-dark);
+}
+
+.btnText {
   font-family: "Jetbrains";
   font-size: 14px;
   font-weight: 500;

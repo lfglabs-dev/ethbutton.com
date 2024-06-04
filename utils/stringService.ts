@@ -5,3 +5,12 @@ export const formatTime = (seconds: number): string => {
     .toString()
     .padStart(2, "0")}`;
 };
+
+export function minifyAddress(address: string | undefined): string {
+  if (!address) return "";
+
+  const firstPart = address.substring(0, 4);
+  const secondPart = address.substring(address.length - 3, address.length);
+
+  return (firstPart + "..." + secondPart).toLowerCase();
+}

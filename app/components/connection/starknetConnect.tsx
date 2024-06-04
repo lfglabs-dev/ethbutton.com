@@ -3,30 +3,35 @@
 import React, { FunctionComponent } from "react";
 import { Modal, useMediaQuery } from "@mui/material";
 import { Connector } from "starknetkit";
-import styles from "../styles/components/walletConnect.module.css";
+import styles from "../../styles/components/walletConnect.module.css";
 import {
   getConnectorDiscovery,
   getConnectorIcon,
   getConnectorName,
   sortConnectors,
 } from "@/utils/starknetConnectorsWrapper";
-import Button from "./button";
+import Button from "../button";
+import { useConnect } from "@starknet-react/core";
+import { NetworkType } from "@/constants/types";
 
 type StarknetWalletConnectProps = {
   closeModal: () => void;
   open: boolean;
   connectors: Connector[];
-  connectWallet: (connector: Connector) => void;
+  onWalletConnected: (network: NetworkType) => void;
 };
 
 const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
   closeModal,
   open,
   connectors,
-  connectWallet,
+  onWalletConnected,
 }) => {
-  const connect = (connector: Connector) => {
-    connectWallet(connector);
+  const { connectAsync } = useConnect();
+
+  const connect = async (connector: Connector) => {
+    await connectAsync({ connector });
+    onWalletConnected(NetworkType.starknet);
     closeModal();
   };
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -96,7 +101,7 @@ const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
               }
             )}
             <div onClick={closeModal} className={styles.menu_close}>
-              Close
+              Back
             </div>
           </div>
         </div>

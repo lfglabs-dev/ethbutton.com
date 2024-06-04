@@ -10,6 +10,7 @@ type ButtonProps = {
   icon?: React.ReactNode;
   width?: number;
   loading?: boolean;
+  variation?: string;
 };
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -18,10 +19,12 @@ const Button: FunctionComponent<ButtonProps> = ({
   icon,
   width = 0,
   loading = false,
+  variation = "default",
 }) => {
+  const iconColor = variation === "default" ? "#4C6449" : "#1E2A3B";
   return (
     <div
-      className={styles.svgBorder}
+      className={`${styles.svgBorder} ${styles[variation]}`}
       onClick={onClick}
       style={{ width: `${width ? width + "px" : "auto"} ` }}
     >
@@ -29,7 +32,7 @@ const Button: FunctionComponent<ButtonProps> = ({
         {loading || icon ? (
           <div className={styles.btnIcon}>
             {loading ? (
-              <CircularProgress size={24} sx={{ color: "#4C6449" }} />
+              <CircularProgress size={24} sx={{ color: iconColor }} />
             ) : (
               icon
             )}
