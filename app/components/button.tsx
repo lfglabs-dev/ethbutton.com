@@ -5,7 +5,7 @@ import styles from "../styles/components/button.module.css";
 import { CircularProgress } from "@mui/material";
 
 type ButtonProps = {
-  onClick: () => void;
+  onClick?: () => void;
   children: string;
   icon?: React.ReactNode;
   width?: number;
@@ -24,7 +24,9 @@ const Button: FunctionComponent<ButtonProps> = ({
   const iconColor = variation === "default" ? "#4C6449" : "#1E2A3B";
   return (
     <div
-      className={`${styles.svgBorder} ${styles[variation]}`}
+      className={`${styles.svgBorder} ${styles[variation]} ${
+        onClick ? "cursor-pointer" : ""
+      }`}
       onClick={onClick}
       style={{ width: `${width ? width + "px" : "auto"} ` }}
     >

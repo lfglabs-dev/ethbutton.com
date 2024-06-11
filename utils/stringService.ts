@@ -14,3 +14,19 @@ export function minifyAddress(address: string | undefined): string {
 
   return (firstPart + "..." + secondPart).toLowerCase();
 }
+
+export function numberToWords(num: number): string {
+  const numWords = [
+    "ZERO",
+    "ONE",
+    "TWO",
+    "THREE",
+    "FOUR",
+    "FIVE",
+    "SIX",
+    "SEVEN",
+    "EIGHT",
+    "NINE",
+  ];
+  return numWords[num] || num.toString();
+}

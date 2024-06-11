@@ -229,6 +229,25 @@
   line-height: 42px;
 }
 
+.endText {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+}
+
+.socialIcons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
 @media (max-width: 1280px) {
   .main {
     justify-content: center;

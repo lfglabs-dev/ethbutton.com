@@ -17,6 +17,34 @@
   gap: 8px;
 }
 
+.winnerWrapper {
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(
+    77.5deg,
+    #109ae4 -31.33%,
+    #27abf1 -19.3%,
+    #2baaee -4.45%,
+    #3bb1f0 11.89%,
+    #7581f7 29.28%,
+    #ef30a2 47.54%,
+    #f276c0 66.2%,
+    #ffadde 81.84%
+  );
+  overflow: hidden;
+}
+
+.winnerSection {
+  background-color: var(--background);
+  padding: 16px;
+  box-shadow: 0px 2.06px 30.91px rgba(29, 94, 123, 0.24);
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
 @media (max-width: 1280px) {
   .statsSections {
     margin: 24px auto;

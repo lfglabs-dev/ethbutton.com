@@ -73,6 +73,22 @@ body {
   width: 100%;
 }
 
+.primary {
+  color: var(--primary);
+}
+
+.secondary {
+  color: var(--secondary);
+}
+
+.airstrike {
+  font-family: "Airstrike";
+}
+
+.airstrike-platinium {
+  font-family: "Airstrike-platinium";
+}
+
 a:hover {
   color: var(--secondary);
   transition: all 0.3s ease-in-out;

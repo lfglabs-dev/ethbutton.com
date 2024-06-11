@@ -12,11 +12,20 @@
   border: 0 solid transparent;
   padding: 10px 11px;
   border-image-outset: 2px;
-  cursor: pointer;
 }
 
 .default {
   border-image: url("/visuals/button.svg") 18 fill stretch;
+  color: var(--content);
+}
+
+.default-overlay {
+  border-image: url("/visuals/button.svg") 18 fill stretch;
+  color: var(--content);
+}
+
+.default-overlay:hover {
+  border-image: url("/visuals/buttonColored.svg") 18 fill stretch;
   color: var(--content);
 }
 

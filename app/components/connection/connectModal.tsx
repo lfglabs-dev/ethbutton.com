@@ -17,7 +17,7 @@ type StarknetWalletConnectProps = {
   onWalletConnected: (network: NetworkType) => void;
 };
 
-const SelectNetwork: FunctionComponent<StarknetWalletConnectProps> = ({
+const ConnectModal: FunctionComponent<StarknetWalletConnectProps> = ({
   closeModal,
   open,
   onWalletConnected,
@@ -67,14 +67,11 @@ const SelectNetwork: FunctionComponent<StarknetWalletConnectProps> = ({
                 <span className={styles.titleBlue}>network</span>
               </div>
               <div className={styles.selectNetwork}>
-                {/* <EthereumConnect
-                  title="EVM wallet"
-                  onWalletConnected={onWalletConnected}
-                /> */}
                 <Button
                   onClick={connectEvm}
                   icon={<img src="/visuals/ethFilledIcon.svg" />}
                   width={300}
+                  variation="default-overlay"
                 >
                   EVM wallet
                 </Button>
@@ -82,6 +79,7 @@ const SelectNetwork: FunctionComponent<StarknetWalletConnectProps> = ({
                   onClick={() => setOpenStarknetModal(true)}
                   icon={<img src="/visuals/starknetIcon.svg" />}
                   width={300}
+                  variation="default-overlay"
                 >
                   Starknet wallet
                 </Button>
@@ -103,4 +101,4 @@ const SelectNetwork: FunctionComponent<StarknetWalletConnectProps> = ({
   );
 };
 
-export default SelectNetwork;
+export default ConnectModal;

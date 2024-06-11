@@ -1,4 +1,5 @@
-import { Call, RawArgs, hash, num, shortString } from "starknet";
+import { OutsideCall, OutsideExecution } from "@/constants/types";
+import { Call, hash, shortString } from "starknet";
 
 const types = {
   StarkNetDomain: [
@@ -28,20 +29,6 @@ export function getDomain(chainId: string) {
     version: "1",
     chainId: chainId,
   };
-}
-
-export interface OutsideExecution {
-  caller: string;
-  nonce: num.BigNumberish;
-  execute_after: num.BigNumberish;
-  execute_before: num.BigNumberish;
-  calls: OutsideCall[];
-}
-
-export interface OutsideCall {
-  to: string;
-  selector: num.BigNumberish;
-  calldata: RawArgs;
 }
 
 export function getOutsideCall(call: Call): OutsideCall {

@@ -81,8 +81,9 @@
   gap: 10px;
   font-family: "Airstrike";
   color: var(--secondary);
-  font-size: 19px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28px;
   margin-bottom: 12px;
   text-align: center;
 }
@@ -90,10 +91,10 @@
 .modalTitle span {
   color: var(--primary);
   font-family: "Airstrike-platinium";
-  font-size: 20px;
+  font-size: 24px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 28px;
 }
 
 .selectNetworkTitle {
@@ -102,10 +103,10 @@
 .selectNetworkTitle span:first-child,
 .selectNetworkTitle span:last-child {
   font-family: "Airstrike-platinium";
-  font-size: 20px;
+  font-size: 23px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 28px;
 }
 
 .selectNetworkTitle span:first-child {
@@ -166,8 +167,8 @@
 
 @media (max-width: 1024px) {
   .menu {
-    width: 320px;
-    padding: 30px;
+    width: 340px;
+    padding: 30px 10px;
   }
 
   .modalTitle {

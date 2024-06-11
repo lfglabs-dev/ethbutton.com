@@ -1,0 +1,17 @@
+.description {
+  font-family: "Jetbrains";
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+  text-align: center;
+  color: var(--content);
+  margin: 12px 0;
+}
+
+@media (max-width: 820px) {
+  .description {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
+  }
+}
