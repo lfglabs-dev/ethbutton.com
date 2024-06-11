@@ -16,8 +16,8 @@ const EthereumConnect: FunctionComponent<EthereumConnectProps> = ({
   return (
     <ConnectButton.Custom>
       {({
-        account,
-        chain,
+        // account,
+        // chain,
         // openAccountModal,
         // openChainModal,
         // openConnectModal,
