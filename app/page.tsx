@@ -34,7 +34,7 @@ import {
   starknetResetButtonFromEth,
   trackId,
 } from "@/services/apiService";
-import { Signature } from "starknet";
+import { Signature, TypedData } from "starknet";
 import {
   addEthToken,
   clearEthTokens,
@@ -62,7 +62,7 @@ export default function Home() {
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [welcomeModal, setWelcomeModal] = useState(false);
   const [tryAgainModal, setTryAgainModal] = useState(false);
-  const [recoverTokenModal, setRecoverTokenModal] = useState(false); // todo
+  // const [recoverTokenModal, setRecoverTokenModal] = useState(false); // todo
   const [isConnected, setIsConnected] = useState(false);
   const [network, setNetwork] = useState<NetworkType>();
   const address =
@@ -193,124 +193,6 @@ export default function Home() {
     }
   };
 
-  // const clickEthButton2 = async () => {
-  //   if (!isConnected) {
-  //     setOpenConnectModal(true);
-  //     return;
-  //   }
-
-  //   switch (network) {
-  //     case NetworkType.starknet:
-  //       // if starknet account is not defined we show the connection modal
-  //       if (!starknetAccount) {
-  //         setOpenConnectModal(true);
-  //         return;
-  //       }
-  //       const nonce: number = Math.floor(Math.random() * 1000000000000);
-  //       const executeBefore: number = Math.floor(Date.now() / 1000) + 3600 * 48; // + 48h for testing
-  //       const outsideExecution: OutsideExecution = getOutsideExecution(
-  //         nonce,
-  //         executeBefore
-  //       );
-  //       const typedData = getTypedData(outsideExecution);
-
-  //       if (
-  //         remainingClicks.eligibilityAmt &&
-  //         remainingClicks.eligibilityAmt > 0
-  //       ) {
-  //         // call starknet_reset_button
-  //         try {
-  //           const signature = await starknetAccount.signMessage(typedData);
-  //           const virtualTxId = await starknetResetButton(
-  //             starknetAccount.address,
-  //             signature as Signature,
-  //             nonce,
-  //             executeBefore
-  //           );
-  //           storeVirtualTxId(virtualTxId.virtual_tx_id);
-  //         } catch (signMessageError) {
-  //           console.error(
-  //             "Error during starknetAccount.signMessage:",
-  //             signMessageError
-  //           );
-  //         }
-  //       } else if (
-  //         remainingClicks.domainClicks &&
-  //         remainingClicks.domainClicks > 0
-  //       ) {
-  //         if (!remainingClicks.domainStatus) return;
-  //         // call starknet_domain_reset_button
-  //         const signature = await starknetAccount.signMessage(typedData);
-  //         // get domain not blacklisted
-  //         const availableDomain = getNonBlacklistedDomain(
-  //           remainingClicks?.domainStatus
-  //         );
-  //         if (!availableDomain) {
-  //           setTryAgainModal(true);
-  //           return;
-  //         }
-  //         const virtualTxId = await starknetDomainResetButton(
-  //           signature as Signature,
-  //           nonce,
-  //           executeBefore,
-  //           availableDomain
-  //         );
-  //         storeVirtualTxId(virtualTxId.virtual_tx_id);
-  //         return;
-  //       } else {
-  //         if (hasEthTokens && ethTokens.length > 0) {
-  //           // eth_reset_button_from_starknet
-  //           const signature = await starknetAccount.signMessage(typedData);
-  //           const virtualTxId = await starknetResetButtonFromEth(
-  //             starknetAccount.address,
-  //             signature as Signature,
-  //             ethTokens,
-  //             nonce,
-  //             executeBefore,
-  //             deploymentData
-  //           );
-  //           console.log("virtualTxId", virtualTxId);
-  //           storeVirtualTxId(virtualTxId.virtual_tx_id);
-  //           // Clear tokens from local storage once they are all used
-  //           clearEthTokens();
-  //           return;
-  //         } else {
-  //           setTryAgainModal(true);
-  //           return;
-  //         }
-  //       }
-  //     case NetworkType.evm:
-  //       if (!evmAddress) {
-  //         setOpenConnectModal(true);
-  //         return;
-  //       }
-
-  //       // if ETH and we have a click remaining : eth_reset_button
-  //       if (
-  //         remainingClicks.eligibilityAmt &&
-  //         remainingClicks.eligibilityAmt > 0
-  //       ) {
-  //         let signature = await signMessageAsync({
-  //           message: `I press the Ethereum button with my address`,
-  //         });
-  //         console.log("signature", signature);
-  //         let res = await ethResetButton(evmAddress, signature);
-  //         console.log("res", res);
-  //         storeVirtualTxId(res.virtual_tx_id);
-  //         addEthToken({
-  //           token: res.token,
-  //           eth_addr: res.eth_addr,
-  //         });
-  //         return;
-  //       } else {
-  //         setTryAgainModal(true);
-  //         return;
-  //       }
-  //     default:
-  //       return;
-  //   }
-  // };
-
   const openConnectionModalIfNeeded = (condition: boolean) => {
     if (condition) {
       setOpenConnectModal(true);
@@ -320,7 +202,7 @@ export default function Home() {
   };
 
   const handleEligibleStarknetReset = async (
-    typedData: any,
+    typedData: TypedData,
     nonce: number,
     executeBefore: number
   ) => {
@@ -340,7 +222,7 @@ export default function Home() {
   };
 
   const handleDomainStarknetReset = async (
-    typedData: any,
+    typedData: TypedData,
     nonce: number,
     executeBefore: number
   ) => {
@@ -366,7 +248,7 @@ export default function Home() {
   };
 
   const handleEthResetFromStarknet = async (
-    typedData: any,
+    typedData: TypedData,
     nonce: number,
     executeBefore: number
   ) => {
@@ -433,7 +315,7 @@ export default function Home() {
         console.log("he can play on starknet");
         if (!hasEthTokens) {
           console.log("he has no tokens in local storage");
-          setRecoverTokenModal(true);
+          // setRecoverTokenModal(true);
           //todo: create recoverTokenModal
         } else {
           console.log("he has tokens in local storage");

@@ -23,8 +23,8 @@ const ConnectModal: FunctionComponent<StarknetWalletConnectProps> = ({
   onWalletConnected,
 }) => {
   const [openStarknetModal, setOpenStarknetModal] = useState(false);
-  const { openConnectModal, connectModalOpen } = useConnectModal();
-  const { address, isDisconnected, isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const { isDisconnected } = useAccount();
 
   const connectEvm = () => {
     // console.log(

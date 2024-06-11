@@ -37,8 +37,8 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
       </>
     ) : (
       <>
-        Unfortunately, you don't have clicks left. You get another click for
-        each Starknet domain purchased.
+        Unfortunately, you don&apos;t have clicks left. You get another click
+        for each Starknet domain purchased.
       </>
     );
 

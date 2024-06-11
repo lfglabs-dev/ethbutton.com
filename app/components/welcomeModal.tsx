@@ -64,8 +64,8 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
       </>
     ) : isWhitelisted ? (
       <>
-        You don't have any clicks left. You get another click for each Starknet
-        domain purchased.
+        You don&apos;t have any clicks left. You get another click for each
+        Starknet domain purchased.
       </>
     ) : (
       <>
