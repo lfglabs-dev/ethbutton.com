@@ -98,3 +98,30 @@ export const clearEthTokens = () => {
     console.error("Error clearing Eth tokens from local storage:", error);
   }
 };
+
+export const storeEthSig = (ethAddr: string, sig: string): void => {
+  if (typeof ethAddr !== "string" || typeof sig !== "string") {
+    throw new Error("Both ethAddr and sig must be strings");
+  }
+
+  const ethSigObject = { eth_addr: ethAddr, sig: sig };
+  localStorage.setItem("ethbutton-ethSig", JSON.stringify(ethSigObject));
+};
+
+export const getEthSig = (): { eth_addr: string; sig: string } | null => {
+  const ethSigString = localStorage.getItem("ethbutton-ethSig");
+  if (!ethSigString) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(ethSigString);
+  } catch (error) {
+    console.error("Error parsing JSON from local storage", error);
+    return null;
+  }
+};
+
+export const clearEthSig = (): void => {
+  localStorage.removeItem("ethbutton-ethSig");
+};

@@ -13,7 +13,6 @@ import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { mainnet as EthMainnet, sepolia as EthSepolia } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { NotificationProvider } from "@/context/NotificationProvider";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Providers({ children }: any) {
@@ -44,9 +43,7 @@ export function Providers({ children }: any) {
     >
       <WagmiProvider config={config} reconnectOnMount={false}>
         <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider>
-            <NotificationProvider>{children}</NotificationProvider>
-          </RainbowKitProvider>
+          <RainbowKitProvider>{children}</RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </StarknetConfig>

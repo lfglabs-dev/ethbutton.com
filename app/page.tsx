@@ -22,11 +22,13 @@ import {
   getNonBlacklistedDomain,
   getTotalClicks,
   isOver5mn,
+  needToRecoverToken,
 } from "@/utils/dataService";
 import WelcomeModal from "./components/welcomeModal";
 import { getOutsideExecution } from "@/services/clickService";
 import { getTypedData } from "@/utils/callData/typedData";
 import {
+  altStarknetNewAccount,
   ethResetButton,
   resetTimer,
   starknetDomainResetButton,
@@ -38,13 +40,19 @@ import { Signature, TypedData } from "starknet";
 import {
   addEthToken,
   clearEthTokens,
+  getEthSig,
   storeVirtualTxId,
 } from "@/services/localStorageService";
 import canPlayOnStarknet from "@/hooks/canPlayOnStarknet";
 import isStarknetDeployed from "@/hooks/isDeployed";
 import TryAgainModal from "./components/tryAgainModal";
+import Notification from "./components/notification";
+import { hexToDecimal } from "@/utils/feltService";
+import getPriceValue from "@/hooks/getEthQuote";
+import RecoverTokenModal from "./components/recoverTokenModal";
 
 export default function Home() {
+  const [isLoaded, setIsLoaded] = useState(false);
   // Starknet hooks
   const { disconnectAsync } = useDisconnect();
   const { account: starknetAccount } = useAccount();
@@ -62,7 +70,7 @@ export default function Home() {
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [welcomeModal, setWelcomeModal] = useState(false);
   const [tryAgainModal, setTryAgainModal] = useState(false);
-  // const [recoverTokenModal, setRecoverTokenModal] = useState(false); // todo
+  const [recoverTokenModal, setRecoverTokenModal] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [network, setNetwork] = useState<NetworkType>();
   const address =
@@ -72,8 +80,10 @@ export default function Home() {
   const [totalClicks, setTotalClicks] = useState<number>(0);
   const [totalPlayers, setTotalPlayers] = useState<number>(0);
   const [trackingList, setTrackingList] = useState<string[]>([]);
+  const [showNotif, setShowNotif] = useState<boolean>(false);
 
-  const remainingClicks = getRemainingClicks(network, address);
+  const priceValue = getPriceValue();
+  const { isFirstLoad, remainingClicks } = getRemainingClicks(network, address);
   const { hasEthTokens, ethTokens } = canPlayOnStarknet(network);
   const deploymentData = isStarknetDeployed(network, address);
 
@@ -81,7 +91,8 @@ export default function Home() {
 
   // console.log("isFinished", isFinished, countdownTimestamp);
   // console.log("deploymentData", deploymentData);
-  console.log("remainingClicks", remainingClicks);
+  // console.log("remainingClicks", remainingClicks);
+  // console.log("isConnected", isConnected);
   // console.log("hasEthTokens", hasEthTokens, ethTokens);
 
   useEffect(() => {
@@ -91,6 +102,20 @@ export default function Home() {
       setNetwork(NetworkType.evm);
     }
   }, [evmConnected]);
+
+  useEffect(() => {
+    if (network && isConnected && !isFirstLoad) {
+      console.log("Show modal welcome on first load");
+      if (
+        network === NetworkType.evm &&
+        needToRecoverToken(remainingClicks, ethTokens)
+      ) {
+        setRecoverTokenModal(true);
+      } else {
+        setWelcomeModal(true);
+      }
+    }
+  }, [isFirstLoad]);
 
   useEffect(() => {
     const ws = new WebSocket(process.env.NEXT_PUBLIC_WEBSOCKET_URL as string);
@@ -105,6 +130,7 @@ export default function Home() {
       setCurrentWinner(data.last_reset_info[1]);
       setTotalClicks(parseInt(data.click_counter));
       setTotalPlayers(parseInt(data.players));
+      if (!isLoaded) setIsLoaded(true);
     };
 
     ws.onclose = () => {
@@ -124,23 +150,35 @@ export default function Home() {
     if (trackingList && trackingList.length > 0) {
       trackingList.forEach((txId: string) => {
         trackId(txId).then((res) => {
-          console.log("res", res);
-          // todo: if sent and tx hash > notification with link
-          // + "Youstill have X chances to press the button"
-          // res = sent, timestamp_added, tx_hash, winner_addr
+          const decimalAddr = hexToDecimal(
+            starknetAccount
+              ? (starknetAccount?.address as string)
+              : (evmAddress as string)
+          );
+          if (hexToDecimal(res.winner_addr) !== decimalAddr) {
+            if (getTotalClicks(remainingClicks, network, ethTokens) > 0) {
+              // user has some remaining clicks with this wallet
+              setShowNotif(true);
+            } else {
+              // user has no more clicks on this wallet but needs to recover a click token
+              if (needToRecoverToken(remainingClicks, ethTokens))
+                setRecoverTokenModal(true);
+              // show try again modal
+              else setTryAgainModal(true);
+            }
+            // remove txId from trackingList
+            setTrackingList((prev) => prev.filter((id) => id !== txId));
+          }
         });
       });
-      console.log("trackingList", trackingList);
     }
-  }, [trackingList]);
+  }, [trackingList, currentWinner]);
 
   const onWalletConnected = (network: NetworkType) => {
+    console.log("onWalletConnected", network);
     setNetwork(network);
     setOpenConnectModal(false);
     setIsConnected(true);
-    setTimeout(() => {
-      setWelcomeModal(true);
-    }, 500);
   };
 
   const openWalletModal = () => {
@@ -242,6 +280,7 @@ export default function Home() {
         availableDomain
       );
       storeVirtualTxId(virtualTxId.virtual_tx_id);
+      setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
     } catch (error) {
       console.error("Error during starknet domain reset:", error);
     }
@@ -266,11 +305,36 @@ export default function Home() {
         console.log("virtualTxId", virtualTxId);
         storeVirtualTxId(virtualTxId.virtual_tx_id);
         clearEthTokens();
+        setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
       } catch (error) {
         console.error("Error during eth reset from starknet:", error);
       }
     } else {
-      setTryAgainModal(true);
+      const ethSig = getEthSig();
+      if (ethSig) {
+        // we have eth signature in local storage, so we can call alt_starknet_new_account
+        // with eth_addr and signature
+        try {
+          const signature = await starknetAccount?.signMessage(typedData);
+          const virtualTxId = await altStarknetNewAccount(
+            starknetAccount?.address as string,
+            signature as Signature,
+            ethSig.eth_addr,
+            ethSig.sig,
+            nonce,
+            executeBefore,
+            deploymentData
+          );
+          console.log("virtualTxId", virtualTxId);
+          storeVirtualTxId(virtualTxId.virtual_tx_id);
+          clearEthTokens();
+          setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
+        } catch (error) {
+          console.error("Error during alt starknet new reset:", error);
+        }
+      } else {
+        setTryAgainModal(true);
+      }
     }
   };
 
@@ -304,6 +368,7 @@ export default function Home() {
           token: res.token,
           eth_addr: res.eth_addr,
         });
+        setTrackingList([...trackingList, res.virtual_tx_id]);
       } catch (error) {
         console.error("Error during eth reset:", error);
       }
@@ -312,13 +377,14 @@ export default function Home() {
         remainingClicks.eligibilityAmt === 0 &&
         !remainingClicks.evmBlacklisted
       ) {
-        console.log("he can play on starknet");
+        console.log("User can play on starknet");
         if (!hasEthTokens) {
-          console.log("he has no tokens in local storage");
-          // setRecoverTokenModal(true);
-          //todo: create recoverTokenModal
+          console.log(
+            "User has no tokens in local storage but his eth addr is not blacklisted"
+          );
+          setRecoverTokenModal(true);
         } else {
-          console.log("he has tokens in local storage");
+          console.log("User has tokens in local storage");
           setTryAgainModal(true);
         }
       } else {
@@ -351,7 +417,7 @@ export default function Home() {
     <>
       <main className={styles.main}>
         <div className={styles.leftContainer}>
-          {!isFinished ? (
+          {!isLoaded || !isFinished ? (
             <>
               <Button
                 onClick={connectBtnAction}
@@ -365,9 +431,11 @@ export default function Home() {
               >
                 {getConnectionBtnText()}
               </Button>
-              <Button icon={<img src="/visuals/eth.svg" width={14} />}>
-                $3,103
-              </Button>
+              {priceValue ? (
+                <Button icon={<img src="/visuals/eth.svg" width={14} />}>
+                  {priceValue}
+                </Button>
+              ) : null}
             </>
           ) : (
             <>
@@ -440,7 +508,7 @@ export default function Home() {
             <div className={styles.coloredTrapeze}>
               <div className={styles.darkTrapeze}>
                 <h1 className={styles.title}>
-                  {!isFinished ? (
+                  {!isLoaded || !isFinished ? (
                     <>
                       WIN <span className={styles.pinkTitle}>Five</span>{" "}
                       <span className={styles.blueTitle}>ETH</span> !
@@ -463,10 +531,14 @@ export default function Home() {
         </div>
         <Stats
           isConnected={isConnected}
-          remainingClicks={getTotalClicks(remainingClicks as RemainingClicks)}
+          remainingClicks={getTotalClicks(
+            remainingClicks as RemainingClicks,
+            network,
+            ethTokens
+          )}
           totalClicks={totalClicks}
           totalPlayers={totalPlayers}
-          isFinished={isFinished}
+          isFinished={!isLoaded ? false : isFinished}
           currentWinner={currentWinner}
         />
       </main>
@@ -483,7 +555,7 @@ export default function Home() {
         addrOrName={getConnectionBtnText()}
         openWalletModal={openWalletModal}
         hasEthTokens={hasEthTokens}
-        ethTokens={ethTokens.length}
+        ethTokens={ethTokens}
       />
       <TryAgainModal
         closeModal={() => setTryAgainModal(false)}
@@ -492,6 +564,18 @@ export default function Home() {
         hasEthTokens={hasEthTokens}
         openWalletModal={openWalletModal}
       />
+      <RecoverTokenModal
+        closeModal={() => setRecoverTokenModal(false)}
+        open={recoverTokenModal}
+        addr={evmAddress}
+      />
+      <Notification visible={showNotif} onClose={() => setShowNotif(false)}>
+        <>
+          Try again! You still have{" "}
+          {getTotalClicks(remainingClicks, network, ethTokens)} chance to press
+          the button.
+        </>
+      </Notification>
     </>
   );
 }

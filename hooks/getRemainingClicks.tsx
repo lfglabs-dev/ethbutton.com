@@ -14,10 +14,12 @@ export default function getRemainingClicks(
   const [remainingClicks, setRemainingClicks] = useState<RemainingClicks>({
     whitelisted: false,
   });
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   useEffect(() => {
     if (!address || !network) {
       setRemainingClicks({ whitelisted: false });
+      setIsFirstLoad(true);
       return;
     }
 
@@ -50,12 +52,14 @@ export default function getRemainingClicks(
           domainStatus,
           whitelisted,
         });
+        setIsFirstLoad(false);
       } catch (error) {
         console.log("Error while fetching starknet data", error);
         setRemainingClicks({
           eligibilityAmt: 0,
           whitelisted: false,
         });
+        setIsFirstLoad(false);
       }
     };
 
@@ -67,10 +71,12 @@ export default function getRemainingClicks(
           whitelisted: eligibilityAmt.whitelisted,
           evmBlacklisted: eligibilityAmt.blacklisted ?? false,
         });
+        setIsFirstLoad(false);
         return;
       } catch (error) {
         console.log("Error while fetching ethereum eligibility", error);
         setRemainingClicks({ eligibilityAmt: 0, whitelisted: false });
+        setIsFirstLoad(false);
         return;
       }
     };
@@ -91,5 +97,5 @@ export default function getRemainingClicks(
     };
   }, [network, address]);
 
-  return remainingClicks;
+  return { isFirstLoad, remainingClicks };
 }

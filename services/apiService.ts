@@ -144,6 +144,39 @@ export const starknetResetButtonFromEth = async (
   }
 };
 
+export const altStarknetNewAccount = async (
+  starknet_addr: string,
+  sig: Signature,
+  eth_addr: string,
+  eth_sig: String,
+  nonce: number,
+  executeBefore: number,
+  deploymentData?: GetDeploymentDataResult
+) => {
+  try {
+    const response = await fetch(`${baseurl}/alt_starknet_new_account`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        eth_addr,
+        starknet_addr,
+        eth_sig,
+        sig: stark.signatureToHexArray(sig),
+        nonce,
+        execute_before: executeBefore,
+        class_hash: deploymentData?.class_hash,
+        salt: deploymentData?.salt,
+        deployment_calldata: deploymentData?.calldata,
+      }),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log("Error while calling starknet_reset_button_from_eth", err);
+  }
+};
+
 // Ethereum related functions
 export const getEthEligibility = async (address: string) => {
   try {

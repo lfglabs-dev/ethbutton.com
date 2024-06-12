@@ -30,3 +30,8 @@ export function numberToWords(num: number): string {
   ];
   return numWords[num] || num.toString();
 }
+
+export function isHexString(str: string): boolean {
+  if (str === "") return true;
+  return /^0x[0123456789abcdefABCDEF]+$/.test(str);
+}

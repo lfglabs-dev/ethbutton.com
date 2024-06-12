@@ -5,7 +5,7 @@ import { Modal } from "@mui/material";
 import styles from "../styles/components/welcomeModal.module.css";
 import modalStyles from "../styles/components/modal.module.css";
 import Button from "./button";
-import { NetworkType, RemainingClicks } from "@/constants/types";
+import { EthToken, NetworkType, RemainingClicks } from "@/constants/types";
 import WalletIcon from "./iconComponents/walletIcon";
 import { numberToWords } from "@/utils/stringService";
 import { getTotalClicks } from "@/utils/dataService";
@@ -18,7 +18,7 @@ type WelcomeModalProps = {
   addrOrName?: string;
   openWalletModal?: () => void;
   hasEthTokens: boolean;
-  ethTokens?: number;
+  ethTokens?: EthToken[];
 };
 
 const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
@@ -31,9 +31,8 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
   hasEthTokens,
   ethTokens,
 }) => {
-  const totalClicks = getTotalClicks(remainingClicks) + (ethTokens ?? 0);
+  const totalClicks = getTotalClicks(remainingClicks, network, ethTokens);
   const isWhitelisted = remainingClicks.whitelisted;
-  console.log("totalClicks", totalClicks);
   const btnIcon =
     network === NetworkType.starknet ? (
       <img src="/visuals/starknetIcon.svg" />

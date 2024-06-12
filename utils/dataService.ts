@@ -1,7 +1,17 @@
-import { RemainingClicks } from "@/constants/types";
+import { EthToken, NetworkType, RemainingClicks } from "@/constants/types";
 
-export const getTotalClicks = (remaining: RemainingClicks): number => {
-  return (remaining?.eligibilityAmt ?? 0) + (remaining?.domainClicks ?? 0);
+export const getTotalClicks = (
+  remaining: RemainingClicks,
+  network?: NetworkType,
+  ethTokens?: EthToken[]
+): number => {
+  const tokensRelatedClicks =
+    network === NetworkType.evm ? 0 : ethTokens?.length ?? 0;
+  return (
+    (remaining?.eligibilityAmt ?? 0) +
+    (remaining?.domainClicks ?? 0) +
+    tokensRelatedClicks
+  );
 };
 
 export const getNonBlacklistedDomain = (
@@ -23,4 +33,17 @@ export function isOver5mn(timestamp: number) {
   const fiveMinutesInMilliseconds = 300000; // 5 minutes * 60 seconds * 1000 milliseconds
 
   return currentTime - timestamp > fiveMinutesInMilliseconds;
+}
+
+export function needToRecoverToken(
+  remainingClicks: RemainingClicks,
+  ethTokens: EthToken[]
+): boolean {
+  if (
+    remainingClicks.eligibilityAmt === 0 &&
+    !remainingClicks.evmBlacklisted &&
+    (!ethTokens || ethTokens.length === 0)
+  )
+    return true;
+  else return false;
 }

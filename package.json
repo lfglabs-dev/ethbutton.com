@@ -18,6 +18,7 @@
     "@starknet-react/chains": "^0.1.7",
     "@starknet-react/core": "^2.8.2",
     "@types/ws": "^8.5.10",
+    "bn.js": "^5.2.1",
     "ethers": "^6.12.1",
     "next": "14.2.3",
     "react": "^18",
@@ -28,6 +29,7 @@
     "wagmi": "^2.9.7"
   },
   "devDependencies": {
+    "@types/bn.js": "^5.1.5",
     "@types/jest": "^29.5.12",
     "@types/node": "^20",
     "@types/react": "^18",

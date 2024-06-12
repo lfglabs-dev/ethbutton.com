@@ -1,0 +1,23 @@
+.info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background-color: var(--content-dark);
+  color: var(--content);
+
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+
+  padding: 16px 24px;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .info {
+    max-width: 300px;
+  }
+}
