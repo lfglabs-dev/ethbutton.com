@@ -5,8 +5,6 @@ import { Modal } from "@mui/material";
 import styles from "../styles/components/welcomeModal.module.css";
 import modalStyles from "../styles/components/modal.module.css";
 import Button from "./button";
-import { NetworkType } from "@/constants/types";
-import WalletIcon from "./iconComponents/walletIcon";
 import {
   getArgentIcon,
   getArgentWebsite,
@@ -45,8 +43,8 @@ const RecoverTokenModal: FunctionComponent<RecoverTokenModalProps> = ({
   const modalDescription =
     step === 0 ? (
       <>
-        You are eligible to play again with a starknet wallet, but first you'll
-        need to regenerate a signature with your ethereum wallet.
+        You are eligible to play again with a starknet wallet, but first
+        you&apos;ll need to regenerate a signature with your ethereum wallet.
       </>
     ) : (
       <>

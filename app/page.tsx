@@ -525,7 +525,7 @@ export default function Home() {
               <Countdown timestamp={countdownTimestamp} />
             </div>
             <div className={styles.ethBtnContainer}>
-              <EthButton onClick={clickEthButton} />
+              <EthButton onClick={clickEthButton} isFinished={isFinished} />
             </div>
           </div>
         </div>
