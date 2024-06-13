@@ -2,6 +2,7 @@
 
 import React, { FunctionComponent, useState } from "react";
 import { Modal } from "@mui/material";
+import modalStyles from "../../styles/components/modal.module.css";
 import styles from "../../styles/components/walletConnect.module.css";
 import { NetworkType } from "@/constants/types";
 import StarknetWalletConnect from "./starknetConnect";
@@ -59,9 +60,9 @@ const ConnectModal: FunctionComponent<StarknetWalletConnectProps> = ({
           },
         }}
       >
-        <div className={styles.menu_wrapper}>
-          <div className={styles.menu}>
-            <div className={styles.modalContent}>
+        <div className={modalStyles.menu_wrapper}>
+          <div className={modalStyles.menu}>
+            <div className={modalStyles.modal_content}>
               <div className={styles.selectNetworkTitle}>
                 <span>Choose</span> your{" "}
                 <span className={styles.titleBlue}>network</span>

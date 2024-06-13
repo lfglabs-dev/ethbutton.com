@@ -60,8 +60,42 @@
   color: var(--content);
   text-align: center;
   font-family: "Airstrike";
-  font-family: Airstrike;
   font-size: 16px;
   font-weight: 400;
   line-height: 16px;
+}
+
+.content img {
+  width: 58px;
+}
+
+@media (max-width: 620px) {
+  .content img {
+    width: 40px;
+    margin: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .content {
+    font-size: 14px;
+  }
+  .content img {
+    width: 30px;
+    margin: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .content {
+    font-size: 11px;
+  }
+  .content img {
+    width: 25px;
+    margin: auto;
+  }
+  .innerCircle {
+    width: calc(100% - 17px);
+    height: calc(100% - 17px);
+  }
 }

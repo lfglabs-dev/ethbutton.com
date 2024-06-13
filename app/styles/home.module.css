@@ -65,6 +65,7 @@
   left: 20px;
   top: 47%;
   transform: translateY(-50%);
+  width: 18px;
 }
 
 .rightSquares {
@@ -73,6 +74,7 @@
   right: 20px;
   top: 47%;
   transform: translateY(-50%);
+  width: 18px;
 }
 
 .bottomSquares {
@@ -81,6 +83,7 @@
   left: 50%;
   bottom: 25px;
   transform: translateX(-50%);
+  width: 319px;
 }
 
 .verticalGroupLeft {
@@ -88,6 +91,7 @@
   left: 60px;
   bottom: 70px;
   z-index: 3;
+  height: 121px;
 }
 
 .verticalGroupRight {
@@ -95,6 +99,7 @@
   right: 60px;
   bottom: 70px;
   z-index: 3;
+  height: 121px;
 }
 
 .radialGradient {
@@ -176,7 +181,6 @@
 }
 
 .title {
-  font-size: 48px;
   font-weight: 700;
   color: var(--content);
   text-align: center;
@@ -267,9 +271,377 @@
 
 /* 1280px, 1024px, 768px, 640px */
 
-@media (max-width: 900px) {
+@media (max-width: 920px) {
+  .centralSection {
+    width: 700px;
+    height: 500px;
+  }
   .backgroundWrapper {
-    width: 900px;
-    height: 600px;
+    width: 700px;
+    height: 500px;
+  }
+  .backgroundLines {
+    top: 37px;
+  }
+  .leftSquares {
+    width: 16px;
+    left: 15px;
+    top: 47%;
+  }
+  .rightSquares {
+    width: 16px;
+    right: 15px;
+    top: 47%;
+  }
+  .bottomSquares {
+    left: 50%;
+    bottom: 53px;
+    width: 248px;
+  }
+  .verticalGroupLeft {
+    left: 49px;
+    bottom: 86px;
+    height: 96px;
+  }
+  .verticalGroupRight {
+    right: 49px;
+    bottom: 86px;
+    height: 96px;
+  }
+  .radialGradient {
+    left: 26%;
+    bottom: 56px;
+    width: 150px;
+    height: 8px;
+  }
+  .radialGradientLeft {
+    left: 36px;
+    bottom: 60px;
+    width: 8px;
+    height: 131px;
+  }
+  .radialGradientRight {
+    right: 36px;
+    top: 48%;
+    width: 8px;
+    height: 220px;
+  }
+  .coloredTrapeze {
+    min-width: 550px;
+    height: 85px;
+  }
+  .title {
+    font-size: 52px;
+    line-height: 60px;
+  }
+  .ethBtnContainer {
+    width: 150px;
+    height: 150px;
+    bottom: 7px;
+  }
+}
+
+@media (max-width: 720px) {
+  .main {
+    padding: 10px;
+  }
+  .centralSection {
+    width: 600px;
+    height: 420px;
+  }
+  .backgroundWrapper {
+    width: 600px;
+    height: 420px;
+  }
+  .backgroundLines {
+    top: 33px;
+  }
+  .leftSquares {
+    width: 14px;
+    left: 12px;
+    top: 48%;
+  }
+  .rightSquares {
+    width: 14px;
+    right: 12px;
+    top: 48%;
+  }
+  .bottomSquares {
+    left: 50%;
+    bottom: 38px;
+    width: 215px;
+  }
+  .verticalGroupLeft {
+    left: 42px;
+    bottom: 66px;
+    height: 81px;
+  }
+  .verticalGroupRight {
+    right: 42px;
+    bottom: 66px;
+    height: 81px;
+  }
+  .radialGradient {
+    left: 26%;
+    bottom: 41px;
+    width: 144px;
+    height: 7px;
+  }
+  .radialGradientLeft {
+    left: 31px;
+    bottom: 49px;
+    width: 7px;
+    height: 110px;
+  }
+  .radialGradientRight {
+    right: 31px;
+    top: 48%;
+    width: 7px;
+    height: 200px;
+  }
+  .coloredTrapeze {
+    min-width: 490px;
+    height: 75px;
+  }
+  .title {
+    font-size: 46px;
+    line-height: 58px;
+  }
+  .ethBtnContainer {
+    width: 140px;
+    height: 140px;
+    bottom: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .main {
+    padding: 10px;
+  }
+  .centralSection {
+    width: 500px;
+    height: 350px;
+  }
+  .backgroundWrapper {
+    width: 500px;
+    height: 350px;
+  }
+  .backgroundLines {
+    top: 28px;
+  }
+  .leftSquares {
+    width: 12px;
+    left: 9px;
+    top: 48%;
+  }
+  .rightSquares {
+    width: 12px;
+    right: 9px;
+    top: 48%;
+  }
+  .bottomSquares {
+    left: 50%;
+    bottom: 35px;
+    width: 191px;
+  }
+  .verticalGroupLeft {
+    left: 35px;
+    bottom: 54px;
+    height: 68px;
+  }
+  .verticalGroupRight {
+    right: 35px;
+    bottom: 54px;
+    height: 68px;
+  }
+  .radialGradient {
+    left: 25%;
+    bottom: 39px;
+    width: 123px;
+    height: 6px;
+  }
+  .radialGradientLeft {
+    left: 25px;
+    bottom: 41px;
+    width: 6px;
+    height: 95px;
+  }
+  .radialGradientRight {
+    right: 26px;
+    top: 48%;
+    width: 6px;
+    height: 170px;
+  }
+  .coloredTrapeze {
+    min-width: 400px;
+    height: 65px;
+  }
+  .title {
+    font-size: 38px;
+    line-height: 48px;
+  }
+  .countdownContainer {
+    font-size: 38px;
+    line-height: 46px;
+  }
+  .ethBtnContainer {
+    width: 120px;
+    height: 120px;
+    bottom: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .main {
+    padding: 10px;
+  }
+  .centralSection {
+    width: 400px;
+    height: 280px;
+  }
+  .backgroundWrapper {
+    width: 400px;
+    height: 280px;
+  }
+  .backgroundLines {
+    top: 28px;
+  }
+  .leftSquares {
+    width: 8px;
+    left: 9px;
+    top: 46%;
+  }
+  .rightSquares {
+    width: 8px;
+    right: 9px;
+    top: 46%;
+  }
+  .bottomSquares {
+    left: 50%;
+    bottom: 26px;
+    width: 140px;
+  }
+  .verticalGroupLeft {
+    left: 29px;
+    bottom: 37px;
+    height: 55px;
+  }
+  .verticalGroupRight {
+    right: 29px;
+    bottom: 37px;
+    height: 55px;
+  }
+  .radialGradient {
+    left: 25%;
+    bottom: 28px;
+    width: 118px;
+    height: 4px;
+  }
+  .radialGradientLeft {
+    left: 21px;
+    bottom: 41px;
+    width: 4px;
+    height: 95px;
+  }
+  .radialGradientRight {
+    right: 22px;
+    top: 48%;
+    width: 4px;
+    height: 150px;
+  }
+  .coloredTrapeze {
+    min-width: 340px;
+    height: 55px;
+  }
+  .title {
+    font-size: 31px;
+    line-height: 48px;
+  }
+  .countdownContainer {
+    font-size: 38px;
+    line-height: 46px;
+  }
+  .ethBtnContainer {
+    width: 100px;
+    height: 100px;
+    bottom: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .main {
+    padding: 10px;
+  }
+  .centralSection {
+    width: 300px;
+    height: 220px;
+  }
+  .backgroundWrapper {
+    width: 300px;
+    height: 220px;
+  }
+  .backgroundLines {
+    top: 17px;
+  }
+  .leftSquares {
+    width: 8px;
+    left: 9px;
+    top: 46%;
+  }
+  .rightSquares {
+    width: 8px;
+    right: 9px;
+    top: 46%;
+  }
+  .bottomSquares {
+    left: 50%;
+    bottom: 26px;
+    width: 140px;
+  }
+  .verticalGroupLeft {
+    left: 22px;
+    bottom: 43px;
+    height: 40px;
+  }
+  .verticalGroupRight {
+    right: 22px;
+    bottom: 43px;
+    height: 40px;
+  }
+  .radialGradient {
+    left: 21%;
+    bottom: 30px;
+    width: 82px;
+    height: 2px;
+  }
+  .radialGradientLeft {
+    left: 19px;
+    bottom: 36px;
+    width: 2px;
+    height: 85px;
+  }
+  .radialGradientRight {
+    right: 19px;
+    top: 48%;
+    width: 2px;
+    height: 120px;
+  }
+  .coloredTrapeze {
+    min-width: 250px;
+    height: 40px;
+    top: 8px;
+  }
+  .title {
+    font-size: 23px;
+    line-height: 33px;
+  }
+  .countdownContainer {
+    font-size: 30px;
+    line-height: 34px;
+  }
+  .ethBtnContainer {
+    width: 80px;
+    height: 80px;
+    bottom: 0;
   }
 }

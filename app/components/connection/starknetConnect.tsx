@@ -4,6 +4,7 @@ import React, { FunctionComponent } from "react";
 import { Modal, useMediaQuery } from "@mui/material";
 import { Connector } from "starknetkit";
 import styles from "../../styles/components/walletConnect.module.css";
+import modalStyles from "../../styles/components/modal.module.css";
 import {
   getConnectorDiscovery,
   getConnectorIcon,
@@ -65,9 +66,9 @@ const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
         },
       }}
     >
-      <div className={styles.menu_wrapper}>
-        <div className={styles.menu}>
-          <div className={styles.modalContent}>
+      <div className={modalStyles.menu_wrapper}>
+        <div className={modalStyles.menu}>
+          <div className={modalStyles.modal_content}>
             <div className={styles.modalTitle}>
               Connect <span>to</span>
             </div>
