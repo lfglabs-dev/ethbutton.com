@@ -32,7 +32,7 @@ const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
 
   const connect = async (connector: Connector) => {
     await connectAsync({ connector });
-    onWalletConnected(NetworkType.starknet);
+    onWalletConnected(NetworkType.STARKNET);
     closeModal();
   };
   const isMobile = useMediaQuery("(max-width: 768px)");

@@ -10,7 +10,7 @@ import { getConnectors } from "@/utils/starknetConnectorsWrapper";
 import { Connector } from "starknetkit";
 import Button from "../button";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useAccount } from "@starknet-react/core";
+import { useAccount as useWagmiAccount } from "wagmi";
 
 type StarknetWalletConnectProps = {
   closeModal: () => void;
@@ -25,21 +25,14 @@ const ConnectModal: FunctionComponent<StarknetWalletConnectProps> = ({
 }) => {
   const [openStarknetModal, setOpenStarknetModal] = useState(false);
   const { openConnectModal } = useConnectModal();
-  const { isDisconnected } = useAccount();
+  const { isDisconnected } = useWagmiAccount();
 
   const connectEvm = () => {
-    // console.log(
-    //   "connectEvm",
-    //   address,
-    //   isConnected,
-    //   "disconnected",
-    //   isDisconnected
-    // );
-    // openConnectModal is sometimes undefined with MetaMask
-    // need to investigate this further
-    console.log("openConnectModal", openConnectModal);
+    // openConnectModal is sometimes undefined because user is already connected
     if (isDisconnected) {
       openConnectModal && openConnectModal();
+    } else {
+      onWalletConnected(NetworkType.EVM);
     }
   };
 

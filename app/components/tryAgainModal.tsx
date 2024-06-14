@@ -30,7 +30,7 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
   openWalletModal,
 }) => {
   const modalDescription =
-    network === NetworkType.evm && hasEthTokens ? (
+    network === NetworkType.EVM && hasEthTokens ? (
       <>
         You are eligible to play again with a starknet wallet. You can install
         one of our partner wallets to get an additional click!
@@ -67,7 +67,7 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
 
             <div className={styles.description}>{modalDescription}</div>
 
-            {network === NetworkType.evm && hasEthTokens ? (
+            {network === NetworkType.EVM && hasEthTokens ? (
               <div>
                 <Button
                   icon={<img src={getArgentIcon()} width={22} />}

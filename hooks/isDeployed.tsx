@@ -9,7 +9,7 @@ export default function isStarknetDeployed(
     useState<GetDeploymentDataResult>();
 
   useEffect(() => {
-    if (!network || network === NetworkType.evm || !address) {
+    if (!network || network === NetworkType.EVM || !address) {
       setDeploymentData(undefined);
       return;
     }

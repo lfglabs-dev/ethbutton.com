@@ -1,8 +1,8 @@
 import { RawArgs, num } from "starknet";
 
 export enum NetworkType {
-  starknet = "Starknet",
-  evm = "Evm",
+  STARKNET = "Starknet",
+  EVM = "Evm",
 }
 
 export type IconProps = {

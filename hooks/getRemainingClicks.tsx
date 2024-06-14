@@ -81,10 +81,10 @@ export default function getRemainingClicks(
       }
     };
 
-    if (network === NetworkType.starknet) {
+    if (network === NetworkType.STARKNET) {
       fetchStarknetData();
       intervalId = setInterval(fetchStarknetData, 5000); // Set interval for fetching Starknet data
-    } else if (network === NetworkType.evm) {
+    } else if (network === NetworkType.EVM) {
       fetchEvmData();
       intervalId = setInterval(fetchEvmData, 5000); // Set interval for fetching EVM data
     }

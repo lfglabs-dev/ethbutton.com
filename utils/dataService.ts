@@ -6,7 +6,7 @@ export const getTotalClicks = (
   ethTokens?: EthToken[]
 ): number => {
   const tokensRelatedClicks =
-    network === NetworkType.evm ? 0 : ethTokens?.length ?? 0;
+    network === NetworkType.EVM ? 0 : ethTokens?.length ?? 0;
   return (
     (remaining?.eligibilityAmt ?? 0) +
     (remaining?.domainClicks ?? 0) +

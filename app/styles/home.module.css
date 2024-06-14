@@ -261,6 +261,7 @@
   .leftContainer {
     margin: 24px auto;
     align-items: center;
+    max-width: 400px;
   }
 
   .backgroundWrapper {
@@ -495,6 +496,9 @@
   .main {
     padding: 10px;
   }
+  .leftContainer {
+    max-width: 300px;
+  }
   .centralSection {
     width: 400px;
     height: 280px;
@@ -571,6 +575,9 @@
 @media (max-width: 420px) {
   .main {
     padding: 10px;
+  }
+  .leftContainer {
+    max-width: 250px;
   }
   .centralSection {
     width: 300px;

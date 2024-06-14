@@ -15,22 +15,8 @@ const EthereumConnect: FunctionComponent<EthereumConnectProps> = ({
   const { openConnectModal } = useConnectModal();
   return (
     <ConnectButton.Custom>
-      {({
-        // account,
-        // chain,
-        // openAccountModal,
-        // openChainModal,
-        // openConnectModal,
-        authenticationStatus,
-        mounted,
-      }) => {
+      {({ authenticationStatus, mounted }) => {
         const ready = mounted && authenticationStatus !== "loading";
-        // const connected =
-        //   ready &&
-        //   account &&
-        //   chain &&
-        //   (!authenticationStatus || authenticationStatus === "authenticated");
-
         return (
           <div
             className={styles.connectButton}

@@ -74,7 +74,7 @@ export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
   const [network, setNetwork] = useState<NetworkType>();
   const address =
-    network === NetworkType.starknet ? starknetAccount?.address : evmAddress;
+    network === NetworkType.STARKNET ? starknetAccount?.address : evmAddress;
   const [countdownTimestamp, setCountdownTimestamp] = useState<number>(0);
   const [currentWinner, setCurrentWinner] = useState<string>("");
   const [totalClicks, setTotalClicks] = useState<number>(0);
@@ -86,20 +86,13 @@ export default function Home() {
   const { isFirstLoad, remainingClicks } = getRemainingClicks(network, address);
   const { hasEthTokens, ethTokens } = canPlayOnStarknet(network);
   const deploymentData = isStarknetDeployed(network, address);
-
   const isFinished = isOver5mn(countdownTimestamp);
-
-  // console.log("isFinished", isFinished, countdownTimestamp);
-  // console.log("deploymentData", deploymentData);
-  // console.log("remainingClicks", remainingClicks);
-  // console.log("isConnected", isConnected);
-  // console.log("hasEthTokens", hasEthTokens, ethTokens);
 
   useEffect(() => {
     if (evmConnected) {
       setOpenConnectModal(false);
       setIsConnected(true);
-      setNetwork(NetworkType.evm);
+      setNetwork(NetworkType.EVM);
     }
   }, [evmConnected]);
 
@@ -107,7 +100,7 @@ export default function Home() {
     if (network && isConnected && !isFirstLoad) {
       console.log("Show modal welcome on first load");
       if (
-        network === NetworkType.evm &&
+        network === NetworkType.EVM &&
         needToRecoverToken(remainingClicks, ethTokens)
       ) {
         setRecoverTokenModal(true);
@@ -194,11 +187,11 @@ export default function Home() {
 
   const getUserNameOrAddress = () => {
     switch (network) {
-      case NetworkType.starknet:
+      case NetworkType.STARKNET:
         return starkNameData
           ? starkNameData
           : minifyAddress(starknetAccount?.address);
-      case NetworkType.evm:
+      case NetworkType.EVM:
         return ens && ens.data ? ens.data : minifyAddress(evmAddress);
       default:
         return undefined;
@@ -207,12 +200,12 @@ export default function Home() {
 
   const disconnectUser = async () => {
     switch (network) {
-      case NetworkType.starknet:
+      case NetworkType.STARKNET:
         await disconnectAsync();
         setIsConnected(false);
         setNetwork(undefined);
         return;
-      case NetworkType.evm:
+      case NetworkType.EVM:
         console.log("disconnecting evm");
         disconnectEvm();
         setIsConnected(false);
@@ -400,11 +393,11 @@ export default function Home() {
     if (openConnectionModalIfNeeded(!isConnected)) return;
 
     switch (network) {
-      case NetworkType.starknet:
+      case NetworkType.STARKNET:
         if (openConnectionModalIfNeeded(!starknetAccount)) return;
         await handleStarknetButtonClick();
         break;
-      case NetworkType.evm:
+      case NetworkType.EVM:
         if (openConnectionModalIfNeeded(!evmAddress)) return;
         await handleEvmButtonClick();
         break;
