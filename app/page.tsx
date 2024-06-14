@@ -98,7 +98,6 @@ export default function Home() {
 
   useEffect(() => {
     if (network && isConnected && !isFirstLoad) {
-      console.log("Show modal welcome on first load");
       if (
         network === NetworkType.EVM &&
         needToRecoverToken(remainingClicks, ethTokens)

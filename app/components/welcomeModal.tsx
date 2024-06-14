@@ -34,7 +34,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
   const totalClicks = getTotalClicks(remainingClicks, network, ethTokens);
   const isWhitelisted = remainingClicks.whitelisted;
   const btnIcon =
-    network === NetworkType.starknet ? (
+    network === NetworkType.STARKNET ? (
       <img src="/visuals/starknetIcon.svg" />
     ) : (
       <img src="/visuals/ethFilledIcon.svg" />

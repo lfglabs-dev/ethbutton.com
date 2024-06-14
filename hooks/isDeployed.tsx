@@ -16,7 +16,6 @@ export default function isStarknetDeployed(
 
     const checkIsDeployed = async () => {
       try {
-        console.log("Checking if Starknet is deployed", window.starknet);
         if (!window.starknet || !window.starknet.isConnected) {
           setDeploymentData(undefined);
           return;
@@ -26,7 +25,7 @@ export default function isStarknetDeployed(
           // @ts-ignore
           type: "wallet_deploymentData",
         });
-        console.log("Starknet data", data);
+        console.log("Starknet data for deployment", data);
         if (isGetDeploymentDataResult(data)) {
           setDeploymentData(data);
         } else {
