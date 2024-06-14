@@ -237,7 +237,10 @@ export default function Home() {
     executeBefore: number
   ) => {
     try {
-      const signature = await starknetAccount?.signMessage(typedData);
+      if (!starknetAccount) return;
+      console.log("starknetAccount", starknetAccount);
+      const signature = await starknetAccount.signMessage(typedData);
+      console.log("signature", signature);
       const virtualTxId = await starknetResetButton(
         starknetAccount?.address as string,
         signature as Signature,
