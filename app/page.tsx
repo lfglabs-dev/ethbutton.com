@@ -241,7 +241,11 @@ export default function Home() {
   ) => {
     try {
       if (!starknetAccount) return;
-      const signature = await starknetAccount.signMessage(typedData);
+      const signature = await starknetAccount.signMessage(
+        typedData,
+        // @ts-ignore
+        { skipDeploy: true }
+      );
       const virtualTxId = await starknetResetButton(
         starknetAccount?.address as string,
         signature,
@@ -291,7 +295,11 @@ export default function Home() {
   ) => {
     if (hasEthTokens && ethTokens.length > 0) {
       try {
-        const signature = await starknetAccount?.signMessage(typedData);
+        const signature = await starknetAccount?.signMessage(
+          typedData,
+          // @ts-ignore
+          { skipDeploy: true }
+        );
         const virtualTxId = await starknetResetButtonFromEth(
           starknetAccount?.address as string,
           signature as Signature,
@@ -314,7 +322,11 @@ export default function Home() {
         // we have eth signature in local storage, so we can call alt_starknet_new_account
         // with eth_addr and signature
         try {
-          const signature = await starknetAccount?.signMessage(typedData);
+          const signature = await starknetAccount?.signMessage(
+            typedData,
+            // @ts-ignore
+            { skipDeploy: true }
+          );
           const virtualTxId = await altStarknetNewAccount(
             starknetAccount?.address as string,
             signature as Signature,

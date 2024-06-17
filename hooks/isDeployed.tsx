@@ -1,5 +1,6 @@
 import { GetDeploymentDataResult, NetworkType } from "@/constants/types";
 import { useEffect, useState } from "react";
+import { wallet } from "starknet";
 
 export default function isStarknetDeployed(
   network?: NetworkType,
