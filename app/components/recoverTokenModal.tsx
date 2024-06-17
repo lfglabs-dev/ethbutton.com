@@ -8,8 +8,6 @@ import Button from "./button";
 import {
   getArgentIcon,
   getArgentWebsite,
-  getBraavosIcon,
-  getBraavosWebsite,
 } from "@/utils/starknetConnectorsWrapper";
 import { storeEthSig } from "@/services/localStorageService";
 import { useSignMessage } from "wagmi";

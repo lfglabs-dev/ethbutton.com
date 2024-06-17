@@ -36,7 +36,7 @@ import {
   starknetResetButtonFromEth,
   trackId,
 } from "@/services/apiService";
-import { Signature, TypedData, WeierstrassSignatureType } from "starknet";
+import { Signature, TypedData } from "starknet";
 import {
   addEthToken,
   clearEthTokens,
