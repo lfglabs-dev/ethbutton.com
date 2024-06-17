@@ -47,10 +47,7 @@ const RecoverTokenModal: FunctionComponent<RecoverTokenModalProps> = ({
         you&apos;ll need to regenerate a signature with your ethereum wallet.
       </>
     ) : (
-      <>
-        You can now install one of our partner wallets to get your additional
-        click!
-      </>
+      <>You can now install your Argent wallet to get your additional click!</>
     );
 
   return (
@@ -97,13 +94,13 @@ const RecoverTokenModal: FunctionComponent<RecoverTokenModalProps> = ({
                 >
                   Argent
                 </Button>
-                <Button
+                {/* <Button
                   icon={<img src={getBraavosIcon()} width={22} />}
                   width={300}
                   onClick={() => window.open(getBraavosWebsite())}
                 >
                   Braavos
-                </Button>
+                </Button> */}
               </div>
             )}
 

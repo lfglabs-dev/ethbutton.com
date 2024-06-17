@@ -61,3 +61,56 @@ export function getTypedData(outsideExecution: OutsideExecution) {
     },
   };
 }
+
+const typesV2 = {
+  StarknetDomain: [
+    { name: "name", type: "shortstring" },
+    { name: "version", type: "shortstring" },
+    { name: "chainId", type: "shortstring" },
+    { name: "revision", type: "shortstring" },
+  ],
+  OutsideExecution: [
+    { name: "Caller", type: "ContractAddress" },
+    { name: "Nonce", type: "felt" },
+    { name: "Execute After", type: "u128" },
+    { name: "Execute Before", type: "u128" },
+    { name: "Calls", type: "Call*" },
+  ],
+  Call: [
+    { name: "To", type: "ContractAddress" },
+    { name: "Selector", type: "selector" },
+    { name: "Calldata", type: "felt*" },
+  ],
+};
+
+export function getDomainV2(chainId: string) {
+  return {
+    name: "Account.execute_from_outside",
+    version: "2",
+    chainId: chainId,
+    revision: "1",
+  };
+}
+
+export function getTypedDataV2(outsideExecution: OutsideExecution) {
+  const chainId =
+    process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "SN_SEPOLIA" : "SN_MAIN";
+  return {
+    types: typesV2,
+    primaryType: "OutsideExecution",
+    domain: getDomainV2(chainId),
+    message: {
+      Caller: outsideExecution.caller,
+      Nonce: outsideExecution.nonce,
+      "Execute After": outsideExecution.execute_after,
+      "Execute Before": outsideExecution.execute_before,
+      Calls: outsideExecution.calls.map((call) => {
+        return {
+          To: call.to,
+          Selector: call.selector,
+          Calldata: call.calldata,
+        };
+      }),
+    },
+  };
+}

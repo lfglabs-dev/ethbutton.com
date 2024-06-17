@@ -1,5 +1,11 @@
 import { EthToken, GetDeploymentDataResult } from "@/constants/types";
-import { Signature, stark } from "starknet";
+import {
+  ArraySignatureType,
+  Signature,
+  WeierstrassSignatureType,
+  num,
+  stark,
+} from "starknet";
 
 const baseurl = process.env.NEXT_PUBLIC_ETH_BUTTON_API;
 const starknetIdBaseUrl = process.env.NEXT_PUBLIC_STARKNET_ID_API;
@@ -67,8 +73,11 @@ export const starknetResetButton = async (
   address: string,
   sig: Signature,
   nonce: number,
-  executeBefore: number
+  executeBefore: number,
+  version: number
 ) => {
+  const sigHex = stark.signatureToHexArray(sig);
+  console.log("sigHex reset button", sigHex);
   try {
     const response = await fetch(`${baseurl}/starknet_reset_button`, {
       method: "POST",
@@ -77,9 +86,10 @@ export const starknetResetButton = async (
       },
       body: JSON.stringify({
         addr: address,
-        sig: stark.signatureToHexArray(sig),
+        sig: [sigHex[1], sigHex[2]],
         nonce,
         execute_before: executeBefore,
+        version,
       }),
     });
     return await response.json();
@@ -92,7 +102,8 @@ export const starknetDomainResetButton = async (
   sig: Signature,
   nonce: number,
   executeBefore: number,
-  domain: string
+  domain: string,
+  version: number
 ) => {
   try {
     const response = await fetch(`${baseurl}/starknet_domain_reset_button`, {
@@ -105,6 +116,7 @@ export const starknetDomainResetButton = async (
         sig: stark.signatureToHexArray(sig),
         nonce,
         execute_before: executeBefore,
+        version,
       }),
     });
     return await response.json();
@@ -119,6 +131,7 @@ export const starknetResetButtonFromEth = async (
   tokens: EthToken[],
   nonce: number,
   executeBefore: number,
+  version: number,
   deploymentData?: GetDeploymentDataResult
 ) => {
   try {
@@ -136,6 +149,7 @@ export const starknetResetButtonFromEth = async (
         class_hash: deploymentData?.class_hash,
         salt: deploymentData?.salt,
         deployment_calldata: deploymentData?.calldata,
+        version,
       }),
     });
     return await response.json();
@@ -151,6 +165,7 @@ export const altStarknetNewAccount = async (
   eth_sig: String,
   nonce: number,
   executeBefore: number,
+  version: number,
   deploymentData?: GetDeploymentDataResult
 ) => {
   try {
@@ -169,6 +184,7 @@ export const altStarknetNewAccount = async (
         class_hash: deploymentData?.class_hash,
         salt: deploymentData?.salt,
         deployment_calldata: deploymentData?.calldata,
+        version,
       }),
     });
     return await response.json();

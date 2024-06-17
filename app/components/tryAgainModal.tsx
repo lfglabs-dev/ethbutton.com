@@ -10,8 +10,6 @@ import WalletIcon from "./iconComponents/walletIcon";
 import {
   getArgentIcon,
   getArgentWebsite,
-  getBraavosIcon,
-  getBraavosWebsite,
 } from "@/utils/starknetConnectorsWrapper";
 
 type TryAgainModalProps = {
@@ -76,13 +74,13 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
                 >
                   Argent
                 </Button>
-                <Button
+                {/* <Button
                   icon={<img src={getBraavosIcon()} width={22} />}
                   width={300}
                   onClick={() => window.open(getBraavosWebsite())}
                 >
                   Braavos
-                </Button>
+                </Button> */}
               </div>
             ) : (
               <div>

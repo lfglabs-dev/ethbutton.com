@@ -26,7 +26,7 @@ import {
 } from "@/utils/dataService";
 import WelcomeModal from "./components/welcomeModal";
 import { getOutsideExecution } from "@/services/clickService";
-import { getTypedData } from "@/utils/callData/typedData";
+import { getTypedData, getTypedDataV2 } from "@/utils/callData/typedData";
 import {
   altStarknetNewAccount,
   ethResetButton,
@@ -36,7 +36,7 @@ import {
   starknetResetButtonFromEth,
   trackId,
 } from "@/services/apiService";
-import { Signature, TypedData } from "starknet";
+import { Signature, TypedData, WeierstrassSignatureType } from "starknet";
 import {
   addEthToken,
   clearEthTokens,
@@ -50,6 +50,7 @@ import Notification from "./components/notification";
 import { hexToDecimal } from "@/utils/feltService";
 import getPriceValue from "@/hooks/getEthQuote";
 import RecoverTokenModal from "./components/recoverTokenModal";
+import getTxVersion from "@/hooks/getTxVersion";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -87,6 +88,8 @@ export default function Home() {
   const { hasEthTokens, ethTokens } = canPlayOnStarknet(network);
   const deploymentData = isStarknetDeployed(network, address);
   const isFinished = isOver5mn(countdownTimestamp);
+  const txVersion = getTxVersion(network, address);
+  // console.log("txVersion", txVersion);
 
   useEffect(() => {
     if (evmConnected) {
@@ -238,14 +241,13 @@ export default function Home() {
   ) => {
     try {
       if (!starknetAccount) return;
-      console.log("starknetAccount", starknetAccount);
       const signature = await starknetAccount.signMessage(typedData);
-      console.log("signature", signature);
       const virtualTxId = await starknetResetButton(
         starknetAccount?.address as string,
-        signature as Signature,
+        signature,
         nonce,
-        executeBefore
+        executeBefore,
+        txVersion as number
       );
       storeVirtualTxId(virtualTxId.virtual_tx_id);
       setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
@@ -272,7 +274,8 @@ export default function Home() {
         signature as Signature,
         nonce,
         executeBefore,
-        availableDomain
+        availableDomain,
+        txVersion as number
       );
       storeVirtualTxId(virtualTxId.virtual_tx_id);
       setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
@@ -295,6 +298,7 @@ export default function Home() {
           ethTokens,
           nonce,
           executeBefore,
+          txVersion as number,
           deploymentData
         );
         console.log("virtualTxId", virtualTxId);
@@ -318,6 +322,7 @@ export default function Home() {
             ethSig.sig,
             nonce,
             executeBefore,
+            txVersion as number,
             deploymentData
           );
           console.log("virtualTxId", virtualTxId);
@@ -337,7 +342,11 @@ export default function Home() {
     const nonce = Math.floor(Math.random() * 1000000000000);
     const executeBefore = Math.floor(Date.now() / 1000) + 3600 * 48; // + 48h for testing
     const outsideExecution = getOutsideExecution(nonce, executeBefore);
-    const typedData = getTypedData(outsideExecution);
+    if (!txVersion) return;
+    const typedData =
+      txVersion === 1
+        ? getTypedData(outsideExecution)
+        : getTypedDataV2(outsideExecution);
 
     if (remainingClicks.eligibilityAmt && remainingClicks.eligibilityAmt > 0) {
       await handleEligibleStarknetReset(typedData, nonce, executeBefore);
