@@ -42,6 +42,7 @@ export function needToRecoverToken(
   if (
     remainingClicks.eligibilityAmt === 0 &&
     !remainingClicks.evmBlacklisted &&
+    remainingClicks.whitelisted &&
     (!ethTokens || ethTokens.length === 0)
   )
     return true;
