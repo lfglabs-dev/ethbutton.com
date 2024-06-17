@@ -293,7 +293,7 @@ export default function Home() {
       try {
         const signature = await starknetAccount?.signMessage(
           typedData,
-          // @ts-expect-error
+          // @ts-expect-error we should skip deploy
           { skipDeploy: true }
         );
         const virtualTxId = await starknetResetButtonFromEth(
@@ -320,7 +320,7 @@ export default function Home() {
         try {
           const signature = await starknetAccount?.signMessage(
             typedData,
-            // @ts-expect-error
+            // @ts-expect-error we should skip deploy
             { skipDeploy: true }
           );
           const virtualTxId = await altStarknetNewAccount(
