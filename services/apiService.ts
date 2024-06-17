@@ -77,7 +77,6 @@ export const starknetResetButton = async (
   version: number
 ) => {
   const sigHex = stark.signatureToHexArray(sig);
-  console.log("sigHex reset button", sigHex);
   try {
     const response = await fetch(`${baseurl}/starknet_reset_button`, {
       method: "POST",
@@ -86,7 +85,7 @@ export const starknetResetButton = async (
       },
       body: JSON.stringify({
         addr: address,
-        sig: [sigHex[1], sigHex[2]],
+        sig: sigHex,
         nonce,
         execute_before: executeBefore,
         version,
@@ -105,6 +104,7 @@ export const starknetDomainResetButton = async (
   domain: string,
   version: number
 ) => {
+  const sigHex = stark.signatureToHexArray(sig);
   try {
     const response = await fetch(`${baseurl}/starknet_domain_reset_button`, {
       method: "POST",
@@ -113,7 +113,7 @@ export const starknetDomainResetButton = async (
       },
       body: JSON.stringify({
         domain: domain,
-        sig: stark.signatureToHexArray(sig),
+        sig: sigHex,
         nonce,
         execute_before: executeBefore,
         version,
@@ -134,6 +134,7 @@ export const starknetResetButtonFromEth = async (
   version: number,
   deploymentData?: GetDeploymentDataResult
 ) => {
+  const sigHex = stark.signatureToHexArray(sig);
   try {
     const response = await fetch(`${baseurl}/starknet_reset_button_from_eth`, {
       method: "POST",
@@ -142,7 +143,7 @@ export const starknetResetButtonFromEth = async (
       },
       body: JSON.stringify({
         starknet_addr,
-        sig: stark.signatureToHexArray(sig),
+        sig: sigHex,
         tokens,
         nonce,
         execute_before: executeBefore,
@@ -168,6 +169,7 @@ export const altStarknetNewAccount = async (
   version: number,
   deploymentData?: GetDeploymentDataResult
 ) => {
+  const sigHex = stark.signatureToHexArray(sig);
   try {
     const response = await fetch(`${baseurl}/alt_starknet_new_account`, {
       method: "POST",
@@ -178,7 +180,7 @@ export const altStarknetNewAccount = async (
         eth_addr,
         starknet_addr,
         eth_sig,
-        sig: stark.signatureToHexArray(sig),
+        sig: sigHex,
         nonce,
         execute_before: executeBefore,
         class_hash: deploymentData?.class_hash,
