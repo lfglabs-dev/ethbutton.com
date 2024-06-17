@@ -50,4 +50,5 @@ export interface GetDeploymentDataResult {
   class_hash: string; // Represented as 'felt252'
   salt: string; // Represented as 'felt252'
   calldata: string[]; // Array of 'felt252', length := calldata_len
+  version: number;
 }

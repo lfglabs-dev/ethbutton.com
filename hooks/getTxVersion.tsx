@@ -8,7 +8,6 @@ export default function getTxVersion(network?: NetworkType, address?: string) {
 
   useEffect(() => {
     if (!network || network === NetworkType.EVM || !account) {
-      console.log("1");
       setVersion(undefined);
       return;
     }
@@ -30,6 +29,7 @@ export default function getTxVersion(network?: NetworkType, address?: string) {
             "0x1d1144bb2138366ff28d8e9ab57456b1d332ac42196230c3a602003c89872",
           ],
         });
+        console.log("supports results", supports_v1, supports_v2);
 
         // @ts-ignore
         if (Number(supports_v1.result[0])) setVersion(1);
