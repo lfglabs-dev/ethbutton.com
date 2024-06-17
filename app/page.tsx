@@ -241,11 +241,7 @@ export default function Home() {
   ) => {
     try {
       if (!starknetAccount) return;
-      const signature = await starknetAccount.signMessage(
-        typedData,
-        // @ts-ignore
-        { skipDeploy: true }
-      );
+      const signature = await starknetAccount.signMessage(typedData);
       const virtualTxId = await starknetResetButton(
         starknetAccount?.address as string,
         signature,
@@ -297,7 +293,7 @@ export default function Home() {
       try {
         const signature = await starknetAccount?.signMessage(
           typedData,
-          // @ts-ignore
+          // @ts-expect-error
           { skipDeploy: true }
         );
         const virtualTxId = await starknetResetButtonFromEth(
@@ -324,7 +320,7 @@ export default function Home() {
         try {
           const signature = await starknetAccount?.signMessage(
             typedData,
-            // @ts-ignore
+            // @ts-expect-error
             { skipDeploy: true }
           );
           const virtualTxId = await altStarknetNewAccount(
