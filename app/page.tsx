@@ -350,10 +350,9 @@ export default function Home() {
     const nonce = Math.floor(Math.random() * 1000000000000);
     const executeBefore = Math.floor(Date.now() / 1000) + 3600 * 48; // + 48h for testing
     const outsideExecution = getOutsideExecution(nonce, executeBefore);
-    if (!txVersion && !deploymentData?.version)
-      console.log("txVersion is undefined");
+    if (!txVersion) console.log("txVersion is undefined");
     const typedData =
-      txVersion === 1 || deploymentData?.version === 1
+      txVersion === 1
         ? getTypedData(outsideExecution)
         : getTypedDataV2(outsideExecution);
 

@@ -1,9 +1,10 @@
 import { NetworkType } from "@/constants/types";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useConnect } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 
 export default function getTxVersion(network?: NetworkType, address?: string) {
   const { account } = useAccount();
+  const { connector } = useConnect();
   const [txVersion, setVersion] = useState<number | undefined>();
 
   useEffect(() => {
@@ -12,7 +13,7 @@ export default function getTxVersion(network?: NetworkType, address?: string) {
       return;
     }
 
-    const checkIsDeployed = async () => {
+    const checkTxVersion = async () => {
       try {
         const supports_v1 = await account.callContract({
           contractAddress: account.address,
@@ -29,20 +30,26 @@ export default function getTxVersion(network?: NetworkType, address?: string) {
             "0x1d1144bb2138366ff28d8e9ab57456b1d332ac42196230c3a602003c89872",
           ],
         });
-        console.log("supports results", supports_v1, supports_v2);
 
         // @ts-ignore
         if (Number(supports_v1.result[0])) setVersion(1);
         // @ts-ignore
         else if (Number(supports_v2.result[0])) setVersion(2);
-        else setVersion(undefined);
+        else {
+          if (connector?.id === "argent") setVersion(1);
+          else if (connector?.id === "braavos") setVersion(2);
+          else setVersion(undefined);
+        }
       } catch (error) {
-        setVersion(undefined);
+        console.log("Error while checking tx version", error);
+        if (connector?.id.includes("argent")) setVersion(1);
+        else if (connector?.id === "braavos") setVersion(2);
+        else setVersion(undefined);
       }
     };
 
-    checkIsDeployed();
-  }, [network, address]);
+    checkTxVersion();
+  }, [network, address, account?.address, connector]);
 
   return txVersion;
 }
