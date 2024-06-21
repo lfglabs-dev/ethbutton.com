@@ -1,11 +1,5 @@
 import { EthToken, GetDeploymentDataResult } from "@/constants/types";
-import {
-  ArraySignatureType,
-  Signature,
-  WeierstrassSignatureType,
-  num,
-  stark,
-} from "starknet";
+import { Signature, stark } from "starknet";
 
 const baseurl = process.env.NEXT_PUBLIC_ETH_BUTTON_API;
 const starknetIdBaseUrl = process.env.NEXT_PUBLIC_STARKNET_ID_API;
@@ -76,7 +70,7 @@ export const starknetResetButton = async (
   executeBefore: number,
   version: number
 ) => {
-  const sigHex = stark.signatureToHexArray(sig);
+  let sigHex = stark.signatureToHexArray(sig);
   try {
     const response = await fetch(`${baseurl}/starknet_reset_button`, {
       method: "POST",

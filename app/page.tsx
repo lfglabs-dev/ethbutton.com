@@ -7,7 +7,12 @@ import EthButton from "./components/ethButton";
 import Stats from "./components/stats";
 import Countdown from "./components/countdown";
 import { useEffect, useState } from "react";
-import { useAccount, useDisconnect, useStarkName } from "@starknet-react/core";
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useStarkName,
+} from "@starknet-react/core";
 import { NetworkType, RemainingClicks } from "@/constants/types";
 import ConnectModal from "./components/connection/connectModal";
 import { minifyAddress } from "@/utils/stringService";
@@ -36,7 +41,7 @@ import {
   starknetResetButtonFromEth,
   trackId,
 } from "@/services/apiService";
-import { Signature, TypedData } from "starknet";
+import { Signature, TypedData, WeierstrassSignatureType } from "starknet";
 import {
   addEthToken,
   clearEthTokens,
@@ -60,6 +65,7 @@ export default function Home() {
   const { data: starkNameData } = useStarkName({
     address: starknetAccount?.address,
   });
+  const { connector } = useConnect();
   // EVM hooks
   const { address: evmAddress, isConnected: evmConnected } = useWagmiAccount();
   const { disconnect: disconnectEvm } = useDisconnect();
@@ -218,6 +224,10 @@ export default function Home() {
     }
   };
 
+  const needSkipDeploy = (): boolean => {
+    return connector?.id && connector.id.includes("argent") ? true : false;
+  };
+
   const connectBtnAction = () => {
     if (isConnected) {
       disconnectUser();
@@ -241,7 +251,9 @@ export default function Home() {
   ) => {
     try {
       if (!starknetAccount) return;
-      const signature = await starknetAccount.signMessage(typedData);
+      const signature = (await starknetAccount.signMessage(
+        typedData
+      )) as WeierstrassSignatureType;
       const virtualTxId = await starknetResetButton(
         starknetAccount?.address as string,
         signature,
@@ -294,7 +306,7 @@ export default function Home() {
         const signature = await starknetAccount?.signMessage(
           typedData,
           // @ts-expect-error we should skip deploy
-          { skipDeploy: true }
+          { skipDeploy: needSkipDeploy() }
         );
         const virtualTxId = await starknetResetButtonFromEth(
           starknetAccount?.address as string,
@@ -321,7 +333,7 @@ export default function Home() {
           const signature = await starknetAccount?.signMessage(
             typedData,
             // @ts-expect-error we should skip deploy
-            { skipDeploy: true }
+            { skipDeploy: needSkipDeploy() }
           );
           const virtualTxId = await altStarknetNewAccount(
             starknetAccount?.address as string,
