@@ -1,5 +1,5 @@
 import { GetDeploymentDataResult, NetworkType } from "@/constants/types";
-import { useConnect } from "@starknet-react/core";
+import { useConnect, useProvider } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { wallet } from "starknet";
 import getStarknet, { StarknetWindowObject } from "get-starknet-core";
@@ -8,7 +8,9 @@ export default function isStarknetDeployed(
   network?: NetworkType,
   address?: string
 ) {
+  const { provider } = useProvider();
   const { connector } = useConnect();
+  const [isDeployed, setIsDeployed] = useState<boolean>(false);
   const [deploymentData, setDeploymentData] =
     useState<GetDeploymentDataResult>();
 
@@ -20,8 +22,20 @@ export default function isStarknetDeployed(
 
     const checkIsDeployed = async () => {
       try {
-        const availableWallets = await getStarknet.getAvailableWallets();
+        provider
+          .getClassHashAt(address)
+          .then((classHash) => {
+            console.log("Class hash", classHash);
+            setIsDeployed(true);
+            setDeploymentData(undefined);
+            return;
+          })
+          .catch((error) => {
+            console.error("Error getting class hash", error);
+            setIsDeployed(false);
+          });
 
+        const availableWallets = await getStarknet.getAvailableWallets();
         if (!availableWallets) {
           setDeploymentData(undefined);
           return;
@@ -30,7 +44,8 @@ export default function isStarknetDeployed(
         availableWallets.forEach(async (connectedWallet) => {
           if (
             connectedWallet.id === connector?.id &&
-            connectedWallet.isConnected
+            connectedWallet.isConnected &&
+            connectedWallet.id !== "braavos" // we cannot deploye braavos account for the user for now
           ) {
             const data = await wallet.deploymentData(
               // @ts-ignore
@@ -56,7 +71,7 @@ export default function isStarknetDeployed(
     checkIsDeployed();
   }, [network, address]);
 
-  return deploymentData;
+  return { isDeployed, deploymentData };
 }
 
 function isGetDeploymentDataResult(obj: any): obj is GetDeploymentDataResult {

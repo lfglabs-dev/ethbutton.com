@@ -92,10 +92,9 @@ export default function Home() {
   const priceValue = getPriceValue();
   const { isFirstLoad, remainingClicks } = getRemainingClicks(network, address);
   const { hasEthTokens, ethTokens } = canPlayOnStarknet(network);
-  const deploymentData = isStarknetDeployed(network, address);
+  const { isDeployed, deploymentData } = isStarknetDeployed(network, address);
   const isFinished = isOver5mn(countdownTimestamp);
   const txVersion = getTxVersion(network, address);
-  // console.log("txVersion", txVersion);
 
   useEffect(() => {
     if (evmConnected) {
@@ -225,7 +224,9 @@ export default function Home() {
   };
 
   const needSkipDeploy = (): boolean => {
-    return connector?.id && connector.id.includes("argent") ? true : false;
+    return !isDeployed && connector?.id && connector.id.includes("argent")
+      ? true
+      : false;
   };
 
   const connectBtnAction = () => {

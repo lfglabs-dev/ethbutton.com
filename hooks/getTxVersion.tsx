@@ -36,7 +36,8 @@ export default function getTxVersion(network?: NetworkType, address?: string) {
         // @ts-ignore
         else if (Number(supports_v2.result[0])) setVersion(2);
         else {
-          if (connector?.id === "argent") setVersion(1);
+          if (connector?.id.includes("argent") || connector?.id === "bitkeep")
+            setVersion(1);
           else if (connector?.id === "braavos") setVersion(2);
           else setVersion(undefined);
         }
