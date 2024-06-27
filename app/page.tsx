@@ -19,7 +19,7 @@ import { minifyAddress } from "@/utils/stringService";
 import WalletIcon from "./components/iconComponents/walletIcon";
 import {
   useEnsName,
-  useSignMessage,
+  useSignMessage as useWagmiSignMessage,
   useAccount as useWagmiAccount,
 } from "wagmi";
 import getRemainingClicks from "@/hooks/getRemainingClicks";
@@ -72,7 +72,7 @@ export default function Home() {
   const ens = useEnsName({
     address: evmAddress,
   });
-  const { signMessageAsync } = useSignMessage();
+  const { signMessageAsync } = useWagmiSignMessage();
   // state variables
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [welcomeModal, setWelcomeModal] = useState(false);

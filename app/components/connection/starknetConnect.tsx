@@ -39,15 +39,36 @@ const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
 
   const filterConnectors = (connectors: Connector[]) => {
     if (!isMobile) return connectors;
-    return connectors.filter((connector) => connector.id !== "argentMobile");
+    return connectors.filter((connector) => connector.id !== "argentX");
+  };
+
+  const openBraavosMobile = () => {
+    window.open(`braavos://dapp/ethbutton.com`);
+  };
+
+  const needInstall = (connectorId: string, isAvailable: boolean) => {
+    if (connectorId === "braavos" && isMobile) {
+      return false;
+    }
+    return !isAvailable;
   };
 
   const getWalletName = (connectorId: string, isAvailable: boolean): string => {
-    return `${!isAvailable ? "Install " : ""}${
+    return `${needInstall(connectorId, isAvailable) ? "Install " : ""}${
       connectorId === "argentX" && isMobile
         ? "Argent"
         : getConnectorName(connectorId)
     }`;
+  };
+
+  const tryConnect = (connector: Connector, isAvailable: boolean) => {
+    if (isAvailable) {
+      connect(connector);
+    } else if (isMobile && connector.id === "braavos") {
+      openBraavosMobile();
+    } else {
+      window.open(getConnectorDiscovery(connector.id));
+    }
   };
 
   return (
@@ -79,11 +100,7 @@ const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
                   <div
                     key={connector.id}
                     className={styles.wallet}
-                    onClick={
-                      isAvailable
-                        ? () => connect(connector)
-                        : () => window.open(getConnectorDiscovery(connector.id))
-                    }
+                    onClick={() => tryConnect(connector, isAvailable)}
                   >
                     <Button
                       onClick={() => console.log("Open connect wallet modal")}

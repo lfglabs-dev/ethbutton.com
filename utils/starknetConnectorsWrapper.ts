@@ -9,7 +9,7 @@ export const getConnectors = (): any[] => {
   const connectors = [
     new InjectedConnector({ options: { id: "argentX" } }),
     new InjectedConnector({ options: { id: "braavos" } }),
-    new InjectedConnector({ options: { id: "okxwallet" } }),
+    // new InjectedConnector({ options: { id: "okxwallet" } }), // we remove them for now as they do not implement
     new InjectedConnector({ options: { id: "bitkeep" } }),
     new ArgentMobileConnector({
       dappName: "ETH button",
