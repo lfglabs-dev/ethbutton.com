@@ -41,7 +41,12 @@ import {
   starknetResetButtonFromEth,
   trackId,
 } from "@/services/apiService";
-import { Signature, TypedData, WeierstrassSignatureType } from "starknet";
+import {
+  Signature,
+  TypedData,
+  WeierstrassSignatureType,
+  constants,
+} from "starknet";
 import {
   addEthToken,
   clearEthTokens,
@@ -56,6 +61,7 @@ import { hexToDecimal } from "@/utils/feltService";
 import getPriceValue from "@/hooks/getEthQuote";
 import RecoverTokenModal from "./components/recoverTokenModal";
 import getTxVersion from "@/hooks/getTxVersion";
+import WrongNetworkModal from "./components/wrongNetwork";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -77,11 +83,15 @@ export default function Home() {
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [welcomeModal, setWelcomeModal] = useState(false);
   const [tryAgainModal, setTryAgainModal] = useState(false);
+  const [wrongNetworkModal, setWrongNetworkModal] = useState(false);
   const [recoverTokenModal, setRecoverTokenModal] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [network, setNetwork] = useState<NetworkType>();
   const address =
     network === NetworkType.STARKNET ? starknetAccount?.address : evmAddress;
+  const starknetNetwork =
+    process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
+  const [isWrongStarknetNetwork, setIsWrongStarknetNetwork] = useState(false);
   const [countdownTimestamp, setCountdownTimestamp] = useState<number>(0);
   const [currentWinner, setCurrentWinner] = useState<string>("");
   const [totalClicks, setTotalClicks] = useState<number>(0);
@@ -112,7 +122,9 @@ export default function Home() {
       ) {
         setRecoverTokenModal(true);
       } else {
-        setWelcomeModal(true);
+        if (network === NetworkType.STARKNET && isWrongStarknetNetwork)
+          setWrongNetworkModal(true);
+        else setWelcomeModal(true);
       }
     }
   }, [isFirstLoad]);
@@ -173,6 +185,18 @@ export default function Home() {
       });
     }
   }, [trackingList, currentWinner]);
+
+  useEffect(() => {
+    if (network === NetworkType.EVM || !isConnected || !starknetAccount) return;
+    starknetAccount.getChainId().then((chainId) => {
+      const isWrongNetwork =
+        (chainId === constants.StarknetChainId.SN_SEPOLIA &&
+          starknetNetwork === "mainnet") ||
+        (chainId === constants.StarknetChainId.SN_MAIN &&
+          starknetNetwork === "testnet");
+      setIsWrongStarknetNetwork(isWrongNetwork);
+    });
+  }, [starknetAccount, network, isConnected, starknetNetwork]);
 
   const onWalletConnected = (network: NetworkType) => {
     console.log("onWalletConnected", network);
@@ -426,6 +450,10 @@ export default function Home() {
 
     switch (network) {
       case NetworkType.STARKNET:
+        if (isWrongStarknetNetwork) {
+          setWrongNetworkModal(true);
+          return;
+        }
         if (openConnectionModalIfNeeded(!starknetAccount)) return;
         await handleStarknetButtonClick();
         break;
@@ -593,6 +621,11 @@ export default function Home() {
         closeModal={() => setRecoverTokenModal(false)}
         open={recoverTokenModal}
         addr={evmAddress}
+      />
+      <WrongNetworkModal
+        closeModal={() => setWrongNetworkModal(false)}
+        open={wrongNetworkModal}
+        disconnectUser={disconnectUser}
       />
       <Notification visible={showNotif} onClose={() => setShowNotif(false)}>
         <>
