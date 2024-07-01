@@ -47,7 +47,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
       </>
     ) : (
       <>
-        This address is not <span className="secondary">withlisted</span>
+        This address is not <span className="secondary">eligible</span>
       </>
     );
 
@@ -104,7 +104,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
 
             <div className={styles.description}>{modalDescription}</div>
 
-            {!remainingClicks.whitelisted ? (
+            {!remainingClicks.whitelisted || totalClicks == 0 ? (
               <div>
                 <Button
                   icon={<img src="/visuals/starknetIdIcon.svg" />}
