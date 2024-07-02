@@ -36,6 +36,10 @@
   width: 900px;
   height: 598px;
   z-index: 0;
+  background-image: url("/visuals/desktop_background.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .background {
@@ -181,6 +185,7 @@
   .backgroundWrapper {
     width: 450px;
     height: 621px;
+    background-image: url("/visuals/mobile_background.svg");
   }
   .countdownContainer {
     flex-wrap: wrap;

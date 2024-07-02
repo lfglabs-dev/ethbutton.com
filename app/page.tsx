@@ -529,47 +529,18 @@ export default function Home() {
         </div>
         <div className={styles.centralSection}>
           <div className={styles.backgroundWrapper}>
-            {isMobile ? (
-              <>
-                <img
-                  alt="background"
-                  src="/visuals/mobile_background.svg"
-                  className={styles.background}
-                />
-                <h1 className={styles.title}>
-                  {!isLoaded || !isFinished ? (
-                    <>
-                      WIN <span className={styles.pinkTitle}>Five</span>{" "}
-                      <span className={styles.blueTitle}>ETH</span> !
-                    </>
-                  ) : (
-                    <>
-                      GAME <span className={styles.pinkTitle}>ENDED</span> !
-                    </>
-                  )}
-                </h1>
-              </>
-            ) : (
-              <>
-                <img
-                  alt="background"
-                  src="/visuals/desktop_background.svg"
-                  className={styles.background}
-                />
-                <h1 className={styles.title}>
-                  {!isLoaded || !isFinished ? (
-                    <>
-                      WIN <span className={styles.pinkTitle}>Five</span>{" "}
-                      <span className={styles.blueTitle}>ETH</span> !
-                    </>
-                  ) : (
-                    <>
-                      GAME <span className={styles.pinkTitle}>ENDED</span> !
-                    </>
-                  )}
-                </h1>
-              </>
-            )}
+            <h1 className={styles.title}>
+              {!isLoaded || !isFinished ? (
+                <>
+                  WIN <span className={styles.pinkTitle}>Five</span>{" "}
+                  <span className={styles.blueTitle}>ETH</span> !
+                </>
+              ) : (
+                <>
+                  GAME <span className={styles.pinkTitle}>ENDED</span> !
+                </>
+              )}
+            </h1>
             <div className={styles.countdownContainer}>
               <Countdown timestamp={countdownTimestamp} />
             </div>
