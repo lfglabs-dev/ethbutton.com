@@ -83,7 +83,7 @@ export default function Home() {
   // state variables
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [welcomeModal, setWelcomeModal] = useState(false);
-  const [tryAgainModal, setTryAgainModal] = useState(true);
+  const [tryAgainModal, setTryAgainModal] = useState(false);
   const [wrongNetworkModal, setWrongNetworkModal] = useState(false);
   const [recoverTokenModal, setRecoverTokenModal] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
