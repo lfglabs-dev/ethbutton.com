@@ -1,12 +1,9 @@
 .statsSections {
-  flex: 0 0 200px;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: start;
-  max-width: 200px;
+  justify-content: center;
   padding: 0 20px;
-  margin-top: 200px;
   gap: 24px;
 }
 
@@ -15,6 +12,10 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
+}
+
+.statsSection p {
+  text-align: center;
 }
 
 .winnerWrapper {
@@ -50,9 +51,17 @@
     margin: 24px auto;
     align-items: center;
     justify-content: center;
-    max-width: 400px;
+    max-width: 190px;
+    flex: 0 0 190px;
   }
   .statsSection {
     align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  .statsSections {
+    display: none;
   }
 }

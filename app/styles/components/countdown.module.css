@@ -25,42 +25,44 @@
   box-shadow: 0px 2.06px 30.91px rgba(29, 94, 123, 0.24);
 }
 
-@media (max-width: 920px) {
+@media (max-width: 1280px) {
   .countdown {
     height: 120px;
     width: 120px;
-    padding: 40px 20px;
+    padding: 38px 20px;
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1024px) {
+  .countdownWrapper {
+    flex: 0 0 134px;
+    max-width: 134px;
+  }
+
   .countdown {
-    height: 100px;
-    width: 100px;
-    padding: 30px 20px;
+    height: 132px;
+    width: 132px;
+    padding: 44px 20px;
+  }
+
+  .separator {
+    display: none;
   }
 }
 
-@media (max-width: 620px) {
-  .countdown {
-    height: 80px;
-    width: 80px;
-    padding: 18px 20px;
+@media (max-width: 490px) {
+  .countdownWrapper {
+    flex: 0 0 90px;
+    max-width: 90px;
   }
-}
 
-@media (max-width: 520px) {
   .countdown {
-    height: 60px;
-    width: 60px;
-    padding: 10px 15px;
+    height: 88px;
+    width: 88px;
+    padding: 24px 20px;
   }
-}
 
-@media (max-width: 420px) {
-  .countdown {
-    height: 40px;
-    width: 40px;
-    padding: 3px 5px;
+  .separator {
+    display: none;
   }
 }

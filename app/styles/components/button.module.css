@@ -1,43 +1,48 @@
 .btnContainer {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
-  flex-direction: row;
-  position: relative;
-  padding: 0 10px;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s;
 }
 
-.svgBorder {
-  border: 0 solid transparent;
-  padding: 10px 11px;
-  border-image-outset: 2px;
-}
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 
-.default {
-  border-image: url("/visuals/button.svg") 18 fill stretch;
-  color: var(--content);
-}
-
-.default:hover {
-  border-image: url("/visuals/buttonColored.svg") 18 fill stretch;
-  color: var(--content);
-}
-
-.white {
-  border-image: url("/visuals/buttonWhite.svg") 18 fill stretch;
-  color: var(--content-dark);
-}
-
-.btnText {
   font-family: "Jetbrains";
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
   text-align: center;
-  padding: 5px 5px 10px;
+  padding: 7px;
 }
 
-.btnIcon {
-  padding-bottom: 5px;
+.default {
+  background-image: url("/visuals/button.svg");
+  color: var(--content);
+}
+
+.default:hover {
+  background-image: url("/visuals/buttonColored.svg");
+  color: var(--content);
+}
+
+.white {
+  background-image: url("/visuals/buttonWhite.svg");
+  color: var(--content-dark);
+}
+
+@media (max-width: 490px) {
+  .content {
+    font-size: 12px;
+  }
 }

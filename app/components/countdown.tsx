@@ -42,7 +42,7 @@ const Countdown: FunctionComponent<CountdownProps> = ({ timestamp }) => {
       <div className={styles.countdownWrapper}>
         <div className={styles.countdown}>{minutes[1]}</div>
       </div>
-      <div>:</div>
+      <div className={styles.separator}>:</div>
       <div className={styles.countdownWrapper}>
         <div className={styles.countdown}>{seconds[0]}</div>
       </div>

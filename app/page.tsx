@@ -62,6 +62,7 @@ import getPriceValue from "@/hooks/getEthQuote";
 import RecoverTokenModal from "./components/recoverTokenModal";
 import getTxVersion from "@/hooks/getTxVersion";
 import WrongNetworkModal from "./components/wrongNetwork";
+import { useMediaQuery } from "@mui/material";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -105,6 +106,7 @@ export default function Home() {
   const { isDeployed, deploymentData } = isStarknetDeployed(network, address);
   const isFinished = isOver5mn(countdownTimestamp);
   const txVersion = getTxVersion(network, address);
+  const isMobile = useMediaQuery("(max-width: 1024px)");
 
   useEffect(() => {
     if (evmConnected) {
@@ -485,9 +487,16 @@ export default function Home() {
                 {getConnectionBtnText()}
               </Button>
               {priceValue ? (
-                <Button icon={<img src="/visuals/eth.svg" width={14} />}>
-                  {priceValue}
-                </Button>
+                isMobile ? (
+                  <div className={styles.ethPrice}>
+                    <img src="/visuals/eth.svg" width={14} />
+                    {priceValue}
+                  </div>
+                ) : (
+                  <Button icon={<img src="/visuals/eth.svg" width={14} />}>
+                    {priceValue}
+                  </Button>
+                )
               ) : null}
             </>
           ) : (
@@ -520,46 +529,13 @@ export default function Home() {
         </div>
         <div className={styles.centralSection}>
           <div className={styles.backgroundWrapper}>
-            <img
-              alt="background"
-              src="/visuals/background.svg"
-              className={styles.background}
-            />
-            <img
-              alt="background lines"
-              src="/visuals/backgroundLines.svg"
-              className={styles.backgroundLines}
-            />
-            <img
-              alt="left squares"
-              src="/visuals/leftSquares.svg"
-              className={styles.leftSquares}
-            />
-            <img
-              alt="right squares"
-              src="/visuals/rightSquares.svg"
-              className={styles.rightSquares}
-            />
-            <img
-              alt="bottom squares"
-              src="/visuals/bottomSquares.svg"
-              className={styles.bottomSquares}
-            />
-            <img
-              alt="vertical group"
-              src="/visuals/verticalGroup.svg"
-              className={styles.verticalGroupLeft}
-            />
-            <img
-              alt="vertical group"
-              src="/visuals/verticalGroup.svg"
-              className={styles.verticalGroupRight}
-            />
-            <div className={styles.radialGradient} />
-            <div className={styles.radialGradientLeft} />
-            <div className={styles.radialGradientRight} />
-            <div className={styles.coloredTrapeze}>
-              <div className={styles.darkTrapeze}>
+            {isMobile ? (
+              <>
+                <img
+                  alt="background"
+                  src="/visuals/mobile_background.svg"
+                  className={styles.background}
+                />
                 <h1 className={styles.title}>
                   {!isLoaded || !isFinished ? (
                     <>
@@ -572,8 +548,28 @@ export default function Home() {
                     </>
                   )}
                 </h1>
-              </div>
-            </div>
+              </>
+            ) : (
+              <>
+                <img
+                  alt="background"
+                  src="/visuals/desktop_background.svg"
+                  className={styles.background}
+                />
+                <h1 className={styles.title}>
+                  {!isLoaded || !isFinished ? (
+                    <>
+                      WIN <span className={styles.pinkTitle}>Five</span>{" "}
+                      <span className={styles.blueTitle}>ETH</span> !
+                    </>
+                  ) : (
+                    <>
+                      GAME <span className={styles.pinkTitle}>ENDED</span> !
+                    </>
+                  )}
+                </h1>
+              </>
+            )}
             <div className={styles.countdownContainer}>
               <Countdown timestamp={countdownTimestamp} />
             </div>
