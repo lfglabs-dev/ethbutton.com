@@ -119,6 +119,7 @@
   font-weight: 500;
   line-height: 24px;
   text-align: left;
+  max-width: 200px;
 }
 
 .socialIcons {
@@ -177,6 +178,7 @@
     flex: 0;
     margin: 10px auto;
     flex-direction: column-reverse;
+    max-width: 300px;
   }
   .centralSection {
     width: 450px;
@@ -207,6 +209,9 @@
     width: 150px;
     height: 150px;
     bottom: 7px;
+  }
+  .endText {
+    max-width: unset;
   }
 }
 

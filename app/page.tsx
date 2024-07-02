@@ -104,7 +104,8 @@ export default function Home() {
   const { isFirstLoad, remainingClicks } = getRemainingClicks(network, address);
   const { hasEthTokens, ethTokens } = canPlayOnStarknet(network);
   const { isDeployed, deploymentData } = isStarknetDeployed(network, address);
-  const isFinished = isOver5mn(countdownTimestamp);
+  // const isFinished = isOver5mn(countdownTimestamp);
+  const isFinished = true;
   const txVersion = getTxVersion(network, address);
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
@@ -472,7 +473,31 @@ export default function Home() {
     <>
       <main className={styles.main}>
         <div className={styles.leftContainer}>
-          {!isLoaded || !isFinished ? (
+          {isFinished ? (
+            <>
+              <div className={styles.endText}>
+                <p>
+                  Thank you for participating! Check back soon for more exciting
+                  challenges and opportunities.
+                </p>
+                <p>Stay connected with us for updates and future events!</p>
+                <div className={styles.socialIcons}>
+                  <img
+                    src="/visuals/discordIcon.svg"
+                    alt="Discord Icon"
+                    width={20}
+                    onClick={() => window.open("https://twitter.com/")}
+                  />
+                  <img
+                    src="/visuals/twitterIcon.svg"
+                    alt="Twitter Icon"
+                    width={20}
+                    onClick={() => window.open("https://twitter.com/")}
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
             <>
               <Button
                 onClick={connectBtnAction}
@@ -499,31 +524,8 @@ export default function Home() {
                 )
               ) : null}
             </>
-          ) : (
-            <>
-              <div className={styles.endText}>
-                <p>
-                  Thank you for participating! Check back soon for more exciting
-                  challenges and opportunities.
-                </p>
-                <p>Stay connected with us for updates and future events!</p>
-                <div className={styles.socialIcons}>
-                  <img
-                    src="/visuals/discordIcon.svg"
-                    alt="Discord Icon"
-                    width={20}
-                    onClick={() => window.open("https://twitter.com/")}
-                  />
-                  <img
-                    src="/visuals/twitterIcon.svg"
-                    alt="Twitter Icon"
-                    width={20}
-                    onClick={() => window.open("https://twitter.com/")}
-                  />
-                </div>
-              </div>
-            </>
           )}
+
           {/* // todo: remove after testing is over */}
           <Button onClick={resetTimer}>TEST: start timer</Button>
         </div>
