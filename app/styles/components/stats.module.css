@@ -33,6 +33,7 @@
     #ffadde 81.84%
   );
   overflow: hidden;
+  max-width: 200px;
 }
 
 .winnerSection {
