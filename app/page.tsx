@@ -104,8 +104,7 @@ export default function Home() {
   const { isFirstLoad, remainingClicks } = getRemainingClicks(network, address);
   const { hasEthTokens, ethTokens } = canPlayOnStarknet(network);
   const { isDeployed, deploymentData } = isStarknetDeployed(network, address);
-  // const isFinished = isOver5mn(countdownTimestamp);
-  const isFinished = true;
+  const isFinished = isOver5mn(countdownTimestamp);
   const txVersion = getTxVersion(network, address);
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
