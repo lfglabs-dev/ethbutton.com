@@ -97,7 +97,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
             </div>
 
             {addrOrName ? (
-              <Button icon={btnIcon} width={300} variation="white">
+              <Button icon={btnIcon} width={260} variation="white">
                 {addrOrName}
               </Button>
             ) : null}
@@ -105,10 +105,10 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
             <div className={styles.description}>{modalDescription}</div>
 
             {!remainingClicks.whitelisted || totalClicks == 0 ? (
-              <div>
+              <div className=" flex flex-col gap-3">
                 <Button
                   icon={<img src="/visuals/starknetIdIcon.svg" />}
-                  width={300}
+                  width={260}
                   onClick={() =>
                     window.open(process.env.NEXT_PUBLIC_STARKNET_ID_URL)
                   }
@@ -117,7 +117,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
                 </Button>
                 <Button
                   icon={<WalletIcon width="21" color="#C8CCD3" />}
-                  width={300}
+                  width={260}
                   onClick={openWalletModal}
                 >
                   Select another wallet

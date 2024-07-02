@@ -66,27 +66,27 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
             <div className={styles.description}>{modalDescription}</div>
 
             {network === NetworkType.EVM && hasEthTokens ? (
-              <div>
+              <div className="gap-3 flex flex-col">
                 <Button
                   icon={<img src={getArgentIcon()} width={22} />}
-                  width={300}
+                  width={260}
                   onClick={() => window.open(getArgentWebsite())}
                 >
                   Argent
                 </Button>
                 {/* <Button
                   icon={<img src={getBraavosIcon()} width={22} />}
-                  width={300}
+                  width={260}
                   onClick={() => window.open(getBraavosWebsite())}
                 >
                   Braavos
                 </Button> */}
               </div>
             ) : (
-              <div>
+              <div className="gap-3 flex flex-col">
                 <Button
                   icon={<img src="/visuals/starknetIdIcon.svg" />}
-                  width={300}
+                  width={260}
                   onClick={() =>
                     window.open(process.env.NEXT_PUBLIC_STARKNET_ID_URL)
                   }
@@ -95,7 +95,7 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
                 </Button>
                 <Button
                   icon={<WalletIcon width="21" color="#C8CCD3" />}
-                  width={300}
+                  width={260}
                   onClick={openWalletModal}
                 >
                   Select another wallet

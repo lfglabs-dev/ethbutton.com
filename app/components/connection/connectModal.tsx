@@ -64,7 +64,7 @@ const ConnectModal: FunctionComponent<StarknetWalletConnectProps> = ({
                 <Button
                   onClick={connectEvm}
                   icon={<img src="/visuals/ethFilledIcon.svg" />}
-                  width={300}
+                  width={260}
                   variation="default"
                 >
                   EVM wallet
@@ -72,7 +72,7 @@ const ConnectModal: FunctionComponent<StarknetWalletConnectProps> = ({
                 <Button
                   onClick={() => setOpenStarknetModal(true)}
                   icon={<img src="/visuals/starknetIcon.svg" />}
-                  width={300}
+                  width={260}
                   variation="default"
                 >
                   Starknet wallet
