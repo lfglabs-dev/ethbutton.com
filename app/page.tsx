@@ -121,7 +121,7 @@ export default function Home() {
         .then((name) => {
           setStarkNameData(name);
         })
-        .catch((_) => {
+        .catch(() => {
           setStarkNameData(undefined);
         });
     } else {
