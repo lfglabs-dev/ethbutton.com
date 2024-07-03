@@ -112,7 +112,7 @@ export default function Home() {
         ? constants.StarknetChainId.SN_SEPOLIA
         : constants.StarknetChainId.SN_MAIN
     );
-  }, []);
+  }, [starknetNetwork]);
 
   useEffect(() => {
     if (network === NetworkType.STARKNET && starknetAccount) {
