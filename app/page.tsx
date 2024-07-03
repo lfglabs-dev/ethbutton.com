@@ -62,7 +62,7 @@ import getPriceValue from "@/hooks/getEthQuote";
 import RecoverTokenModal from "./components/recoverTokenModal";
 import getTxVersion from "@/hooks/getTxVersion";
 import WrongNetworkModal from "./components/wrongNetwork";
-import { useMediaQuery } from "@mui/material";
+import { Skeleton, useMediaQuery } from "@mui/material";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -132,6 +132,12 @@ export default function Home() {
   }, [isFirstLoad]);
 
   useEffect(() => {
+    if (!isLoaded && countdownTimestamp !== 0) {
+      setIsLoaded(true);
+    }
+  }, [countdownTimestamp]);
+
+  useEffect(() => {
     const ws = new WebSocket(process.env.NEXT_PUBLIC_WEBSOCKET_URL as string);
 
     ws.onopen = () => {
@@ -144,7 +150,6 @@ export default function Home() {
       setCurrentWinner(data.last_reset_info[1]);
       setTotalClicks(parseInt(data.click_counter));
       setTotalPlayers(parseInt(data.players));
-      if (!isLoaded) setIsLoaded(true);
     };
 
     ws.onclose = () => {
@@ -472,7 +477,7 @@ export default function Home() {
     <>
       <main className={styles.main}>
         <div className={styles.leftContainer}>
-          {isFinished ? (
+          {isFinished && isLoaded ? (
             <>
               <div className={styles.endText}>
                 <p>
@@ -516,7 +521,14 @@ export default function Home() {
                   {getTotalClicks(remainingClicks, network, ethTokens)}
                 </div>
               ) : null}
-              {priceValue ? (
+              {!isLoaded ? (
+                <Skeleton
+                  variant="rectangular"
+                  width={120}
+                  height={25}
+                  className="mx-auto"
+                />
+              ) : priceValue ? (
                 isMobile ? (
                   <div className={styles.ethPrice}>
                     <img src="/visuals/eth.svg" width={14} />
@@ -532,7 +544,7 @@ export default function Home() {
           )}
 
           {/* // todo: remove after testing is over */}
-          {isFinished ? (
+          {isFinished && isLoaded ? (
             <Button onClick={resetTimer}>TEST: start timer</Button>
           ) : null}
         </div>
@@ -551,7 +563,7 @@ export default function Home() {
               )}
             </h1>
             <div className={styles.countdownContainer}>
-              <Countdown timestamp={countdownTimestamp} />
+              <Countdown timestamp={countdownTimestamp} isLoaded={isLoaded} />
             </div>
             <div className={styles.ethBtnContainer}>
               <EthButton onClick={clickEthButton} isFinished={isFinished} />
