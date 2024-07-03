@@ -6,7 +6,7 @@ import Button from "./components/button";
 import EthButton from "./components/ethButton";
 import Stats from "./components/stats";
 import Countdown from "./components/countdown";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useAccount,
   useConnect,
@@ -42,6 +42,7 @@ import {
   trackId,
 } from "@/services/apiService";
 import {
+  Provider,
   Signature,
   TypedData,
   WeierstrassSignatureType,
@@ -63,15 +64,14 @@ import RecoverTokenModal from "./components/recoverTokenModal";
 import getTxVersion from "@/hooks/getTxVersion";
 import WrongNetworkModal from "./components/wrongNetwork";
 import { Skeleton, useMediaQuery } from "@mui/material";
+import { StarknetIdNavigator } from "starknetid.js";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   // Starknet hooks
   const { disconnectAsync } = useDisconnect();
   const { account: starknetAccount } = useAccount();
-  const { data: starkNameData } = useStarkName({
-    address: starknetAccount?.address,
-  });
+  const [starkNameData, setStarkNameData] = useState<string>();
   const { connector } = useConnect();
   // EVM hooks
   const { address: evmAddress, isConnected: evmConnected } = useWagmiAccount();
@@ -107,6 +107,32 @@ export default function Home() {
   const isFinished = isOver5mn(countdownTimestamp);
   const txVersion = getTxVersion(network, address);
   const isMobile = useMediaQuery("(max-width: 1024px)");
+
+  const starknetIdNavigator = useMemo(() => {
+    return new StarknetIdNavigator(
+      new Provider({
+        nodeUrl: process.env.NEXT_PUBLIC_RPC_URL,
+      }),
+      starknetNetwork === "testnet"
+        ? constants.StarknetChainId.SN_SEPOLIA
+        : constants.StarknetChainId.SN_MAIN
+    );
+  }, []);
+
+  useEffect(() => {
+    if (network === NetworkType.STARKNET && starknetAccount) {
+      starknetIdNavigator
+        .getStarkName(starknetAccount?.address)
+        .then((name) => {
+          setStarkNameData(name);
+        })
+        .catch((error) => {
+          setStarkNameData(undefined);
+        });
+    } else {
+      setStarkNameData(undefined);
+    }
+  }, [starknetAccount, network]);
 
   useEffect(() => {
     if (evmConnected) {
