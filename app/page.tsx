@@ -7,12 +7,7 @@ import EthButton from "./components/ethButton";
 import Stats from "./components/stats";
 import Countdown from "./components/countdown";
 import { useEffect, useMemo, useState } from "react";
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useStarkName,
-} from "@starknet-react/core";
+import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { NetworkType, RemainingClicks } from "@/constants/types";
 import ConnectModal from "./components/connection/connectModal";
 import { minifyAddress } from "@/utils/stringService";
