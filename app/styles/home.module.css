@@ -140,6 +140,10 @@
   margin-bottom: 10px;
 }
 
+.remainingClicksMobile {
+  display: none;
+}
+
 @media (max-width: 1280px) {
   .backgroundWrapper {
     width: 700px;
@@ -212,6 +216,9 @@
   }
   .endText {
     max-width: unset;
+  }
+  .remainingClicksMobile {
+    display: block;
   }
 }
 

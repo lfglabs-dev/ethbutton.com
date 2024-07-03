@@ -510,6 +510,12 @@ export default function Home() {
               >
                 {getConnectionBtnText()}
               </Button>
+              {isConnected && !isFinished ? (
+                <div className={styles.remainingClicksMobile}>
+                  Remaining clicks :{" "}
+                  {getTotalClicks(remainingClicks, network, ethTokens)}
+                </div>
+              ) : null}
               {priceValue ? (
                 isMobile ? (
                   <div className={styles.ethPrice}>
@@ -526,7 +532,9 @@ export default function Home() {
           )}
 
           {/* // todo: remove after testing is over */}
-          <Button onClick={resetTimer}>TEST: start timer</Button>
+          {isFinished ? (
+            <Button onClick={resetTimer}>TEST: start timer</Button>
+          ) : null}
         </div>
         <div className={styles.centralSection}>
           <div className={styles.backgroundWrapper}>
