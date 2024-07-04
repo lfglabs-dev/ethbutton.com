@@ -59,3 +59,9 @@ export type LeaderboardData = {
   times_clicked: number;
   reward?: string;
 };
+
+export type SearchResult = {
+  isValid: boolean;
+  addr?: string;
+  error?: string;
+};

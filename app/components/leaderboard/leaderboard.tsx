@@ -13,7 +13,9 @@ import { minifyAddress } from "@/utils/stringService";
 import { ethers } from "ethers";
 import { StarknetIdNavigator } from "starknetid.js";
 import { Provider, constants } from "starknet";
-import { LeaderboardData } from "@/constants/types";
+import { LeaderboardData, SearchResult } from "@/constants/types";
+import SearchBar from "./searchBar";
+import { getUserData } from "@/services/leaderboardService";
 
 type DataTableProps = {
   data: LeaderboardData[];
@@ -28,8 +30,12 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
 }) => {
   const [names, setNames] = useState<Record<string, string>>({});
   const [isInit, setIsInit] = useState(false);
-  const borderColor =
-    "[border-image:linear-gradient(77.5deg,_#109AE4_-31.33%,_#27ABF1_-19.3%,_#2BAAEE_-4.45%,_#3BB1F0_11.89%,_#7581F7_29.28%,_#EF30A2_47.54%,_#F276C0_66.2%,_#FFADDE_81.84%)_30]";
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  const [searchResult, setSearchResult] = useState<LeaderboardData | undefined>(
+    undefined
+  );
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [currentResult, setCurrentResult] = useState<SearchResult | null>();
 
   useEffect(() => {
     if (!isLoaded || isInit) return;
@@ -40,6 +46,13 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
     });
     setIsInit(true);
   }, [data, isLoaded, isInit]);
+
+  useEffect(() => {
+    if (!currentResult) {
+      if (isSearchMode) setIsSearchMode(false);
+      return;
+    }
+  }, [currentResult]);
 
   const starknetIdNavigator = useMemo(() => {
     return new StarknetIdNavigator(
@@ -86,9 +99,39 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
     }
   };
 
+  const onSearch = (result: SearchResult) => {
+    setIsSearchMode(true);
+    if (result.isValid) {
+      setError(undefined);
+      // fetch api
+      getUserData(result?.addr as string)
+        .then((data) => {
+          if (data) {
+            setSearchResult(data);
+          } else {
+            setError("No data found for this address");
+            setSearchResult(undefined);
+          }
+        })
+        .catch((err) => {
+          setError(err as string);
+          setSearchResult(undefined);
+        });
+    } else {
+      if (result.error) setError(result.error as string);
+      setSearchResult(undefined);
+    }
+  };
+
   return (
     <div className={styles.main}>
-      <div className={styles.searchSection}></div>
+      <div className={styles.searchSection}>
+        <SearchBar
+          starknetIdNavigator={starknetIdNavigator}
+          setCurrentResult={setCurrentResult}
+          onSearch={onSearch}
+        />
+      </div>
       <div className={styles.tableSection}>
         <div className={styles.titleSection}>
           <h1 className={styles.title}>Leaderboard</h1>
@@ -109,19 +152,46 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((row) => (
+                {!isSearchMode ? (
+                  data &&
+                  data.map((row) => (
+                    <TableRow
+                      key={row.address}
+                      onClick={() => window.open(getExternalLink(row.address))}
+                    >
+                      <TableCell>{row.rank}</TableCell>
+                      <TableCell>
+                        <div className="cursor-pointer">
+                          {names[row.address]}
+                        </div>
+                      </TableCell>
+                      <TableCell>{row.times_clicked}</TableCell>
+                      <TableCell>$0</TableCell>
+                    </TableRow>
+                  ))
+                ) : error ? (
+                  <div className="text-center m-5">{error}</div>
+                ) : searchResult ? (
                   <TableRow
-                    key={row.address}
-                    onClick={() => window.open(getExternalLink(row.address))}
+                    key={searchResult?.address}
+                    onClick={() =>
+                      window.open(
+                        getExternalLink(searchResult?.address as string)
+                      )
+                    }
                   >
-                    <TableCell>{row.rank}</TableCell>
+                    <TableCell>{searchResult?.rank}</TableCell>
                     <TableCell>
-                      <div className="cursor-pointer">{names[row.address]}</div>
+                      <div className="cursor-pointer">
+                        {minifyAddress(searchResult?.address, true)}
+                      </div>
                     </TableCell>
-                    <TableCell>{row.times_clicked}</TableCell>
-                    <TableCell>$0</TableCell>
+                    <TableCell>{searchResult?.times_clicked}</TableCell>
+                    <TableCell>
+                      {searchResult?.reward ? `$${searchResult?.reward}` : "$0"}
+                    </TableCell>
                   </TableRow>
-                ))}
+                ) : null}
               </TableBody>
             </Table>
           </div>
