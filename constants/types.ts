@@ -52,3 +52,10 @@ export interface GetDeploymentDataResult {
   calldata: string[]; // Array of 'felt252', length := calldata_len
   version: number;
 }
+
+export type LeaderboardData = {
+  address: string;
+  rank: number;
+  times_clicked: number;
+  reward?: string;
+};

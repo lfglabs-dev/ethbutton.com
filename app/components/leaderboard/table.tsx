@@ -55,7 +55,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={
-      "border-[1px] [border-image:linear-gradient(77.5deg,_#109AE4_-31.33%,_#27ABF1_-19.3%,_#2BAAEE_-4.45%,_#3BB1F0_11.89%,_#7581F7_29.28%,_#EF30A2_47.54%,_#F276C0_66.2%,_#FFADDE_81.84%)_30] border-image-slice-1 border-image-width-1 border-image-outset-0 border-image-repeat-stretch transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-r-0 border-l-0 grid grid-cols-[minmax(min-content,1fr)_minmax(min-content,2fr)_minmax(min-content,2fr)_minmax(min-content,1fr)] items-center"
+      "md:text-[12px] text-[8px] border-[1px] [border-image:linear-gradient(77.5deg,_#109AE4_-31.33%,_#27ABF1_-19.3%,_#2BAAEE_-4.45%,_#3BB1F0_11.89%,_#7581F7_29.28%,_#EF30A2_47.54%,_#F276C0_66.2%,_#FFADDE_81.84%)_30] border-image-slice-1 border-image-width-1 border-image-outset-0 border-image-repeat-stretch transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted border-r-0 border-l-0 grid grid-cols-[minmax(min-content,1fr)_minmax(min-content,2fr)_minmax(min-content,2fr)_minmax(min-content,1fr)] items-center"
     }
     {...props}
   />
@@ -69,7 +69,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={
-      "h-10 px-2 text-left align-middle text-[12px] text-[#C8CCD3] opacity-[50%] text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] flex items-center"
+      "h-10 px-2 text-left align-middle md:text-[12px] text-[8px] text-[#C8CCD3] opacity-[50%] text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] flex items-center"
     }
     {...props}
   />

@@ -2,22 +2,35 @@
 
 import React from "next";
 import Leaderboard from "../components/leaderboard/leaderboard";
+import { useEffect, useState } from "react";
+import { LeaderboardData } from "@/constants/types";
+import { getWinners } from "@/services/leaderboardService";
 
 export default function LeaderboardPage() {
-  const data = [
-    {
-      address:
-        "0x061790c262d20a77a4f5b3b10d4dd83b73e0b071be4f13c00dddbe61d708b221",
-      rank: 1,
-      timesClicked: 183,
-    },
-    {
-      address:
-        "0x02a9c0015e9b0d0ad7cf6edf250582f9c517215270f485de3831b920f91ded3d",
-      rank: 2,
-      timesClicked: 1,
-    },
-  ];
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [data, setData] = useState<LeaderboardData[]>();
+  const [participants, setParticipants] = useState<number>(0);
 
-  return <Leaderboard data={data} loading={false} />;
+  useEffect(() => {
+    if (isLoaded) return;
+    getWinners()
+      .then((res) => {
+        setData(res.winners);
+        setParticipants(res.nb_players);
+        setIsLoaded(true);
+      })
+      .catch((err) => {
+        console.log("Error while fetching tracking virtualTxId", err);
+      });
+  });
+
+  return isLoaded ? (
+    <Leaderboard
+      data={data as LeaderboardData[]}
+      isLoaded={isLoaded}
+      participants={participants}
+    />
+  ) : (
+    <>Skeleton</>
+  );
 }

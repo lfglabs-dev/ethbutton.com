@@ -1,5 +1,5 @@
 "use client";
-import React, { FunctionComponent, useMemo } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,22 +13,33 @@ import { minifyAddress } from "@/utils/stringService";
 import { ethers } from "ethers";
 import { StarknetIdNavigator } from "starknetid.js";
 import { Provider, constants } from "starknet";
-
-type TableInfo = {
-  rank: number;
-  address: string;
-  timesClicked: number;
-};
+import { LeaderboardData } from "@/constants/types";
 
 type DataTableProps = {
-  data: TableInfo[];
-  loading: boolean;
+  data: LeaderboardData[];
+  isLoaded: boolean;
+  participants: number;
 };
 
-const Leaderboard: FunctionComponent<DataTableProps> = ({ data, loading }) => {
-  const totalParticipants = 126543; //todo: fetch the right value
+const Leaderboard: FunctionComponent<DataTableProps> = ({
+  data,
+  participants,
+  isLoaded,
+}) => {
+  const [names, setNames] = useState<Record<string, string>>({});
+  const [isInit, setIsInit] = useState(false);
   const borderColor =
     "[border-image:linear-gradient(77.5deg,_#109AE4_-31.33%,_#27ABF1_-19.3%,_#2BAAEE_-4.45%,_#3BB1F0_11.89%,_#7581F7_29.28%,_#EF30A2_47.54%,_#F276C0_66.2%,_#FFADDE_81.84%)_30]";
+
+  useEffect(() => {
+    if (!isLoaded || isInit) return;
+    data.forEach((row) => {
+      getAddrOrName(row.address).then((name) => {
+        setNames((prev) => ({ ...prev, [row.address]: name }));
+      });
+    });
+    setIsInit(true);
+  }, [data, isLoaded, isInit]);
 
   const starknetIdNavigator = useMemo(() => {
     return new StarknetIdNavigator(
@@ -41,13 +52,12 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({ data, loading }) => {
     );
   }, []);
 
-  const getAddrOrName = (addr: string): string => {
+  const getAddrOrName = (addr: string): Promise<string> => {
     if (ethers.isAddress(addr)) {
       // It's a eth addr
-      fetch(`https://enstate.rs/n/${addr}`)
+      return fetch(`https://enstate.rs/n/${addr}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("data", data);
           if (data.name) return data.name;
           else return minifyAddress(addr, true);
         })
@@ -56,7 +66,7 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({ data, loading }) => {
         });
     } else {
       // It's a starknet addr
-      starknetIdNavigator
+      return starknetIdNavigator
         .getStarkName(addr)
         .then((name) => {
           if (name) return name;
@@ -66,7 +76,6 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           return minifyAddress(addr, true);
         });
     }
-    return minifyAddress(addr, true);
   };
 
   const getExternalLink = (addr: string): string => {
@@ -106,8 +115,10 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({ data, loading }) => {
                     onClick={() => window.open(getExternalLink(row.address))}
                   >
                     <TableCell>{row.rank}</TableCell>
-                    <TableCell>{getAddrOrName(row.address)}</TableCell>
-                    <TableCell>{row.timesClicked}</TableCell>
+                    <TableCell>
+                      <div className="cursor-pointer">{names[row.address]}</div>
+                    </TableCell>
+                    <TableCell>{row.times_clicked}</TableCell>
                     <TableCell>$0</TableCell>
                   </TableRow>
                 ))}
@@ -116,7 +127,7 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({ data, loading }) => {
           </div>
         </div>
         <div className={styles.participants}>
-          Total participants {totalParticipants.toLocaleString("en-US")}
+          Total participants {participants.toLocaleString("en-US")}
         </div>
       </div>
     </div>

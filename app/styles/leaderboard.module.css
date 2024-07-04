@@ -77,3 +77,37 @@
   height: 232px;
   margin: 10px auto;
 }
+
+@media (max-width: 1024px) {
+  .tableSection {
+    padding: 24px;
+    height: auto;
+    width: 450px;
+    margin: 10px auto;
+  }
+  .tableWrapper {
+    max-width: 450px;
+  }
+  .searchSection {
+    width: 450px;
+    height: 104px;
+    margin: 10px auto;
+  }
+}
+
+@media (max-width: 490px) {
+  .tableSection {
+    padding: 24px;
+    height: auto;
+    width: 310px;
+    margin: 10px auto;
+  }
+  .tableWrapper {
+    max-width: 310px;
+  }
+  .searchSection {
+    width: 310px;
+    height: 71px;
+    margin: 10px auto;
+  }
+}
