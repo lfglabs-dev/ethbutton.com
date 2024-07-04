@@ -1,12 +1,12 @@
 "use client";
 
 import React from "next";
-import Leaderboard from "../components/leaderboard/leaderboard";
-import { useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { LeaderboardData } from "@/constants/types";
 import { getWinners } from "@/services/leaderboardService";
+import Leaderboard from "./leaderboard";
 
-export default function LeaderboardPage() {
+const LeaderboardWrapper: FunctionComponent = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [data, setData] = useState<LeaderboardData[]>();
   const [participants, setParticipants] = useState<number>(0);
@@ -24,13 +24,13 @@ export default function LeaderboardPage() {
       });
   });
 
-  return isLoaded ? (
+  return (
     <Leaderboard
       data={data as LeaderboardData[]}
       isLoaded={isLoaded}
       participants={participants}
     />
-  ) : (
-    <>Skeleton</>
   );
-}
+};
+
+export default LeaderboardWrapper;

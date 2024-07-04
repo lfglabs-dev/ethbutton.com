@@ -1,4 +1,5 @@
 "use client";
+
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import {
   Table,
@@ -16,6 +17,7 @@ import { Provider, constants } from "starknet";
 import { LeaderboardData, SearchResult } from "@/constants/types";
 import SearchBar from "./searchBar";
 import { getUserData } from "@/services/leaderboardService";
+import LeaderboardSkeleton from "./leaderboardSkeleton";
 
 type DataTableProps = {
   data: LeaderboardData[];
@@ -140,65 +142,75 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
             challenges and opportunities
           </p>
         </div>
-        <div className={styles.tableWrapper}>
-          <div className={styles.table}>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Ranking</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>Time clicked</TableHead>
-                  <TableHead>Reward</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {!isSearchMode ? (
-                  data &&
-                  data.map((row) => (
-                    <TableRow
-                      key={row.address}
-                      onClick={() => window.open(getExternalLink(row.address))}
-                    >
-                      <TableCell>{row.rank}</TableCell>
-                      <TableCell>
-                        <div className="cursor-pointer">
-                          {names[row.address]}
-                        </div>
-                      </TableCell>
-                      <TableCell>{row.times_clicked}</TableCell>
-                      <TableCell>$0</TableCell>
+        {isLoaded ? (
+          <>
+            <div className={styles.tableWrapper}>
+              <div className={styles.table}>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Ranking</TableHead>
+                      <TableHead>Address</TableHead>
+                      <TableHead>Time clicked</TableHead>
+                      <TableHead>Reward</TableHead>
                     </TableRow>
-                  ))
-                ) : error ? (
-                  <div className="text-center m-5">{error}</div>
-                ) : searchResult ? (
-                  <TableRow
-                    key={searchResult?.address}
-                    onClick={() =>
-                      window.open(
-                        getExternalLink(searchResult?.address as string)
-                      )
-                    }
-                  >
-                    <TableCell>{searchResult?.rank}</TableCell>
-                    <TableCell>
-                      <div className="cursor-pointer">
-                        {minifyAddress(searchResult?.address, true)}
-                      </div>
-                    </TableCell>
-                    <TableCell>{searchResult?.times_clicked}</TableCell>
-                    <TableCell>
-                      {searchResult?.reward ? `$${searchResult?.reward}` : "$0"}
-                    </TableCell>
-                  </TableRow>
-                ) : null}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-        <div className={styles.participants}>
-          Total participants {participants.toLocaleString("en-US")}
-        </div>
+                  </TableHeader>
+                  <TableBody>
+                    {!isSearchMode ? (
+                      data &&
+                      data.map((row) => (
+                        <TableRow
+                          key={row.address}
+                          onClick={() =>
+                            window.open(getExternalLink(row.address))
+                          }
+                        >
+                          <TableCell>{row.rank}</TableCell>
+                          <TableCell>
+                            <div className="cursor-pointer">
+                              {names[row.address]}
+                            </div>
+                          </TableCell>
+                          <TableCell>{row.times_clicked}</TableCell>
+                          <TableCell>$0</TableCell>
+                        </TableRow>
+                      ))
+                    ) : error ? (
+                      <div className="text-center m-5">{error}</div>
+                    ) : searchResult ? (
+                      <TableRow
+                        key={searchResult?.address}
+                        onClick={() =>
+                          window.open(
+                            getExternalLink(searchResult?.address as string)
+                          )
+                        }
+                      >
+                        <TableCell>{searchResult?.rank}</TableCell>
+                        <TableCell>
+                          <div className="cursor-pointer">
+                            {minifyAddress(searchResult?.address, true)}
+                          </div>
+                        </TableCell>
+                        <TableCell>{searchResult?.times_clicked}</TableCell>
+                        <TableCell>
+                          {searchResult?.reward
+                            ? `$${searchResult?.reward}`
+                            : "$0"}
+                        </TableCell>
+                      </TableRow>
+                    ) : null}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+            <div className={styles.participants}>
+              Total participants {participants.toLocaleString("en-US")}
+            </div>
+          </>
+        ) : (
+          <LeaderboardSkeleton />
+        )}
       </div>
     </div>
   );
