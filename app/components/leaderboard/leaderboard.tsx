@@ -206,9 +206,14 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
                         </TableCell>
                         <TableCell>{searchResult?.times_clicked}</TableCell>
                         <TableCell>
-                          {searchResult?.reward
-                            ? `$${searchResult?.reward}`
-                            : "$0"}
+                          <div className="flex flex-row gap-1">
+                            {searchResult?.reward ? (
+                              <img src="/visuals/ethereumIcon.svg" width={18} />
+                            ) : (
+                              <div></div>
+                            )}
+                            ${searchResult?.reward ?? 0}
+                          </div>
                         </TableCell>
                       </TableRow>
                     ) : null}
