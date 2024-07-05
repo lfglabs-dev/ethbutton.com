@@ -172,7 +172,19 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
                             </div>
                           </TableCell>
                           <TableCell>{row.times_clicked}</TableCell>
-                          <TableCell>$0</TableCell>
+                          <TableCell>
+                            <div className="flex flex-row gap-1">
+                              {row?.reward ? (
+                                <img
+                                  src="/visuals/ethereumIcon.svg"
+                                  width={18}
+                                />
+                              ) : (
+                                <div></div>
+                              )}
+                              ${row?.reward ?? 0}
+                            </div>
+                          </TableCell>
                         </TableRow>
                       ))
                     ) : error ? (

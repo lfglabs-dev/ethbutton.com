@@ -29,11 +29,9 @@ export async function getStatus(
 ): Promise<SearchResult> {
   if (!domainOrAddr) return { isValid: true };
   if (ethers.isAddress(domainOrAddr)) {
-    console.log("valid eth addr");
     // it's an ETH address
     return { isValid: true, addr: domainOrAddr.toLowerCase() };
   } else if (isValidStrkName(domainOrAddr)) {
-    console.log("valid stark name");
     // It's a valid starkname
     return new Promise((resolve, reject) => {
       if (signal?.aborted) {
@@ -51,7 +49,6 @@ export async function getStatus(
       });
     });
   } else if (isValidEns(domainOrAddr)) {
-    console.log("valid ens name");
     // it's a valid ENS name, we fetch the address from the ENS name
     return new Promise((resolve, reject) => {
       if (signal?.aborted) {
@@ -71,11 +68,9 @@ export async function getStatus(
         });
     });
   } else if (isValidStarkAddr(domainOrAddr)) {
-    console.log("valid stark addr");
     // it's a STRK Addr
     return { isValid: true, addr: domainOrAddr };
   } else {
-    console.log("invalid input");
     return { isValid: false, error: "Invalid input" };
   }
 }
