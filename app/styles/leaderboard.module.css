@@ -1,0 +1,113 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  background: var(--background);
+  min-height: 100vh;
+  margin: auto;
+  padding: 20px;
+}
+
+.tableSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: var(--background-dark);
+  box-shadow: 0px 9px 30px 0px #060b16;
+  padding: 24px;
+  border-radius: 8px;
+  height: auto;
+  width: 1000px;
+  margin: 10px auto;
+}
+
+.tableWrapper {
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(
+    77.5deg,
+    #109ae4 -31.33%,
+    #27abf1 -19.3%,
+    #2baaee -4.45%,
+    #3bb1f0 11.89%,
+    #7581f7 29.28%,
+    #ef30a2 47.54%,
+    #f276c0 66.2%,
+    #ffadde 81.84%
+  );
+  overflow: hidden;
+  max-width: 1000px;
+}
+
+.table {
+  border-radius: 7px;
+  background-color: var(--background);
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  color: var(--content);
+  font-family: "Airstrike";
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+.desc,
+.participants {
+  color: var(--content);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+
+.searchSection {
+  background-image: url("/visuals/searchCard.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 1000px;
+  height: 232px;
+  margin: 10px auto;
+}
+
+@media (max-width: 1024px) {
+  .tableSection {
+    padding: 24px;
+    height: auto;
+    width: 450px;
+    margin: 10px auto;
+  }
+  .tableWrapper {
+    max-width: 450px;
+  }
+  .searchSection {
+    width: 450px;
+    height: 104px;
+    margin: 10px auto;
+  }
+}
+
+@media (max-width: 490px) {
+  .tableSection {
+    padding: 24px;
+    height: auto;
+    width: 310px;
+    margin: 10px auto;
+  }
+  .tableWrapper {
+    max-width: 310px;
+  }
+  .searchSection {
+    width: 310px;
+    height: 71px;
+    margin: 10px auto;
+  }
+}

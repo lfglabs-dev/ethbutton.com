@@ -6,11 +6,17 @@ export const formatTime = (seconds: number): string => {
     .padStart(2, "0")}`;
 };
 
-export function minifyAddress(address: string | undefined): string {
+export function minifyAddress(
+  address: string | undefined,
+  longVersion: boolean = false
+): string {
   if (!address) return "";
 
-  const firstPart = address.substring(0, 4);
-  const secondPart = address.substring(address.length - 3, address.length);
+  const firstPart = address.substring(0, longVersion ? 7 : 4);
+  const secondPart = address.substring(
+    address.length - (longVersion ? 7 : 4),
+    address.length
+  );
 
   return (firstPart + "..." + secondPart).toLowerCase();
 }

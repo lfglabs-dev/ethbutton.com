@@ -27,6 +27,7 @@
     "starknet": "^6.9.0",
     "starknetid.js": "^4.0.0",
     "starknetkit": "^1.1.9",
+    "tldts": "^6.1.30",
     "viem": "^2.12.5",
     "wagmi": "^2.9.7"
   },
