@@ -8,7 +8,11 @@ import Button from "./button";
 import { EthToken, NetworkType, RemainingClicks } from "@/constants/types";
 import WalletIcon from "./iconComponents/walletIcon";
 import { numberToWords } from "@/utils/stringService";
-import { getTotalClicks } from "@/utils/dataService";
+import { getTotalClicks, hasAStarknetClick } from "@/utils/dataService";
+import {
+  getArgentIcon,
+  getArgentWebsite,
+} from "@/utils/starknetConnectorsWrapper";
 
 type WelcomeModalProps = {
   closeModal: () => void;
@@ -61,6 +65,8 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
         {totalClicks > 1 ? "clicks" : "click"} with this address. Make sure to
         choose the right moment to win the prize!
       </>
+    ) : hasAStarknetClick() ? (
+      <>Get a free ticket for downloading a Starknet wallet!</>
     ) : isWhitelisted ? (
       <>
         You don&apos;t have any clicks left. You get another click for each
@@ -104,7 +110,17 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
 
             <div className={styles.description}>{modalDescription}</div>
 
-            {!remainingClicks.whitelisted || totalClicks == 0 ? (
+            {hasAStarknetClick() ? (
+              <div className="gap-3 flex flex-col">
+                <Button
+                  icon={<img src={getArgentIcon()} width={22} />}
+                  width={260}
+                  onClick={() => window.open(getArgentWebsite())}
+                >
+                  Argent
+                </Button>
+              </div>
+            ) : !remainingClicks.whitelisted || totalClicks == 0 ? (
               <div className=" flex flex-col gap-3">
                 <Button
                   icon={<img src="/visuals/starknetIdIcon.svg" />}

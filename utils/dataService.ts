@@ -1,4 +1,5 @@
 import { EthToken, NetworkType, RemainingClicks } from "@/constants/types";
+import { getEthTokens } from "@/services/localStorageService";
 
 export const getTotalClicks = (
   remaining: RemainingClicks,
@@ -48,4 +49,10 @@ export function needToRecoverToken(
   )
     return true;
   else return false;
+}
+
+export function hasAStarknetClick(): boolean {
+  const tokens = getEthTokens();
+  if (tokens.length === 0) return false;
+  return true;
 }
