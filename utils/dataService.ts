@@ -30,7 +30,8 @@ export const getNonBlacklistedDomain = (
 
 export function isOver5mn(timestamp: number) {
   const currentTime = Date.now(); // Gets the current time in milliseconds
-  const fiveMinutesInMilliseconds = 300000; // 5 minutes * 60 seconds * 1000 milliseconds
+  const fiveMinutesInMilliseconds =
+    parseInt(process.env.NEXT_PUBLIC_GAME_DURATION as string) * 1000; // 5 minutes * 60 seconds * 1000 milliseconds
 
   return currentTime - timestamp > fiveMinutesInMilliseconds;
 }

@@ -14,8 +14,7 @@ const Countdown: FunctionComponent<CountdownProps> = ({
   timestamp,
   isLoaded,
 }) => {
-  const countdownDuration = 300; // todo: 5mn, move this into env variables ?
-  const [timeRemaining, setTimeRemaining] = useState(120); // in seconds
+  const [timeRemaining, setTimeRemaining] = useState(0); // in seconds
   const formattedTime = formatTime(timeRemaining);
   const [minutes, seconds] = formattedTime.split(":");
   const skeleton = (
@@ -32,7 +31,9 @@ const Countdown: FunctionComponent<CountdownProps> = ({
   useEffect(() => {
     // any time the timestamp is updated we update the timeRemaining
     const now = new Date().getTime(); // Current time in milliseconds
-    const timestampExpiration = timestamp + countdownDuration * 1000; // Expiration time based on the received timestamp
+    const timestampExpiration =
+      timestamp +
+      parseInt(process.env.NEXT_PUBLIC_GAME_DURATION as string) * 1000; // Expiration time based on the received timestamp
     const secondsUntilExpiration = Math.floor(
       (timestampExpiration - now) / 1000
     );
