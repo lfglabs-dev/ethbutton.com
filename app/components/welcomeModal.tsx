@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useMemo } from "react";
 import { Modal } from "@mui/material";
 import styles from "../styles/components/welcomeModal.module.css";
 import modalStyles from "../styles/components/modal.module.css";
@@ -37,6 +37,9 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
 }) => {
   const totalClicks = getTotalClicks(remainingClicks, network, ethTokens);
   const isWhitelisted = remainingClicks.whitelisted;
+  const hasStarknetClicks = useMemo(() => {
+    if (typeof window !== "undefined") return hasAStarknetClick();
+  }, []);
   const btnIcon =
     network === NetworkType.STARKNET ? (
       <img src="/visuals/starknetIcon.svg" />
@@ -65,7 +68,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
         {totalClicks > 1 ? "clicks" : "click"} with this address. Make sure to
         choose the right moment to win the prize!
       </>
-    ) : hasAStarknetClick() ? (
+    ) : hasStarknetClicks ? (
       <>Get a free ticket for downloading a Starknet wallet!</>
     ) : isWhitelisted ? (
       <>
@@ -110,7 +113,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
 
             <div className={styles.description}>{modalDescription}</div>
 
-            {hasAStarknetClick() ? (
+            {hasStarknetClicks ? (
               <div className="gap-3 flex flex-col">
                 <Button
                   icon={<img src={getArgentIcon()} width={22} />}

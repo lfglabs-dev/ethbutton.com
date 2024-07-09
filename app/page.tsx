@@ -95,6 +95,7 @@ export default function Home() {
   const [totalPlayers, setTotalPlayers] = useState<number>(0);
   const [trackingList, setTrackingList] = useState<string[]>([]);
   const [showNotif, setShowNotif] = useState<boolean>(false);
+  const [showNotifPlayed, setShowNotifPlayed] = useState<boolean>(false);
   const [leaderboard, setLeaderboard] = useState<boolean>(false);
 
   const priceValue = getPriceValue();
@@ -325,6 +326,7 @@ export default function Home() {
       );
       storeVirtualTxId(virtualTxId.virtual_tx_id);
       setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
+      setShowNotifPlayed(true);
     } catch (error) {
       console.error("Error during starkner reset:", error);
     }
@@ -353,6 +355,7 @@ export default function Home() {
       );
       storeVirtualTxId(virtualTxId.virtual_tx_id);
       setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
+      setShowNotifPlayed(true);
     } catch (error) {
       console.error("Error during starknet domain reset:", error);
     }
@@ -383,6 +386,7 @@ export default function Home() {
         storeVirtualTxId(virtualTxId.virtual_tx_id);
         clearEthTokens();
         setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
+        setShowNotifPlayed(true);
       } catch (error) {
         console.error("Error during eth reset from starknet:", error);
       }
@@ -411,6 +415,7 @@ export default function Home() {
           storeVirtualTxId(virtualTxId.virtual_tx_id);
           clearEthTokens();
           setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
+          setShowNotifPlayed(true);
         } catch (error) {
           console.error("Error during alt starknet new reset:", error);
         }
@@ -455,6 +460,7 @@ export default function Home() {
           eth_addr: res.eth_addr,
         });
         setTrackingList([...trackingList, res.virtual_tx_id]);
+        setShowNotifPlayed(true);
       } catch (error) {
         console.error("Error during eth reset:", error);
       }
@@ -658,6 +664,15 @@ export default function Home() {
               Try again! You still have{" "}
               {getTotalClicks(remainingClicks, network, ethTokens)} chance to
               press the button.
+            </>
+          </Notification>
+          <Notification
+            visible={showNotifPlayed}
+            onClose={() => setShowNotifPlayed(false)}
+          >
+            <>
+              Counter successfully reset, if it reaches zero before someone
+              resets it again, you will win 5 eth
             </>
           </Notification>
         </>
