@@ -39,7 +39,7 @@ const Stats: FunctionComponent<StatsProps> = ({
       </div>
       {isConnected && !isFinished ? (
         <div className={styles.statsSection}>
-          <p>Click number</p>
+          <p>Available clicks</p>
           <p>
             {remainingClicks !== 0
               ? remainingClicks.toLocaleString("en-US")
