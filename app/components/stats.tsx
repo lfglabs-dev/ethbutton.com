@@ -12,6 +12,7 @@ type StatsProps = {
   totalPlayers: number;
   isFinished: boolean;
   currentWinner?: string;
+  isLoaded: boolean;
 };
 
 const Stats: FunctionComponent<StatsProps> = ({
@@ -21,6 +22,7 @@ const Stats: FunctionComponent<StatsProps> = ({
   totalPlayers,
   isFinished,
   currentWinner,
+  isLoaded,
 }) => {
   const getExplorerLink = (address: string) => {
     ethers.isAddress(address)
@@ -40,11 +42,7 @@ const Stats: FunctionComponent<StatsProps> = ({
       {isConnected && !isFinished ? (
         <div className={styles.statsSection}>
           <p>Available clicks</p>
-          <p>
-            {remainingClicks !== 0
-              ? remainingClicks.toLocaleString("en-US")
-              : "--"}
-          </p>
+          <p>{isLoaded ? remainingClicks.toLocaleString("en-US") : "--"}</p>
         </div>
       ) : null}
       {isFinished ? (

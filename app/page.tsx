@@ -618,6 +618,7 @@ export default function Home() {
               totalPlayers={totalPlayers}
               isFinished={!isLoaded ? false : isFinished}
               currentWinner={currentWinner}
+              isLoaded={isLoaded}
             />
           </main>
           <ConnectModal
