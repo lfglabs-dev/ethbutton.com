@@ -31,9 +31,15 @@ export default function getRemainingClicks(
           getStarknetEligibility(address),
           getUserDomains(address),
         ]);
-        const domains = availableIds.full_ids
-          .map((fullId: FullId) => fullId.domain)
-          .filter((domain: string) => domain);
+        const now = Date.now();
+        const domains = availableIds.full_ids.map((fullId: FullId) => {
+          if (
+            fullId.domain &&
+            fullId.domain_expiry &&
+            fullId.domain_expiry * 1000 > now
+          )
+            return fullId.domain;
+        });
 
         const domainStatus = await getDomainClaimedStatus(domains);
         const domainClicks = Object.values(domainStatus).filter(
