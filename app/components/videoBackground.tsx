@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 
 const VideoBackground = () => {
   return (
@@ -12,13 +12,13 @@ const VideoBackground = () => {
   );
 };
 
-const videoStyle: {} = {
+const videoStyle: CSSProperties = {
   width: "100%",
   height: "100%",
   objectFit: "cover",
 };
 
-const containerStyle: {} = {
+const containerStyle: CSSProperties = {
   position: "fixed",
   right: "0",
   bottom: "0",
@@ -28,7 +28,7 @@ const containerStyle: {} = {
   overflow: "hidden",
 };
 
-const overlayStyle: {} = {
+const overlayStyle: CSSProperties = {
   position: "absolute",
   top: "0",
   left: "0",
