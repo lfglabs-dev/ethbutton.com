@@ -15,6 +15,7 @@
   align-items: center;
   gap: 16px;
   justify-content: center;
+  z-index: 1;
 }
 
 .centralSection {
@@ -26,6 +27,7 @@
   position: relative;
   height: 598px;
   margin: auto;
+  z-index: 1;
 }
 
 .backgroundWrapper {

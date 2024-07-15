@@ -61,6 +61,7 @@ import WrongNetworkModal from "./components/wrongNetwork";
 import { Skeleton, useMediaQuery } from "@mui/material";
 import { StarknetIdNavigator } from "starknetid.js";
 import LeaderboardWrapper from "./components/leaderboard/leaderboardWrapper";
+import VideoBackground from "./components/videoBackground";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -516,6 +517,7 @@ export default function Home() {
       ) : (
         <>
           <main className={styles.main}>
+            <VideoBackground />
             <div className={styles.leftContainer}>
               {isFinished && isLoaded ? (
                 <>
@@ -672,7 +674,7 @@ export default function Home() {
           >
             <>
               Counter successfully reset, if it reaches zero before someone
-              resets it again, you will win 5 eth
+              resets it again, you will win 5 eth.
             </>
           </Notification>
         </>
