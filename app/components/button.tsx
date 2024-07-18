@@ -12,6 +12,7 @@ type ButtonProps = {
   height?: number;
   loading?: boolean;
   variation?: string;
+  enableHover?: boolean;
 };
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -22,6 +23,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   height,
   loading = false,
   variation = "default",
+  enableHover = true,
 }) => {
   const iconColor = variation === "default" ? "#4C6449" : "#1E2A3B";
   const isSmall = useMediaQuery("(max-width: 1280px and min-width: 491px)");
@@ -31,7 +33,7 @@ const Button: FunctionComponent<ButtonProps> = ({
     <div
       className={`${styles.btnContainer} ${styles[variation]} ${
         onClick ? "cursor-pointer" : ""
-      }`}
+      } ${enableHover ? styles.hovered : ""}`}
       onClick={onClick}
       style={{
         width: `${

@@ -31,7 +31,7 @@
   color: var(--content);
 }
 
-.default:hover {
+.hovered:hover {
   background-image: url("/visuals/buttonColored.svg");
   color: var(--content);
 }

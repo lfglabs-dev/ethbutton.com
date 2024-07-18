@@ -583,7 +583,10 @@ export default function Home() {
                         {priceValue}
                       </div>
                     ) : (
-                      <Button icon={<img src="/visuals/eth.svg" width={14} />}>
+                      <Button
+                        icon={<img src="/visuals/eth.svg" width={14} />}
+                        enableHover={false}
+                      >
                         {priceValue}
                       </Button>
                     )
