@@ -13,6 +13,7 @@ import {
   getArgentIcon,
   getArgentWebsite,
 } from "@/utils/starknetConnectorsWrapper";
+import hasArgent from "@/hooks/hasArgent";
 
 type WelcomeModalProps = {
   closeModal: () => void;
@@ -36,11 +37,14 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
   ethTokens,
 }) => {
   const totalClicks = getTotalClicks(remainingClicks, network, ethTokens);
-  console.log("totalClicks", totalClicks);
   const isWhitelisted = remainingClicks.whitelisted;
+  const isInstalled = hasArgent();
+  console.log(isInstalled);
+
   const hasStarknetClicks = useMemo(() => {
     if (typeof window !== "undefined") return hasAStarknetClick();
   }, []);
+
   const btnIcon =
     network === NetworkType.STARKNET ? (
       <img src="/visuals/starknetIcon.svg" />
@@ -116,13 +120,23 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
 
             {hasStarknetClicks && network === NetworkType.EVM ? (
               <div className="gap-3 flex flex-col">
-                <Button
-                  icon={<img src={getArgentIcon()} width={22} />}
-                  width={260}
-                  onClick={() => window.open(getArgentWebsite())}
-                >
-                  Argent
-                </Button>
+                {!isInstalled ? (
+                  <Button
+                    icon={<img src={getArgentIcon()} width={22} />}
+                    width={260}
+                    onClick={() => window.open(getArgentWebsite())}
+                  >
+                    Install Argent
+                  </Button>
+                ) : (
+                  <Button
+                    icon={<img src={getArgentIcon()} width={22} />}
+                    width={260}
+                    onClick={openWalletModal}
+                  >
+                    Connect with Argent
+                  </Button>
+                )}
               </div>
             ) : totalClicks == 0 ? (
               <div className=" flex flex-col gap-3">
