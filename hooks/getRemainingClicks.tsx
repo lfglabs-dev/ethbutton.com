@@ -32,8 +32,6 @@ export default function getRemainingClicks(
           getUserDomains(address),
         ]);
         const now = Date.now();
-        console.log("availableIds", availableIds);
-        console.log("now", now);
         const domains = availableIds.full_ids
           .filter(
             (fullId: FullId) =>
@@ -42,14 +40,11 @@ export default function getRemainingClicks(
               fullId.domain_expiry * 1000 > now
           )
           .map((fullId: FullId) => fullId.domain);
-        console.log("domains", domains);
 
         const domainStatus = await getDomainClaimedStatus(domains);
-        console.log("domainStatus", domainStatus);
         const domainClicks = Object.values(domainStatus).filter(
           (value) => !value
         ).length;
-        console.log("domainClicks", domainClicks);
 
         const whitelisted = eligibilityAmt.whitelisted
           ? true

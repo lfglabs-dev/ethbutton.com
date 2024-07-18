@@ -1,9 +1,10 @@
 "use client";
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../styles/components/stats.module.css";
 import { ethers } from "ethers";
 import { minifyAddress } from "@/utils/stringService";
+import { StarknetIdNavigator } from "starknetid.js";
 
 type StatsProps = {
   isConnected: boolean;
@@ -13,6 +14,7 @@ type StatsProps = {
   isFinished: boolean;
   currentWinner?: string;
   isLoaded: boolean;
+  starknetIdNavigator: StarknetIdNavigator;
 };
 
 const Stats: FunctionComponent<StatsProps> = ({
@@ -23,12 +25,48 @@ const Stats: FunctionComponent<StatsProps> = ({
   isFinished,
   currentWinner,
   isLoaded,
+  starknetIdNavigator,
 }) => {
+  const [lastWinner, setLastWinner] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    getAddrOrName(currentWinner as string).then((name) => {
+      setLastWinner(name);
+    });
+  }, [currentWinner]);
+
   const getExplorerLink = (address: string) => {
     ethers.isAddress(address)
       ? `https://etherscan.io/address/${address}`
       : `https://starkscan.co/contract/${address}`;
   };
+
+  const getAddrOrName = (addr: string): Promise<string> => {
+    if (ethers.isAddress(addr)) {
+      // It's a eth addr
+      return fetch(`https://enstate.rs/n/${addr}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.name) return data.name;
+          else return minifyAddress(addr, true);
+        })
+        .catch(() => {
+          return minifyAddress(addr, true);
+        });
+    } else {
+      // It's a starknet addr
+      return starknetIdNavigator
+        .getStarkName(addr)
+        .then((name) => {
+          if (name) return name;
+          else return minifyAddress(addr, true);
+        })
+        .catch(() => {
+          return minifyAddress(addr, true);
+        });
+    }
+  };
+
   return (
     <div className={styles.statsSections}>
       <div className={styles.statsSection}>
@@ -43,6 +81,16 @@ const Stats: FunctionComponent<StatsProps> = ({
         <div className={styles.statsSection}>
           <p>Available clicks</p>
           <p>{isLoaded ? remainingClicks.toLocaleString("en-US") : "--"}</p>
+        </div>
+      ) : null}
+      {!isFinished && lastWinner ? (
+        <div className={styles.statsSection}>
+          <p>Current winner</p>
+          <div className={styles.winnerWrapper}>
+            <div className={styles.winnerSection} style={{ margin: "auto" }}>
+              {lastWinner}
+            </div>
+          </div>
         </div>
       ) : null}
       {isFinished ? (

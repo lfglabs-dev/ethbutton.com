@@ -643,6 +643,7 @@ export default function Home() {
               isFinished={!isLoaded ? false : isFinished}
               currentWinner={currentWinner}
               isLoaded={isLoaded}
+              starknetIdNavigator={starknetIdNavigator}
             />
           </main>
           <ConnectModal
