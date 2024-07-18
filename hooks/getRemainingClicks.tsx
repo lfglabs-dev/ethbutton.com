@@ -34,14 +34,14 @@ export default function getRemainingClicks(
         const now = Date.now();
         console.log("availableIds", availableIds);
         console.log("now", now);
-        const domains = availableIds.full_ids.map((fullId: FullId) => {
-          if (
-            fullId.domain &&
-            fullId.domain_expiry &&
-            fullId.domain_expiry * 1000 > now
+        const domains = availableIds.full_ids
+          .filter(
+            (fullId: FullId) =>
+              fullId.domain &&
+              fullId.domain_expiry &&
+              fullId.domain_expiry * 1000 > now
           )
-            return fullId.domain;
-        });
+          .map((fullId: FullId) => fullId.domain);
         console.log("domains", domains);
 
         const domainStatus = await getDomainClaimedStatus(domains);
