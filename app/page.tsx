@@ -548,10 +548,16 @@ export default function Home() {
                   <Button
                     onClick={connectBtnAction}
                     icon={
-                      <WalletIcon
-                        width="21"
-                        color={isConnected ? "#1E2A3B" : "#C8CCD3"}
-                      />
+                      !isConnected ? (
+                        <WalletIcon
+                          width="21"
+                          color={isConnected ? "#1E2A3B" : "#C8CCD3"}
+                        />
+                      ) : network === NetworkType.STARKNET ? (
+                        <img src="/visuals/starknetIcon.svg" width={20} />
+                      ) : (
+                        <img src="/visuals/ethFilledIcon.svg" width={20} />
+                      )
                     }
                     variation={isConnected ? "white" : "default"}
                   >
