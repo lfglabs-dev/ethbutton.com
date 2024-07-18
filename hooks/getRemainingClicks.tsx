@@ -32,6 +32,8 @@ export default function getRemainingClicks(
           getUserDomains(address),
         ]);
         const now = Date.now();
+        console.log("availableIds", availableIds);
+        console.log("now", now);
         const domains = availableIds.full_ids.map((fullId: FullId) => {
           if (
             fullId.domain &&
