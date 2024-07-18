@@ -39,7 +39,6 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
   const totalClicks = getTotalClicks(remainingClicks, network, ethTokens);
   const isWhitelisted = remainingClicks.whitelisted;
   const isInstalled = hasArgent();
-  console.log(isInstalled);
 
   const hasStarknetClicks = useMemo(() => {
     if (typeof window !== "undefined") return hasAStarknetClick();

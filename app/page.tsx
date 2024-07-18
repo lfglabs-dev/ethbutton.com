@@ -97,6 +97,8 @@ export default function Home() {
   const [trackingList, setTrackingList] = useState<string[]>([]);
   const [showNotif, setShowNotif] = useState<boolean>(false);
   const [showNotifPlayed, setShowNotifPlayed] = useState<boolean>(false);
+  const [showErrorMsg, setShowErrorMsg] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const [leaderboard, setLeaderboard] = useState<boolean>(false);
 
   const priceValue = getPriceValue();
@@ -510,6 +512,11 @@ export default function Home() {
     }
   };
 
+  const closeErrorMsg = () => {
+    setShowErrorMsg(false);
+    setErrorMsg("");
+  };
+
   return (
     <>
       {leaderboard ? (
@@ -685,6 +692,9 @@ export default function Home() {
               Counter successfully reset, if it reaches zero before someone
               resets it again, you will win 5 eth.
             </>
+          </Notification>
+          <Notification visible={showErrorMsg} onClose={closeErrorMsg}>
+            <>{errorMsg}</>
           </Notification>
         </>
       )}
