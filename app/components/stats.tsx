@@ -3,7 +3,7 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styles from "../styles/components/stats.module.css";
 import { ethers } from "ethers";
-import { minifyAddress } from "@/utils/stringService";
+import { minifyAddress, shortenDomain } from "@/utils/stringService";
 import { StarknetIdNavigator } from "starknetid.js";
 
 type StatsProps = {
@@ -47,7 +47,7 @@ const Stats: FunctionComponent<StatsProps> = ({
       return fetch(`https://enstate.rs/n/${addr}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data.name) return data.name;
+          if (data.name) return shortenDomain(data.name);
           else return minifyAddress(addr, true);
         })
         .catch(() => {
@@ -58,7 +58,7 @@ const Stats: FunctionComponent<StatsProps> = ({
       return starknetIdNavigator
         .getStarkName(addr)
         .then((name) => {
-          if (name) return name;
+          if (name) return shortenDomain(name);
           else return minifyAddress(addr, true);
         })
         .catch(() => {
