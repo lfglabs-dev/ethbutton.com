@@ -452,7 +452,7 @@ export default function Home() {
     if (remainingClicks.eligibilityAmt && remainingClicks.eligibilityAmt > 0) {
       try {
         const signature = await signMessageAsync({
-          message: `I press the Ethereum button with my address`,
+          message: `I press the Ethereum button`,
         });
         const res = await ethResetButton(evmAddress as string, signature);
         storeVirtualTxId(res.virtual_tx_id);

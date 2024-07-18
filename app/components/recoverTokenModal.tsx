@@ -30,7 +30,7 @@ const RecoverTokenModal: FunctionComponent<RecoverTokenModalProps> = ({
     if (!addr) return;
     try {
       const signature = await signMessageAsync({
-        message: `I press the Ethereum button with my address`,
+        message: `I press the Ethereum button`,
       });
       storeEthSig(signature, addr);
       setStep(1);
