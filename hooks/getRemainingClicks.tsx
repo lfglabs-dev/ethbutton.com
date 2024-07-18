@@ -42,11 +42,14 @@ export default function getRemainingClicks(
           )
             return fullId.domain;
         });
+        console.log("domains", domains);
 
         const domainStatus = await getDomainClaimedStatus(domains);
+        console.log("domainStatus", domainStatus);
         const domainClicks = Object.values(domainStatus).filter(
           (value) => !value
         ).length;
+        console.log("domainClicks", domainClicks);
 
         const whitelisted = eligibilityAmt.whitelisted
           ? true
