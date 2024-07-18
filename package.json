@@ -24,7 +24,7 @@
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
-    "starknet": "^6.9.0",
+    "starknet": "^6.11.0",
     "starknetid.js": "^4.0.0",
     "starknetkit": "^1.1.9",
     "tldts": "^6.1.30",
