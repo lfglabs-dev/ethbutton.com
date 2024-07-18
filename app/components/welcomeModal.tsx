@@ -36,6 +36,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
   ethTokens,
 }) => {
   const totalClicks = getTotalClicks(remainingClicks, network, ethTokens);
+  console.log("totalClicks", totalClicks);
   const isWhitelisted = remainingClicks.whitelisted;
   const hasStarknetClicks = useMemo(() => {
     if (typeof window !== "undefined") return hasAStarknetClick();
@@ -113,7 +114,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
 
             <div className={styles.description}>{modalDescription}</div>
 
-            {hasStarknetClicks ? (
+            {hasStarknetClicks && network === NetworkType.EVM ? (
               <div className="gap-3 flex flex-col">
                 <Button
                   icon={<img src={getArgentIcon()} width={22} />}
@@ -123,7 +124,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
                   Argent
                 </Button>
               </div>
-            ) : !remainingClicks.whitelisted || totalClicks == 0 ? (
+            ) : totalClicks == 0 ? (
               <div className=" flex flex-col gap-3">
                 <Button
                   icon={<img src="/visuals/starknetIdIcon.svg" />}
