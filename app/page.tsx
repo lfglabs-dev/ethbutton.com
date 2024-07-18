@@ -320,6 +320,13 @@ export default function Home() {
       const signature = (await starknetAccount.signMessage(
         typedData
       )) as WeierstrassSignatureType;
+      if (signature === undefined) {
+        setErrorMsg(
+          "Click reset not taken into account, please contact your wallet provider."
+        );
+        setShowErrorMsg(true);
+        return;
+      }
       const virtualTxId = await starknetResetButton(
         starknetAccount?.address as string,
         signature,
@@ -331,7 +338,10 @@ export default function Home() {
       setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
       setShowNotifPlayed(true);
     } catch (error) {
-      console.error("Error during starkner reset:", error);
+      console.error("Error during starknet reset:", error);
+      setErrorMsg(`Error while resetting eth button: ${error}`);
+      setShowErrorMsg(true);
+      return;
     }
   };
 
@@ -342,6 +352,13 @@ export default function Home() {
   ) => {
     try {
       const signature = await starknetAccount?.signMessage(typedData);
+      if (signature === undefined) {
+        setErrorMsg(
+          "Click reset not taken into account, please contact your wallet provider."
+        );
+        setShowErrorMsg(true);
+        return;
+      }
       const availableDomain = getNonBlacklistedDomain(
         remainingClicks?.domainStatus as Record<string, boolean>
       );
@@ -361,6 +378,9 @@ export default function Home() {
       setShowNotifPlayed(true);
     } catch (error) {
       console.error("Error during starknet domain reset:", error);
+      setErrorMsg(`Error while resetting eth button: ${error}`);
+      setShowErrorMsg(true);
+      return;
     }
   };
 
@@ -376,6 +396,13 @@ export default function Home() {
           // @ts-expect-error we should skip deploy
           { skipDeploy: needSkipDeploy() }
         );
+        if (signature === undefined) {
+          setErrorMsg(
+            "Click reset not taken into account, please contact your wallet provider."
+          );
+          setShowErrorMsg(true);
+          return;
+        }
         const virtualTxId = await starknetResetButtonFromEth(
           starknetAccount?.address as string,
           signature as Signature,
@@ -392,6 +419,9 @@ export default function Home() {
         setShowNotifPlayed(true);
       } catch (error) {
         console.error("Error during eth reset from starknet:", error);
+        setErrorMsg(`Error while resetting eth button: ${error}`);
+        setShowErrorMsg(true);
+        return;
       }
     } else {
       const ethSig = getEthSig();
@@ -404,6 +434,13 @@ export default function Home() {
             // @ts-expect-error we should skip deploy
             { skipDeploy: needSkipDeploy() }
           );
+          if (signature === undefined) {
+            setErrorMsg(
+              "Click reset not taken into account, please contact your wallet provider."
+            );
+            setShowErrorMsg(true);
+            return;
+          }
           const virtualTxId = await altStarknetNewAccount(
             starknetAccount?.address as string,
             signature as Signature,
@@ -421,6 +458,9 @@ export default function Home() {
           setShowNotifPlayed(true);
         } catch (error) {
           console.error("Error during alt starknet new reset:", error);
+          setErrorMsg(`Error while resetting eth button: ${error}`);
+          setShowErrorMsg(true);
+          return;
         }
       } else {
         setTryAgainModal(true);
