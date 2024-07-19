@@ -321,7 +321,7 @@ export default function Home() {
         typedData
       )) as WeierstrassSignatureType;
       console.log("signature", signature);
-      if (signature === undefined) {
+      if (!signature) {
         setErrorMsg(
           "Click reset not taken into account, please contact your wallet provider."
         );
@@ -354,7 +354,7 @@ export default function Home() {
     try {
       const signature = await starknetAccount?.signMessage(typedData);
       console.log("signature", signature);
-      if (signature === undefined) {
+      if (!signature) {
         setErrorMsg(
           "Click reset not taken into account, please contact your wallet provider."
         );
@@ -399,7 +399,7 @@ export default function Home() {
           { skipDeploy: needSkipDeploy() }
         );
         console.log("signature", signature);
-        if (signature === undefined) {
+        if (!signature) {
           setErrorMsg(
             "Click reset not taken into account, please contact your wallet provider."
           );
@@ -438,7 +438,7 @@ export default function Home() {
             { skipDeploy: needSkipDeploy() }
           );
           console.log("signature", signature);
-          if (signature === undefined) {
+          if (!signature) {
             setErrorMsg(
               "Click reset not taken into account, please contact your wallet provider."
             );
