@@ -92,6 +92,7 @@
   cursor: pointer;
 }
 
+.countdownContainerWithDays,
 .countdownContainer {
   position: absolute;
   left: 50%;
@@ -110,6 +111,11 @@
   font-weight: 400;
   font-size: 50px;
   line-height: 42px;
+}
+
+.countdownContainerWithDays {
+  font-size: 40px;
+  justify-content: center;
 }
 
 .endText {
@@ -172,6 +178,10 @@
     transform: translateX(-50%);
     width: 100%;
   }
+
+  .countdownContainerWithDays {
+    font-size: 25px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -202,6 +212,7 @@
     top: 42%;
     transform: translate(-50%, -42%);
   }
+
   .title {
     position: absolute;
     font-size: 30px;
