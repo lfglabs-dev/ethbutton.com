@@ -91,3 +91,19 @@
   background-color: #1e2a3b;
   left: 12px;
 }
+
+@media screen and (max-width: 1024px) {
+  .step:has(+ .step)::before {
+    display: none;
+  }
+  .steps {
+    gap: 0;
+    flex-direction: row;
+  }
+  .step {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    gap: 8px;
+  }
+}

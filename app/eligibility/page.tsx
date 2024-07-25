@@ -188,7 +188,7 @@ export default function Eligibility() {
             >
               {getConnectionBtnText()}
             </Button>
-            <div className="mt-16">
+            <div className={styles.stepsContainer}>
               <Steps
                 steps={[
                   {
@@ -214,7 +214,7 @@ export default function Eligibility() {
           </div>
         </div>
         <div className={homeStyles.centralSection}>
-          <div className={homeStyles.backgroundWrapper}>
+          <div className={styles.backgroundWrapper}>
             <h1 className={styles.title}>
               <>
                 CHECK <span className={homeStyles.pinkTitle}>YOUR</span>{" "}
@@ -231,7 +231,7 @@ export default function Eligibility() {
         </div>
         <div className={homeStyles.leftContainer}>
           <div className={styles.sideBar}>
-            <Link href="/">
+            <Link href="/" className="hidden md:block">
               <Button
                 icon={<RightArrowIcon width="21" color="#C8CCD3" />}
                 variation={isConnected ? "white" : "default"}
