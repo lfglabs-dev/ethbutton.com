@@ -92,6 +92,10 @@
   left: 12px;
 }
 
+.step.completed:has(+ .step)::before {
+  background: var(--gradient-color-reverse);
+}
+
 @media screen and (max-width: 1024px) {
   .step:has(+ .step)::before {
     display: none;

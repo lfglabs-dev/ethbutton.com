@@ -7,6 +7,7 @@ type Step = {
   description: string;
   icon: string;
   disabled?: boolean;
+  completed?: boolean;
 };
 
 type StepsProps = {

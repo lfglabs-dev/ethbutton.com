@@ -4,7 +4,7 @@ import React from "next";
 import homeStyles from "../styles/home.module.css";
 import styles from "../styles/eligibility.module.css";
 import Button from "../components/button";
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useAccount, useDisconnect } from "@starknet-react/core";
 import { NetworkType } from "@/constants/types";
 import ConnectModal from "../components/connection/connectModal";
@@ -26,6 +26,9 @@ import ConnectButtons from "../components/connection/connectButtons";
 import StarknetWalletConnect from "../components/connection/starknetConnect";
 import { getConnectors } from "@/utils/starknetConnectorsWrapper";
 import { Connector } from "starknetkit";
+import VerificationSteps from "../components/eligibility/verificationSteps";
+import EligibilitySteps from "../components/eligibility/eligibilitySteps";
+import Message from "../components/message";
 
 export default function Eligibility() {
   // Starknet hooks
@@ -38,6 +41,7 @@ export default function Eligibility() {
   const ens = useEnsName({
     address: evmAddress,
   });
+  const [message, setMessage] = useState<ReactNode>();
   // state variables
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [openStarknetModal, setOpenStarknetModal] = useState(false);
@@ -46,6 +50,7 @@ export default function Eligibility() {
   const [recoverTokenModal, setRecoverTokenModal] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [network, setNetwork] = useState<NetworkType>();
+  const [progress, setProgress] = useState("verification");
   const address =
     network === NetworkType.STARKNET ? starknetAccount?.address : evmAddress;
   const starknetNetwork =
@@ -139,6 +144,7 @@ export default function Eligibility() {
   };
 
   const disconnectUser = async () => {
+    setMessage("");
     switch (network) {
       case NetworkType.STARKNET:
         await disconnectAsync();
@@ -163,6 +169,10 @@ export default function Eligibility() {
       setOpenConnectModal(true);
     }
   };
+
+  useEffect(() => {
+    if (!isConnected && progress === "eligibility") setProgress("verification");
+  }, [isConnected, progress]);
 
   return (
     <>
@@ -195,26 +205,32 @@ export default function Eligibility() {
                     title: "Step 1",
                     description: "Connect your wallet",
                     icon: "1",
+                    completed: isConnected,
                   },
                   {
                     title: "Step 2",
                     description: "Verifying",
                     icon: "2",
-                    disabled: true,
+                    disabled: !isConnected,
+                    completed: progress === "eligibility",
                   },
                   {
                     title: "Step 3",
                     description: "Eligibility",
                     icon: "3",
-                    disabled: true,
+                    disabled: progress !== "eligibility",
                   },
                 ]}
               />
             </div>
           </div>
         </div>
-        <div className={homeStyles.centralSection}>
-          <div className={styles.backgroundWrapper}>
+        <div className={styles.centralSection}>
+          <div
+            className={`${styles.backgroundWrapper} ${
+              progress === "eligibility" ? styles.long : null
+            }`}
+          >
             <h1 className={styles.title}>
               <>
                 CHECK <span className={homeStyles.pinkTitle}>YOUR</span>{" "}
@@ -222,23 +238,35 @@ export default function Eligibility() {
               </>
             </h1>
             <div className={styles.container}>
-              <ConnectButtons
-                onWalletConnected={onWalletConnected}
-                setOpenStarknetModal={setOpenStarknetModal}
-              />
+              {isConnected ? (
+                progress === "verification" ? (
+                  <VerificationSteps next={() => setProgress("eligibility")} />
+                ) : (
+                  <EligibilitySteps
+                    disconnect={disconnectUser}
+                    setMessage={setMessage}
+                    address={address}
+                    starknetAccount={starknetAccount}
+                    network={network}
+                  />
+                )
+              ) : (
+                <ConnectButtons
+                  onWalletConnected={onWalletConnected}
+                  setOpenStarknetModal={setOpenStarknetModal}
+                />
+              )}
             </div>
           </div>
         </div>
         <div className={homeStyles.leftContainer}>
           <div className={styles.sideBar}>
             <Link href="/" className="hidden md:block">
-              <Button
-                icon={<RightArrowIcon width="21" color="#C8CCD3" />}
-                variation={isConnected ? "white" : "default"}
-              >
+              <Button icon={<RightArrowIcon width="21" color="#C8CCD3" />}>
                 Go to the game
               </Button>
             </Link>
+            {message && <Message message={message} />}
           </div>
         </div>
       </main>

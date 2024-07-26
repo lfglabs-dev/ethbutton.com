@@ -37,6 +37,17 @@
     #f276c0 66.2%,
     #ffadde 81.84%
   );
+  --gradient-color-reverse: linear-gradient(
+    -257.5deg,
+    #109ae4 -31.33%,
+    #27abf1 -19.3%,
+    #2baaee -4.45%,
+    #3bb1f0 11.89%,
+    #7581f7 29.28%,
+    #ef30a2 47.54%,
+    #f276c0 66.2%,
+    #ffadde 81.84%
+  );
 }
 
 html,
