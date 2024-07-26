@@ -60,14 +60,13 @@ const EligibilitySteps: FunctionComponent<EligibilityStepsProps> = ({
   }, [starknetAccount, address]);
 
   useEffect(() => {
-    if (
-      !address ||
-      network === NetworkType.EVM ||
-      !network ||
-      !starkProfile ||
-      !starkProfile.name
-    )
+    if (!address || network === NetworkType.EVM || !network) return;
+    if (!starkProfile) return setLoadingEthAddress(true);
+    if (!starkProfile.name) {
+      setLoadingEthAddress(false);
+      setHasStarkDomain(false);
       return;
+    }
     setHasStarkDomain(true);
     setLoadingEthAddress(true);
     const ensDomain = starkProfile.name.replace(".stark", ".snid.eth");
