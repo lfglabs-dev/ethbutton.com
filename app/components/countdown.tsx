@@ -16,7 +16,9 @@ const Countdown: FunctionComponent<CountdownProps> = ({
 }) => {
   const [timeRemaining, setTimeRemaining] = useState(0); // in seconds
   const formattedTime = formatTime(timeRemaining);
-  const [minutes, seconds] = formattedTime.split(":");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [days, hours, minutes, seconds] = formattedTime.split(":"); // Days and hours are not used in this component
+
   const skeleton = (
     <>
       <Skeleton
