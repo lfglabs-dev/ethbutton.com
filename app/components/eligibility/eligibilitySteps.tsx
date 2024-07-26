@@ -8,7 +8,7 @@ import Card from "../card";
 import styles from "../../styles/components/card.module.css";
 import Button from "../button";
 import FundIcon from "../iconComponents/fundIcon";
-import { getEthEligibility, getUserDomains } from "@/services/apiService";
+import { getEthEligibility } from "@/services/apiService";
 import { AccountInterface } from "starknet";
 import { getEnsAddress } from "wagmi/actions";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
@@ -16,6 +16,7 @@ import { mainnet as EthMainnet, sepolia as EthSepolia } from "wagmi/chains";
 import { NetworkType } from "@/constants/types";
 import Strong from "../strong";
 import { useMediaQuery } from "@mui/material";
+import { useStarkProfile } from "@starknet-react/core";
 
 type EligibilityStepsProps = {
   disconnect: () => void;
@@ -38,6 +39,9 @@ const EligibilitySteps: FunctionComponent<EligibilityStepsProps> = ({
   const [ethAddress, setEthAddress] = useState<string | null>(null);
   const [loadingEthCheck, setLoadingEthCheck] = useState(true);
   const [loadingEthAddress, setLoadingEthAddress] = useState(false);
+  const { data: starkProfile } = useStarkProfile({
+    address,
+  });
   const isMobile = useMediaQuery("(max-width: 1280px)");
 
   useEffect(() => {
@@ -56,32 +60,30 @@ const EligibilitySteps: FunctionComponent<EligibilityStepsProps> = ({
   }, [starknetAccount, address]);
 
   useEffect(() => {
-    if (!address || network === NetworkType.EVM || !network) return;
+    if (
+      !address ||
+      network === NetworkType.EVM ||
+      !network ||
+      !starkProfile ||
+      !starkProfile.name
+    )
+      return;
+    setHasStarkDomain(true);
     setLoadingEthAddress(true);
-    getUserDomains(address).then(async (response) => {
-      const ids = response.full_ids;
-      for (let index = 0; index < ids.length; index++) {
-        const identity = ids[index];
-        if (identity.domain) {
-          setHasStarkDomain(true);
-          const ensDomain = identity.domain.replace(".stark", ".snid.eth");
-          // ethereum connection
-          const config = getDefaultConfig({
-            appName: "Eth Button",
-            projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_APP_ID as string,
-            chains: [
-              process.env.NEXT_PUBLIC_IS_TESTNET === "true"
-                ? EthSepolia
-                : EthMainnet,
-            ],
-          });
-          const ensAddress = await getEnsAddress(config, { name: ensDomain });
-          if (ensAddress) setEthAddress(ensAddress);
-        }
-      }
-      setLoadingEthAddress(false);
+    const ensDomain = starkProfile.name.replace(".stark", ".snid.eth");
+    // ethereum connection
+    const config = getDefaultConfig({
+      appName: "Eth Button",
+      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_APP_ID as string,
+      chains: [
+        process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? EthSepolia : EthMainnet,
+      ],
     });
-  }, [address, network]);
+    getEnsAddress(config, { name: ensDomain }).then((ensAddress) => {
+      setLoadingEthAddress(false);
+      if (ensAddress) setEthAddress(ensAddress);
+    });
+  }, [address, network, starkProfile]);
 
   useEffect(() => {
     setLoadingEthCheck(true);
