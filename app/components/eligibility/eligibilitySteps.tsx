@@ -155,7 +155,7 @@ const EligibilitySteps: FunctionComponent<EligibilityStepsProps> = ({
         title="1 Credit"
         onClick={() => window.open(process.env.NEXT_PUBLIC_FUND_WALLET_URL)}
       >
-        Have a funded Starknet wallet
+        Have a deployed & funded Starknet wallet
       </Card>
       <Card
         completed={hasStarkDomain}
@@ -166,10 +166,10 @@ const EligibilitySteps: FunctionComponent<EligibilityStepsProps> = ({
         title="2 Credits"
         onClick={() => window.open(process.env.NEXT_PUBLIC_STARKNET_ID_URL)}
       >
-        Own a .stark domain on Starknet
+        Own a non-expired .stark root domain on Starknet
       </Card>
       {isMobile ? null : (
-        <div className="mx-auto mt-7">
+        <div className="mx-auto">
           <Button onClick={disconnect}>Check another wallet</Button>
         </div>
       )}

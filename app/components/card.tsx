@@ -33,7 +33,6 @@ const Card: FunctionComponent<CardProps> = ({
   return (
     <div className={styles.card}>
       <div className="mr-auto">
-        {title ? <h1 className={styles.title}>{title}</h1> : null}
         <p className={styles.content}>{children}</p>
       </div>
       {loading ? (
@@ -42,6 +41,7 @@ const Card: FunctionComponent<CardProps> = ({
         <ErrorIcon color="#D32F2F" width={isMobile ? "24" : "16"} />
       ) : completed ? (
         <div className="flex items-center gap-2">
+          {title ? <h1 className={styles.title}>{title}</h1> : null}
           {showButtonDone ? "Done" : null}
           <CircledCheckMarkIcon
             className={styles.checkMark}
@@ -50,7 +50,7 @@ const Card: FunctionComponent<CardProps> = ({
           />
         </div>
       ) : buttonText ? (
-        <Button width={190} icon={buttonIcon} onClick={onClick}>
+        <Button width={180} height={30} icon={buttonIcon} onClick={onClick}>
           {buttonText}
         </Button>
       ) : null}

@@ -60,7 +60,7 @@ const VerificationSteps: FunctionComponent<VerificationStepsProps> = ({
       </Card>
       {retweetDone && commentDone && (
         <div className={eligibilityStyles.verifyButton}>
-          <Button onClick={next}>Verifying</Button>
+          <Button onClick={next}>Verify</Button>
         </div>
       )}
     </div>

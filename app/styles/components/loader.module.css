@@ -8,7 +8,7 @@
     var(--c), var(--r1), var(--r2);
   background-repeat: no-repeat;
   animation: l2 1s infinite alternate;
-  height: 20px;
+  height: 14px;
 }
 @keyframes l2 {
   0%,
