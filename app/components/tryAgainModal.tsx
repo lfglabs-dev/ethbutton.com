@@ -17,7 +17,7 @@ type TryAgainModalProps = {
   openWalletModal?: () => void;
   walletType?: WalletType;
   hasClaimed2FA?: boolean;
-  claim2FATicket: () => void;
+  claim2FATicket?: () => void;
 };
 
 const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
@@ -99,7 +99,7 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
               </div>
             ) : (
               <div className="gap-3 flex flex-col">
-                {canClaim2FA ? (
+                {canClaim2FA && claim2FATicket ? (
                   <Button
                     icon={<img src="/visuals/2FA.svg" width={22} />}
                     width={260}
