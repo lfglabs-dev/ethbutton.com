@@ -118,12 +118,7 @@ export default function Home() {
   const [isLaunched, setIsLaunched] = useState(false);
 
   // Claim X ticket
-  // const searchParams = useSearchParams();
-  // const claimXStatus = searchParams.get("success");
-  // const claimXError = searchParams.get("error_msg");
-  const [hasClaimedX, setHasClaimedX] = useState<boolean>(
-    getHasClaimedXTicket()
-  );
+  const [hasClaimedX, setHasClaimedX] = useState<boolean | undefined>();
 
   // Claim 2FA ticket
   const walletType = getWalletType(network, address);
@@ -143,6 +138,12 @@ export default function Home() {
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_LAUNCH_TIME) return;
     setIsLaunched(Number(process.env.NEXT_PUBLIC_LAUNCH_TIME) < Date.now());
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasClaimedX(getHasClaimedXTicket());
+    }
   }, []);
 
   useEffect(() => {
@@ -223,23 +224,6 @@ export default function Home() {
       ws.close();
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (!claimXStatus) return;
-  //   if (claimXStatus === "true") {
-  //     if (!hasClaimedX) {
-  //       storeHasClaimedXTicket();
-  //       setHasClaimedX(true);
-  //     }
-  //   } else if (claimXStatus === "false" && claimXError) {
-  //     // show error message
-  //     if ((claimXError as string).includes("already claimed")) {
-  //       setHasClaimedX(true);
-  //     }
-  //     setErrorMsg(claimXError);
-  //     setShowErrorMsg(true);
-  //   }
-  // }, [claimXStatus, claimXError]);
 
   useEffect(() => {
     if (network === NetworkType.EVM) {

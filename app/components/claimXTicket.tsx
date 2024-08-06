@@ -16,8 +16,6 @@ type ClaimXTicketProps = {
   showClaimed?: boolean;
   width?: number;
   setHasClaimedX: (hasClaimedX: boolean) => void;
-  //   setErrorMsg: (msg: string) => void;
-  //   setShowErrorMsg: (show: boolean) => void;
 };
 
 const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
@@ -28,8 +26,6 @@ const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
   showClaimed = true,
   width = 200,
   setHasClaimedX,
-  //   setErrorMsg,
-  //   setShowErrorMsg,
 }) => {
   const searchParams = useSearchParams();
   const claimXStatus = searchParams.get("success");
