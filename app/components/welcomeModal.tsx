@@ -5,7 +5,12 @@ import { Modal } from "@mui/material";
 import styles from "../styles/components/welcomeModal.module.css";
 import modalStyles from "../styles/components/modal.module.css";
 import Button from "./button";
-import { EthToken, NetworkType, RemainingClicks } from "@/constants/types";
+import {
+  EthToken,
+  NetworkType,
+  RemainingClicks,
+  WalletType,
+} from "@/constants/types";
 import WalletIcon from "./iconComponents/walletIcon";
 import { numberToWords } from "@/utils/stringService";
 import { getTotalClicks, hasAStarknetClick } from "@/utils/dataService";
@@ -24,6 +29,9 @@ type WelcomeModalProps = {
   openWalletModal?: () => void;
   hasEthTokens: boolean;
   ethTokens?: EthToken[];
+  walletType?: WalletType;
+  hasClaimed2FA?: boolean;
+  claim2FATicket: () => void;
 };
 
 const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
@@ -35,6 +43,9 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
   openWalletModal,
   hasEthTokens,
   ethTokens,
+  walletType,
+  hasClaimed2FA,
+  claim2FATicket,
 }) => {
   const totalClicks = getTotalClicks(remainingClicks, network, ethTokens);
   const isWhitelisted = remainingClicks.whitelisted;
@@ -62,6 +73,12 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
       </>
     );
 
+  const get2FAText = () => {
+    if (walletType && !hasClaimed2FA) {
+      return "Enable 2FA on your wallet and claim a free ticket. ";
+    } else return "";
+  };
+
   const modalDescription =
     totalClicks > 0 ? (
       <>
@@ -76,8 +93,8 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
       <>Get a free ticket for downloading a Starknet wallet!</>
     ) : isWhitelisted ? (
       <>
-        You don&apos;t have any clicks left. You get another click for each
-        Starknet domain purchased.
+        You don&apos;t have any clicks left. {get2FAText()}You get another click
+        for each Starknet domain purchased.
       </>
     ) : (
       <>
@@ -139,6 +156,15 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
               </div>
             ) : totalClicks == 0 ? (
               <div className=" flex flex-col gap-3">
+                {isWhitelisted && walletType && !hasClaimed2FA ? (
+                  <Button
+                    icon={<img src="/visuals/2FA.svg" width={22} />}
+                    width={260}
+                    onClick={claim2FATicket}
+                  >
+                    Claim 2FA ticket
+                  </Button>
+                ) : null}
                 <Button
                   icon={<img src="/visuals/starknetIdIcon.svg" />}
                   width={260}

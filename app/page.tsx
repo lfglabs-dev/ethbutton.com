@@ -29,6 +29,7 @@ import { getOutsideExecution } from "@/services/clickService";
 import { getTypedData, getTypedDataV2 } from "@/utils/callData/typedData";
 import {
   altStarknetNewAccount,
+  claim2FATicketQuery,
   ethResetButton,
   resetTimer,
   starknetDomainResetButton,
@@ -47,6 +48,10 @@ import {
   addEthToken,
   clearEthTokens,
   getEthSig,
+  getHasClaimed2FA,
+  getHasClaimedXTicket,
+  storeHasClaimed2FATicket,
+  storeHasClaimedXTicket,
   storeVirtualTxId,
 } from "@/services/localStorageService";
 import canPlayOnStarknet from "@/hooks/canPlayOnStarknet";
@@ -62,6 +67,8 @@ import { Skeleton, useMediaQuery } from "@mui/material";
 import { StarknetIdNavigator } from "starknetid.js";
 import LeaderboardWrapper from "./components/leaderboard/leaderboardWrapper";
 import VideoBackground from "./components/videoBackground";
+import { useSearchParams } from "next/navigation";
+import getWalletType from "@/hooks/getWalletType";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -109,6 +116,18 @@ export default function Home() {
   const txVersion = getTxVersion(network, address);
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
+  // Claim X ticket
+  const searchParams = useSearchParams();
+  const claimXStatus = searchParams.get("success");
+  const claimXError = searchParams.get("error_msg");
+  const [hasClaimedX, setHasClaimedX] = useState<boolean>(
+    getHasClaimedXTicket()
+  );
+
+  // Claim 2FA ticket
+  const walletType = getWalletType(network, address);
+  const [hasClaimed2FA, setHasClaimed2FA] = useState<boolean>();
+
   const starknetIdNavigator = useMemo(() => {
     return new StarknetIdNavigator(
       new Provider({
@@ -119,6 +138,14 @@ export default function Home() {
         : constants.StarknetChainId.SN_MAIN
     );
   }, [starknetNetwork]);
+
+  useEffect(() => {
+    if (network === NetworkType.EVM) {
+      setHasClaimed2FA(undefined);
+    } else if (network === NetworkType.STARKNET && address) {
+      setHasClaimed2FA(getHasClaimed2FA(address));
+    }
+  }, [address]);
 
   useEffect(() => {
     if (network === NetworkType.STARKNET && starknetAccount) {
@@ -198,6 +225,23 @@ export default function Home() {
       ws.close();
     };
   }, []);
+
+  useEffect(() => {
+    if (!claimXStatus) return;
+    if (claimXStatus === "true") {
+      if (!hasClaimedX) {
+        storeHasClaimedXTicket();
+        setHasClaimedX(true);
+      }
+    } else if (claimXStatus === "false" && claimXError) {
+      // show error message
+      if ((claimXError as string).includes("already claimed")) {
+        setHasClaimedX(true);
+      }
+      setErrorMsg(claimXError);
+      setShowErrorMsg(true);
+    }
+  }, [claimXStatus, claimXError]);
 
   useEffect(() => {
     if (trackingList && trackingList.length > 0) {
@@ -561,6 +605,25 @@ export default function Home() {
     setErrorMsg("");
   };
 
+  const claim2FATicket = () => {
+    if (!walletType || network === NetworkType.EVM || !address) return;
+    claim2FATicketQuery(address, walletType)
+      .then((res) => {
+        if (res.error) {
+          setErrorMsg(res.error);
+          setShowErrorMsg(true);
+        } else {
+          // store in local storage
+          storeHasClaimed2FATicket(address);
+          setHasClaimed2FA(true);
+        }
+      })
+      .catch((err) => {
+        setErrorMsg(err.message);
+        setShowErrorMsg(true);
+      });
+  };
+
   return (
     <>
       {leaderboard ? (
@@ -688,6 +751,8 @@ export default function Home() {
               currentWinner={currentWinner}
               isLoaded={isLoaded}
               starknetIdNavigator={starknetIdNavigator}
+              address={address}
+              hasClaimedX={hasClaimedX}
             />
           </main>
           <ConnectModal
@@ -704,6 +769,9 @@ export default function Home() {
             openWalletModal={openWalletModal}
             hasEthTokens={hasEthTokens}
             ethTokens={ethTokens}
+            walletType={walletType}
+            hasClaimed2FA={hasClaimed2FA}
+            claim2FATicket={claim2FATicket}
           />
           <TryAgainModal
             closeModal={() => setTryAgainModal(false)}
@@ -711,6 +779,9 @@ export default function Home() {
             network={network}
             hasEthTokens={hasEthTokens}
             openWalletModal={openWalletModal}
+            walletType={walletType}
+            hasClaimed2FA={hasClaimed2FA}
+            claim2FATicket={claim2FATicket}
           />
           <RecoverTokenModal
             closeModal={() => setRecoverTokenModal(false)}

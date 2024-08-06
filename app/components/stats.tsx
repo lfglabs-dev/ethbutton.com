@@ -5,6 +5,9 @@ import styles from "../styles/components/stats.module.css";
 import { ethers } from "ethers";
 import { minifyAddress, shortenDomain } from "@/utils/stringService";
 import { StarknetIdNavigator } from "starknetid.js";
+import Button from "./button";
+import { hexToDecimal } from "@/utils/feltService";
+import { generateCodeChallenge } from "@/utils/codeChallenge";
 
 type StatsProps = {
   isConnected: boolean;
@@ -15,6 +18,8 @@ type StatsProps = {
   currentWinner?: string;
   isLoaded: boolean;
   starknetIdNavigator: StarknetIdNavigator;
+  address?: string;
+  hasClaimedX?: boolean;
 };
 
 const Stats: FunctionComponent<StatsProps> = ({
@@ -26,6 +31,8 @@ const Stats: FunctionComponent<StatsProps> = ({
   currentWinner,
   isLoaded,
   starknetIdNavigator,
+  address,
+  hasClaimedX,
 }) => {
   const [lastWinner, setLastWinner] = useState<string | undefined>(undefined);
 
@@ -67,6 +74,26 @@ const Stats: FunctionComponent<StatsProps> = ({
     }
   };
 
+  const getExtraTicket = () => {
+    const codeChallenge = generateCodeChallenge(
+      process.env.NEXT_PUBLIC_TWITTER_CODE_VERIFIER as string
+    );
+    const rootUrl = "https://twitter.com/i/oauth2/authorize";
+    const options = {
+      redirect_uri: `${
+        process.env.NEXT_PUBLIC_ETH_BUTTON_API as string
+      }/claim_x_ticket?addr=${hexToDecimal(address)}`,
+      client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID as string,
+      state: "state",
+      response_type: "code",
+      code_challenge: codeChallenge,
+      code_challenge_method: "S256",
+      scope: ["follows.read", "tweet.read", "users.read"].join(" "),
+    };
+    const qs = new URLSearchParams(options).toString();
+    window.open(`${rootUrl}?${qs}`);
+  };
+
   return (
     <div className={styles.statsSections}>
       <div className={styles.statsSection}>
@@ -81,6 +108,32 @@ const Stats: FunctionComponent<StatsProps> = ({
         <div className={styles.statsSection}>
           <p>Available clicks</p>
           <p>{isLoaded ? remainingClicks.toLocaleString("en-US") : "--"}</p>
+        </div>
+      ) : null}
+      {isConnected && !isFinished && hasClaimedX !== undefined ? (
+        <div className={styles.statsSection}>
+          <p>Get your extra ticket</p>
+          {!hasClaimedX ? (
+            <Button
+              onClick={getExtraTicket}
+              icon={
+                <img
+                  src="/visuals/twitterIcon.svg"
+                  alt="Twitter Icon"
+                  width={20}
+                />
+              }
+              width={200}
+            >
+              Retweet
+            </Button>
+          ) : (
+            <div className={styles.winnerWrapper}>
+              <div className={styles.winnerSection} style={{ margin: "auto" }}>
+                Already claimed
+              </div>
+            </div>
+          )}
         </div>
       ) : null}
       {!isFinished && lastWinner ? (

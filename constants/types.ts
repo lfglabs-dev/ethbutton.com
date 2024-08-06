@@ -65,3 +65,5 @@ export type SearchResult = {
   addr?: string;
   error?: string;
 };
+
+export type WalletType = "Argent" | "Braavos";

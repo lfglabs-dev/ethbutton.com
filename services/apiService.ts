@@ -1,4 +1,9 @@
-import { EthToken, GetDeploymentDataResult } from "@/constants/types";
+import {
+  EthToken,
+  GetDeploymentDataResult,
+  WalletType,
+} from "@/constants/types";
+import { Wallet } from "ethers";
 import { Signature, stark } from "starknet";
 
 const baseurl = process.env.NEXT_PUBLIC_ETH_BUTTON_API;
@@ -213,5 +218,36 @@ export const ethResetButton = async (addr: string, sig: string) => {
     return await response.json();
   } catch (err) {
     console.log("Error while calling eth_reset_button", err);
+  }
+};
+
+export const claim2FATicketQuery = async (
+  address: string,
+  walletType: WalletType
+) => {
+  try {
+    const response = await fetch(`${baseurl}/claim_2fa_ticket`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        addr: address,
+        wallet_type: walletType,
+      }),
+    });
+
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json();
+    } else {
+      // If the content type is not JSON, read the response as text
+      const errorMessage = await response.text();
+      return { error: errorMessage }; // Return a custom object containing the error message
+    }
+  } catch (error: any) {
+    console.error("Error fetching data: ", error.message);
+    throw new Error(error.message);
   }
 };
