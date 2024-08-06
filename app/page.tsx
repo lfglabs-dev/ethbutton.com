@@ -51,7 +51,6 @@ import {
   getHasClaimed2FA,
   getHasClaimedXTicket,
   storeHasClaimed2FATicket,
-  storeHasClaimedXTicket,
   storeVirtualTxId,
 } from "@/services/localStorageService";
 import canPlayOnStarknet from "@/hooks/canPlayOnStarknet";
@@ -67,7 +66,6 @@ import { Skeleton, useMediaQuery } from "@mui/material";
 import { StarknetIdNavigator } from "starknetid.js";
 import LeaderboardWrapper from "./components/leaderboard/leaderboardWrapper";
 import VideoBackground from "./components/videoBackground";
-import { useSearchParams } from "next/navigation";
 import getWalletType from "@/hooks/getWalletType";
 import CountdownWithDays from "./components/countdownWithDays";
 import ClaimXTicket from "./components/claimXTicket";
