@@ -120,9 +120,9 @@ export default function Home() {
   const [isLaunched, setIsLaunched] = useState(false);
 
   // Claim X ticket
-  const searchParams = useSearchParams();
-  const claimXStatus = searchParams.get("success");
-  const claimXError = searchParams.get("error_msg");
+  // const searchParams = useSearchParams();
+  // const claimXStatus = searchParams.get("success");
+  // const claimXError = searchParams.get("error_msg");
   const [hasClaimedX, setHasClaimedX] = useState<boolean>(
     getHasClaimedXTicket()
   );
@@ -226,22 +226,22 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!claimXStatus) return;
-    if (claimXStatus === "true") {
-      if (!hasClaimedX) {
-        storeHasClaimedXTicket();
-        setHasClaimedX(true);
-      }
-    } else if (claimXStatus === "false" && claimXError) {
-      // show error message
-      if ((claimXError as string).includes("already claimed")) {
-        setHasClaimedX(true);
-      }
-      setErrorMsg(claimXError);
-      setShowErrorMsg(true);
-    }
-  }, [claimXStatus, claimXError]);
+  // useEffect(() => {
+  //   if (!claimXStatus) return;
+  //   if (claimXStatus === "true") {
+  //     if (!hasClaimedX) {
+  //       storeHasClaimedXTicket();
+  //       setHasClaimedX(true);
+  //     }
+  //   } else if (claimXStatus === "false" && claimXError) {
+  //     // show error message
+  //     if ((claimXError as string).includes("already claimed")) {
+  //       setHasClaimedX(true);
+  //     }
+  //     setErrorMsg(claimXError);
+  //     setShowErrorMsg(true);
+  //   }
+  // }, [claimXStatus, claimXError]);
 
   useEffect(() => {
     if (network === NetworkType.EVM) {
@@ -633,43 +633,41 @@ export default function Home() {
   };
 
   return (
-    <Suspense>
-      <>
-        {leaderboard ? (
-          <LeaderboardWrapper />
-        ) : isLaunched ? (
-          <>
-            <main className={styles.main}>
-              <VideoBackground />
-              <div className={styles.leftContainer}>
-                {isFinished && isLoaded ? (
-                  <>
-                    <div className={styles.endText}>
-                      <p>
-                        Thank you for participating! Check back soon for more
-                        exciting challenges and opportunities.
-                      </p>
-                      <p>
-                        Stay connected with us for updates and future events!
-                      </p>
-                      <div className={styles.socialIcons}>
-                        <img
-                          src="/visuals/discordIcon.svg"
-                          alt="Discord Icon"
-                          width={20}
-                          onClick={() => window.open("https://twitter.com/")}
-                        />
-                        <img
-                          src="/visuals/twitterIcon.svg"
-                          alt="Twitter Icon"
-                          width={20}
-                          onClick={() => window.open("https://twitter.com/")}
-                        />
-                      </div>
+    <>
+      {leaderboard ? (
+        <LeaderboardWrapper />
+      ) : isLaunched ? (
+        <>
+          <main className={styles.main}>
+            <VideoBackground />
+            <div className={styles.leftContainer}>
+              {isFinished && isLoaded ? (
+                <>
+                  <div className={styles.endText}>
+                    <p>
+                      Thank you for participating! Check back soon for more
+                      exciting challenges and opportunities.
+                    </p>
+                    <p>Stay connected with us for updates and future events!</p>
+                    <div className={styles.socialIcons}>
+                      <img
+                        src="/visuals/discordIcon.svg"
+                        alt="Discord Icon"
+                        width={20}
+                        onClick={() => window.open("https://twitter.com/")}
+                      />
+                      <img
+                        src="/visuals/twitterIcon.svg"
+                        alt="Twitter Icon"
+                        width={20}
+                        onClick={() => window.open("https://twitter.com/")}
+                      />
                     </div>
-                  </>
-                ) : (
-                  <>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Suspense>
                     <div className={styles.remainingClicksMobile}>
                       <ClaimXTicket
                         isConnected={isConnected}
@@ -678,187 +676,183 @@ export default function Home() {
                         address={address}
                         showClaimed={false}
                         width={230}
+                        setHasClaimedX={setHasClaimedX}
                       />
                     </div>
-                    <Button
-                      onClick={connectBtnAction}
-                      icon={
-                        !isConnected ? (
-                          <WalletIcon
-                            width="21"
-                            color={isConnected ? "#1E2A3B" : "#C8CCD3"}
-                          />
-                        ) : network === NetworkType.STARKNET ? (
-                          <img src="/visuals/starknetIcon.svg" width={20} />
-                        ) : (
-                          <img src="/visuals/ethFilledIcon.svg" width={20} />
-                        )
-                      }
-                      variation={isConnected ? "white" : "default"}
-                    >
-                      {getConnectionBtnText()}
-                    </Button>
-                    {isConnected && !isFinished ? (
-                      <div className={styles.remainingClicksMobile}>
-                        Remaining clicks :{" "}
-                        {getTotalClicks(remainingClicks, network, ethTokens)}
-                      </div>
-                    ) : null}
-
-                    {!isLoaded ? (
-                      <Skeleton
-                        variant="rectangular"
-                        width={120}
-                        height={25}
-                        className="mx-auto"
-                      />
-                    ) : priceValue ? (
-                      isMobile ? (
-                        <div className={styles.ethPrice}>
-                          <img src="/visuals/eth.svg" width={14} />
-                          {priceValue}
-                        </div>
+                  </Suspense>
+                  <Button
+                    onClick={connectBtnAction}
+                    icon={
+                      !isConnected ? (
+                        <WalletIcon
+                          width="21"
+                          color={isConnected ? "#1E2A3B" : "#C8CCD3"}
+                        />
+                      ) : network === NetworkType.STARKNET ? (
+                        <img src="/visuals/starknetIcon.svg" width={20} />
                       ) : (
-                        <Button
-                          icon={<img src="/visuals/eth.svg" width={14} />}
-                          enableHover={false}
-                        >
-                          {priceValue}
-                        </Button>
+                        <img src="/visuals/ethFilledIcon.svg" width={20} />
                       )
-                    ) : null}
-                  </>
-                )}
+                    }
+                    variation={isConnected ? "white" : "default"}
+                  >
+                    {getConnectionBtnText()}
+                  </Button>
+                  {isConnected && !isFinished ? (
+                    <div className={styles.remainingClicksMobile}>
+                      Remaining clicks :{" "}
+                      {getTotalClicks(remainingClicks, network, ethTokens)}
+                    </div>
+                  ) : null}
 
-                {/* // todo: remove after testing is over */}
-                {isFinished && isLoaded ? (
-                  <Button onClick={resetTimer}>TEST: start timer</Button>
-                ) : null}
-              </div>
-              <div className={styles.centralSection}>
-                <div className={styles.backgroundWrapper}>
-                  <h1 className={styles.title}>
-                    {!isLoaded || !isFinished ? (
-                      <>
-                        WIN <span className={styles.pinkTitle}>Five</span>{" "}
-                        <span className={styles.blueTitle}>ETH</span> !
-                      </>
+                  {!isLoaded ? (
+                    <Skeleton
+                      variant="rectangular"
+                      width={120}
+                      height={25}
+                      className="mx-auto"
+                    />
+                  ) : priceValue ? (
+                    isMobile ? (
+                      <div className={styles.ethPrice}>
+                        <img src="/visuals/eth.svg" width={14} />
+                        {priceValue}
+                      </div>
                     ) : (
-                      <>
-                        GAME <span className={styles.pinkTitle}>ENDED</span> !
-                      </>
-                    )}
-                  </h1>
-                  <div className={styles.countdownContainer}>
-                    <Countdown
-                      timestamp={countdownTimestamp}
-                      isLoaded={isLoaded}
-                    />
-                  </div>
-                  <div className={styles.ethBtnContainer}>
-                    <EthButton
-                      onClick={clickEthButton}
-                      isFinished={isFinished}
-                    />
-                  </div>
-                </div>
-              </div>
-              <Stats
-                isConnected={isConnected}
-                remainingClicks={getTotalClicks(
-                  remainingClicks as RemainingClicks,
-                  network,
-                  ethTokens
-                )}
-                totalClicks={totalClicks}
-                totalPlayers={totalPlayers}
-                isFinished={!isLoaded ? false : isFinished}
-                currentWinner={currentWinner}
-                isLoaded={isLoaded}
-                starknetIdNavigator={starknetIdNavigator}
-                address={address}
-                hasClaimedX={hasClaimedX}
-              />
-            </main>
-            <ConnectModal
-              closeModal={() => setOpenConnectModal(false)}
-              open={openConnectModal}
-              onWalletConnected={onWalletConnected}
-            />
-            <WelcomeModal
-              closeModal={() => setWelcomeModal(false)}
-              open={welcomeModal}
-              remainingClicks={remainingClicks as RemainingClicks}
-              network={network}
-              addrOrName={getConnectionBtnText()}
-              openWalletModal={openWalletModal}
-              hasEthTokens={hasEthTokens}
-              ethTokens={ethTokens}
-              walletType={walletType}
-              hasClaimed2FA={hasClaimed2FA}
-              claim2FATicket={claim2FATicket}
-            />
-            <TryAgainModal
-              closeModal={() => setTryAgainModal(false)}
-              open={tryAgainModal}
-              network={network}
-              hasEthTokens={hasEthTokens}
-              openWalletModal={openWalletModal}
-              walletType={walletType}
-              hasClaimed2FA={hasClaimed2FA}
-              claim2FATicket={claim2FATicket}
-            />
-            <RecoverTokenModal
-              closeModal={() => setRecoverTokenModal(false)}
-              open={recoverTokenModal}
-              addr={evmAddress}
-            />
-            <WrongNetworkModal
-              closeModal={() => setWrongNetworkModal(false)}
-              open={wrongNetworkModal}
-              disconnectUser={disconnectUser}
-            />
-            <Notification
-              visible={showNotif}
-              onClose={() => setShowNotif(false)}
-            >
-              <>
-                Try again! You still have{" "}
-                {getTotalClicks(remainingClicks, network, ethTokens)} chance to
-                press the button.
-              </>
-            </Notification>
-            <Notification
-              visible={showNotifPlayed}
-              onClose={() => setShowNotifPlayed(false)}
-            >
-              <>
-                Counter successfully reset, if it reaches zero before someone
-                resets it again, you will win 5 eth.
-              </>
-            </Notification>
-            <Notification visible={showErrorMsg} onClose={closeErrorMsg}>
-              <>{errorMsg}</>
-            </Notification>
-          </>
-        ) : (
-          <main className={styles.main}>
-            <VideoBackground />
+                      <Button
+                        icon={<img src="/visuals/eth.svg" width={14} />}
+                        enableHover={false}
+                      >
+                        {priceValue}
+                      </Button>
+                    )
+                  ) : null}
+                </>
+              )}
+
+              {/* // todo: remove after testing is over */}
+              {isFinished && isLoaded ? (
+                <Button onClick={resetTimer}>TEST: start timer</Button>
+              ) : null}
+            </div>
             <div className={styles.centralSection}>
               <div className={styles.backgroundWrapper}>
                 <h1 className={styles.title}>
-                  STARTING <span className={styles.pinkTitle}>IN</span>
+                  {!isLoaded || !isFinished ? (
+                    <>
+                      WIN <span className={styles.pinkTitle}>Five</span>{" "}
+                      <span className={styles.blueTitle}>ETH</span> !
+                    </>
+                  ) : (
+                    <>
+                      GAME <span className={styles.pinkTitle}>ENDED</span> !
+                    </>
+                  )}
                 </h1>
-                <div className={styles.countdownContainerWithDays}>
-                  <CountdownWithDays
-                    timestamp={Number(process.env.NEXT_PUBLIC_LAUNCH_TIME)}
+                <div className={styles.countdownContainer}>
+                  <Countdown
+                    timestamp={countdownTimestamp}
+                    isLoaded={isLoaded}
                   />
+                </div>
+                <div className={styles.ethBtnContainer}>
+                  <EthButton onClick={clickEthButton} isFinished={isFinished} />
                 </div>
               </div>
             </div>
+            <Stats
+              isConnected={isConnected}
+              remainingClicks={getTotalClicks(
+                remainingClicks as RemainingClicks,
+                network,
+                ethTokens
+              )}
+              totalClicks={totalClicks}
+              totalPlayers={totalPlayers}
+              isFinished={!isLoaded ? false : isFinished}
+              currentWinner={currentWinner}
+              isLoaded={isLoaded}
+              starknetIdNavigator={starknetIdNavigator}
+              address={address}
+              hasClaimedX={hasClaimedX}
+              setHasClaimedX={setHasClaimedX}
+            />
           </main>
-        )}
-      </>
-    </Suspense>
+          <ConnectModal
+            closeModal={() => setOpenConnectModal(false)}
+            open={openConnectModal}
+            onWalletConnected={onWalletConnected}
+          />
+          <WelcomeModal
+            closeModal={() => setWelcomeModal(false)}
+            open={welcomeModal}
+            remainingClicks={remainingClicks as RemainingClicks}
+            network={network}
+            addrOrName={getConnectionBtnText()}
+            openWalletModal={openWalletModal}
+            hasEthTokens={hasEthTokens}
+            ethTokens={ethTokens}
+            walletType={walletType}
+            hasClaimed2FA={hasClaimed2FA}
+            claim2FATicket={claim2FATicket}
+          />
+          <TryAgainModal
+            closeModal={() => setTryAgainModal(false)}
+            open={tryAgainModal}
+            network={network}
+            hasEthTokens={hasEthTokens}
+            openWalletModal={openWalletModal}
+            walletType={walletType}
+            hasClaimed2FA={hasClaimed2FA}
+            claim2FATicket={claim2FATicket}
+          />
+          <RecoverTokenModal
+            closeModal={() => setRecoverTokenModal(false)}
+            open={recoverTokenModal}
+            addr={evmAddress}
+          />
+          <WrongNetworkModal
+            closeModal={() => setWrongNetworkModal(false)}
+            open={wrongNetworkModal}
+            disconnectUser={disconnectUser}
+          />
+          <Notification visible={showNotif} onClose={() => setShowNotif(false)}>
+            <>
+              Try again! You still have{" "}
+              {getTotalClicks(remainingClicks, network, ethTokens)} chance to
+              press the button.
+            </>
+          </Notification>
+          <Notification
+            visible={showNotifPlayed}
+            onClose={() => setShowNotifPlayed(false)}
+          >
+            <>
+              Counter successfully reset, if it reaches zero before someone
+              resets it again, you will win 5 eth.
+            </>
+          </Notification>
+          <Notification visible={showErrorMsg} onClose={closeErrorMsg}>
+            <>{errorMsg}</>
+          </Notification>
+        </>
+      ) : (
+        <main className={styles.main}>
+          <VideoBackground />
+          <div className={styles.centralSection}>
+            <div className={styles.backgroundWrapper}>
+              <h1 className={styles.title}>
+                STARTING <span className={styles.pinkTitle}>IN</span>
+              </h1>
+              <div className={styles.countdownContainerWithDays}>
+                <CountdownWithDays
+                  timestamp={Number(process.env.NEXT_PUBLIC_LAUNCH_TIME)}
+                />
+              </div>
+            </div>
+          </div>
+        </main>
+      )}
+    </>
   );
 }

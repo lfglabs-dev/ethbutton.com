@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, Suspense, useEffect, useState } from "react";
 import styles from "../styles/components/stats.module.css";
 import { ethers } from "ethers";
 import { minifyAddress, shortenDomain } from "@/utils/stringService";
@@ -18,6 +18,7 @@ type StatsProps = {
   starknetIdNavigator: StarknetIdNavigator;
   address?: string;
   hasClaimedX?: boolean;
+  setHasClaimedX: (hasClaimedX: boolean) => void;
 };
 
 const Stats: FunctionComponent<StatsProps> = ({
@@ -31,6 +32,7 @@ const Stats: FunctionComponent<StatsProps> = ({
   starknetIdNavigator,
   address,
   hasClaimedX,
+  setHasClaimedX,
 }) => {
   const [lastWinner, setLastWinner] = useState<string | undefined>(undefined);
 
@@ -88,12 +90,15 @@ const Stats: FunctionComponent<StatsProps> = ({
           <p>{isLoaded ? remainingClicks.toLocaleString("en-US") : "--"}</p>
         </div>
       ) : null}
-      <ClaimXTicket
-        isConnected={isConnected}
-        isFinished={isFinished}
-        hasClaimedX={hasClaimedX}
-        address={address}
-      />
+      <Suspense>
+        <ClaimXTicket
+          isConnected={isConnected}
+          isFinished={isFinished}
+          hasClaimedX={hasClaimedX}
+          address={address}
+          setHasClaimedX={setHasClaimedX}
+        />
+      </Suspense>
       {!isFinished && lastWinner ? (
         <div className={styles.statsSection}>
           <p>Current winner</p>

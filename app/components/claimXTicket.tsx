@@ -1,9 +1,12 @@
 "use client";
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import Button from "./button";
 import { getExtraTicket } from "@/utils/codeChallenge";
 import styles from "../styles/components/stats.module.css";
+import { useSearchParams } from "next/navigation";
+import { storeHasClaimedXTicket } from "@/services/localStorageService";
+import Notification from "./notification";
 
 type ClaimXTicketProps = {
   address?: string;
@@ -12,6 +15,9 @@ type ClaimXTicketProps = {
   hasClaimedX?: boolean;
   showClaimed?: boolean;
   width?: number;
+  setHasClaimedX: (hasClaimedX: boolean) => void;
+  //   setErrorMsg: (msg: string) => void;
+  //   setShowErrorMsg: (show: boolean) => void;
 };
 
 const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
@@ -21,7 +27,38 @@ const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
   hasClaimedX,
   showClaimed = true,
   width = 200,
+  setHasClaimedX,
+  //   setErrorMsg,
+  //   setShowErrorMsg,
 }) => {
+  const searchParams = useSearchParams();
+  const claimXStatus = searchParams.get("success");
+  const claimXError = searchParams.get("error_msg");
+  const [showErrorMsg, setShowErrorMsg] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
+  useEffect(() => {
+    if (!claimXStatus) return;
+    if (claimXStatus === "true") {
+      if (!hasClaimedX) {
+        storeHasClaimedXTicket();
+        setHasClaimedX(true);
+      }
+    } else if (claimXStatus === "false" && claimXError) {
+      // show error message
+      if ((claimXError as string).includes("already claimed")) {
+        setHasClaimedX(true);
+      }
+      setErrorMsg(claimXError);
+      setShowErrorMsg(true);
+    }
+  }, [claimXStatus, claimXError]);
+
+  const closeErrorMsg = () => {
+    setShowErrorMsg(false);
+    setErrorMsg("");
+  };
+
   return (
     <>
       {isConnected && !isFinished && hasClaimedX !== undefined && address ? (
@@ -50,6 +87,9 @@ const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
           ) : null}
         </div>
       ) : null}
+      <Notification visible={showErrorMsg} onClose={closeErrorMsg}>
+        <>{errorMsg}</>
+      </Notification>
     </>
   );
 };
