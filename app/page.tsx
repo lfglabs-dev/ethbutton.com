@@ -70,6 +70,7 @@ import VideoBackground from "./components/videoBackground";
 import { useSearchParams } from "next/navigation";
 import getWalletType from "@/hooks/getWalletType";
 import CountdownWithDays from "./components/countdownWithDays";
+import ClaimXTicket from "./components/claimXTicket";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -669,6 +670,16 @@ export default function Home() {
                   </>
                 ) : (
                   <>
+                    <div className={styles.remainingClicksMobile}>
+                      <ClaimXTicket
+                        isConnected={isConnected}
+                        isFinished={isFinished}
+                        hasClaimedX={hasClaimedX}
+                        address={address}
+                        showClaimed={false}
+                        width={230}
+                      />
+                    </div>
                     <Button
                       onClick={connectBtnAction}
                       icon={
@@ -693,6 +704,7 @@ export default function Home() {
                         {getTotalClicks(remainingClicks, network, ethTokens)}
                       </div>
                     ) : null}
+
                     {!isLoaded ? (
                       <Skeleton
                         variant="rectangular"
