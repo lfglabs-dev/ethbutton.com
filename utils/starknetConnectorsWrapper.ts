@@ -91,20 +91,20 @@ export const getLastConnected = (): Connector | null => {
   return null;
 };
 
-export const getArgentIcon = () => {
-  return wallets.find((wallet) => wallet.id === "argentX")?.icon;
+export const getArgentIcon = (): string => {
+  return wallets.find((wallet) => wallet.id === "argentX")?.icon as string;
 };
 
-export const getArgentWebsite = () => {
-  return wallets.find((wallet) => wallet.id === "argentX")?.website;
+export const getArgentWebsite = (): string => {
+  return wallets.find((wallet) => wallet.id === "argentX")?.website as string;
 };
 
-export const getBraavosIcon = () => {
-  return wallets.find((wallet) => wallet.id === "braavos")?.icon;
+export const getBraavosIcon = (): string => {
+  return wallets.find((wallet) => wallet.id === "braavos")?.icon as string;
 };
 
-export const getBraavosWebsite = () => {
-  return wallets.find((wallet) => wallet.id === "braavos")?.website;
+export const getBraavosWebsite = (): string => {
+  return wallets.find((wallet) => wallet.id === "braavos")?.website as string;
 };
 
 const wallets = [

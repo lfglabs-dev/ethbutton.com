@@ -7,10 +7,7 @@ import modalStyles from "../styles/components/modal.module.css";
 import Button from "./button";
 import { NetworkType, WalletType } from "@/constants/types";
 import WalletIcon from "./iconComponents/walletIcon";
-import {
-  getArgentIcon,
-  getArgentWebsite,
-} from "@/utils/starknetConnectorsWrapper";
+import hasStarknetWallets from "@/hooks/hasStarknetWallets";
 
 type TryAgainModalProps = {
   closeModal: () => void;
@@ -33,6 +30,7 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
   hasClaimed2FA,
   claim2FATicket,
 }) => {
+  const wallets = hasStarknetWallets();
   const canClaim2FA =
     walletType && !hasClaimed2FA && network === NetworkType.STARKNET;
 
@@ -82,20 +80,22 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
 
             {network === NetworkType.EVM && hasEthTokens ? (
               <div className="gap-3 flex flex-col">
-                <Button
-                  icon={<img src={getArgentIcon()} width={22} />}
-                  width={260}
-                  onClick={() => window.open(getArgentWebsite())}
-                >
-                  Argent
-                </Button>
-                {/* <Button
-                  icon={<img src={getBraavosIcon()} width={22} />}
-                  width={260}
-                  onClick={() => window.open(getBraavosWebsite())}
-                >
-                  Braavos
-                </Button> */}
+                {wallets.map((wallet) => (
+                  <Button
+                    key={wallet.id}
+                    width={260}
+                    onClick={
+                      wallet.isInstalled
+                        ? openWalletModal
+                        : () => window.open(`${wallet.label}Website()`)
+                    }
+                    icon={<img src={wallet.icon} width={22} />}
+                  >
+                    {wallet.isInstalled
+                      ? `Connect with ${wallet.label}`
+                      : `Install ${wallet.label}`}
+                  </Button>
+                ))}
               </div>
             ) : (
               <div className="gap-3 flex flex-col">

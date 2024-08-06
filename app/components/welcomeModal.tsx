@@ -14,11 +14,7 @@ import {
 import WalletIcon from "./iconComponents/walletIcon";
 import { numberToWords } from "@/utils/stringService";
 import { getTotalClicks, hasAStarknetClick } from "@/utils/dataService";
-import {
-  getArgentIcon,
-  getArgentWebsite,
-} from "@/utils/starknetConnectorsWrapper";
-import hasArgent from "@/hooks/hasArgent";
+import hasStarknetWallets from "@/hooks/hasStarknetWallets";
 
 type WelcomeModalProps = {
   closeModal: () => void;
@@ -49,7 +45,7 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
 }) => {
   const totalClicks = getTotalClicks(remainingClicks, network, ethTokens);
   const isWhitelisted = remainingClicks.whitelisted;
-  const isInstalled = hasArgent();
+  const wallets = hasStarknetWallets();
 
   const hasStarknetClicks = useMemo(() => {
     if (typeof window !== "undefined") return hasAStarknetClick();
@@ -136,23 +132,22 @@ const WelcomeModal: FunctionComponent<WelcomeModalProps> = ({
 
             {hasStarknetClicks && network === NetworkType.EVM ? (
               <div className="gap-3 flex flex-col">
-                {!isInstalled ? (
+                {wallets.map((wallet) => (
                   <Button
-                    icon={<img src={getArgentIcon()} width={22} />}
+                    key={wallet.id}
                     width={260}
-                    onClick={() => window.open(getArgentWebsite())}
+                    onClick={
+                      wallet.isInstalled
+                        ? openWalletModal
+                        : () => window.open(`${wallet.label}Website()`)
+                    }
+                    icon={<img src={wallet.icon} width={22} />}
                   >
-                    Install Argent
+                    {wallet.isInstalled
+                      ? `Connect with ${wallet.label}`
+                      : `Install ${wallet.label}`}
                   </Button>
-                ) : (
-                  <Button
-                    icon={<img src={getArgentIcon()} width={22} />}
-                    width={260}
-                    onClick={openWalletModal}
-                  >
-                    Connect with Argent
-                  </Button>
-                )}
+                ))}
               </div>
             ) : totalClicks == 0 ? (
               <div className=" flex flex-col gap-3">
