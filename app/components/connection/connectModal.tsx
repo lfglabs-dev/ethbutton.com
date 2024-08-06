@@ -8,9 +8,7 @@ import { NetworkType } from "@/constants/types";
 import StarknetWalletConnect from "./starknetConnect";
 import { getConnectors } from "@/utils/starknetConnectorsWrapper";
 import { Connector } from "starknetkit";
-import Button from "../button";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useAccount as useWagmiAccount } from "wagmi";
+import ConnectButtons from "./connectButtons";
 
 type StarknetWalletConnectProps = {
   closeModal: () => void;
@@ -24,17 +22,6 @@ const ConnectModal: FunctionComponent<StarknetWalletConnectProps> = ({
   onWalletConnected,
 }) => {
   const [openStarknetModal, setOpenStarknetModal] = useState(false);
-  const { openConnectModal } = useConnectModal();
-  const { isDisconnected } = useWagmiAccount();
-
-  const connectEvm = () => {
-    // openConnectModal is sometimes undefined because user is already connected
-    if (isDisconnected) {
-      openConnectModal && openConnectModal();
-    } else {
-      onWalletConnected(NetworkType.EVM);
-    }
-  };
 
   return (
     <>
@@ -60,24 +47,10 @@ const ConnectModal: FunctionComponent<StarknetWalletConnectProps> = ({
                 <span>Choose</span> your{" "}
                 <span className={styles.titleBlue}>network</span>
               </div>
-              <div className={styles.selectNetwork}>
-                <Button
-                  onClick={connectEvm}
-                  icon={<img src="/visuals/ethFilledIcon.svg" />}
-                  width={260}
-                  variation="default"
-                >
-                  EVM wallet
-                </Button>
-                <Button
-                  onClick={() => setOpenStarknetModal(true)}
-                  icon={<img src="/visuals/starknetIcon.svg" />}
-                  width={260}
-                  variation="default"
-                >
-                  Starknet wallet
-                </Button>
-              </div>
+              <ConnectButtons
+                setOpenStarknetModal={setOpenStarknetModal}
+                onWalletConnected={onWalletConnected}
+              />
               <div onClick={closeModal} className={styles.menu_close}>
                 Close
               </div>

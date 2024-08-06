@@ -1,0 +1,68 @@
+.countdownWrapper {
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(
+    77.5deg,
+    #109ae4 -31.33%,
+    #27abf1 -19.3%,
+    #2baaee -4.45%,
+    #3bb1f0 11.89%,
+    #7581f7 29.28%,
+    #ef30a2 47.54%,
+    #f276c0 66.2%,
+    #ffadde 81.84%
+  );
+  overflow: hidden;
+}
+
+.countdown {
+  background-color: var(--background);
+  border-radius: 7px;
+  height: 114px;
+  width: 114px;
+  padding: 40px 20px;
+  text-align: center;
+  box-shadow: 0px 2.06px 30.91px rgba(29, 94, 123, 0.24);
+}
+
+@media (max-width: 1280px) {
+  .countdown {
+    height: 80px;
+    width: 80px;
+    padding: 20px 10px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .countdownWrapper {
+    flex: 0 0 134px;
+    max-width: 134px;
+  }
+
+  .countdown {
+    height: 132px;
+    width: 132px;
+    padding: 44px 20px;
+  }
+
+  .separator {
+    display: none;
+  }
+}
+
+@media (max-width: 490px) {
+  .countdownWrapper {
+    flex: 0 0 90px;
+    max-width: 90px;
+  }
+
+  .countdown {
+    height: 88px;
+    width: 88px;
+    padding: 24px 20px;
+  }
+
+  .separator {
+    display: none;
+  }
+}

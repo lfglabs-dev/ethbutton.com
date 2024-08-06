@@ -69,6 +69,7 @@ import LeaderboardWrapper from "./components/leaderboard/leaderboardWrapper";
 import VideoBackground from "./components/videoBackground";
 import { useSearchParams } from "next/navigation";
 import getWalletType from "@/hooks/getWalletType";
+import CountdownWithDays from "./components/countdownWithDays";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -115,6 +116,7 @@ export default function Home() {
   const isFinished = isOver5mn(countdownTimestamp);
   const txVersion = getTxVersion(network, address);
   const isMobile = useMediaQuery("(max-width: 1024px)");
+  const [isLaunched, setIsLaunched] = useState(false);
 
   // Claim X ticket
   const searchParams = useSearchParams();
@@ -140,12 +142,9 @@ export default function Home() {
   }, [starknetNetwork]);
 
   useEffect(() => {
-    if (network === NetworkType.EVM) {
-      setHasClaimed2FA(undefined);
-    } else if (network === NetworkType.STARKNET && address) {
-      setHasClaimed2FA(getHasClaimed2FA(address));
-    }
-  }, [address]);
+    if (!process.env.NEXT_PUBLIC_LAUNCH_TIME) return;
+    setIsLaunched(Number(process.env.NEXT_PUBLIC_LAUNCH_TIME) < Date.now());
+  }, []);
 
   useEffect(() => {
     if (network === NetworkType.STARKNET && starknetAccount) {
@@ -242,6 +241,14 @@ export default function Home() {
       setShowErrorMsg(true);
     }
   }, [claimXStatus, claimXError]);
+
+  useEffect(() => {
+    if (network === NetworkType.EVM) {
+      setHasClaimed2FA(undefined);
+    } else if (network === NetworkType.STARKNET && address) {
+      setHasClaimed2FA(getHasClaimed2FA(address));
+    }
+  }, [address]);
 
   useEffect(() => {
     if (trackingList && trackingList.length > 0) {
@@ -628,7 +635,7 @@ export default function Home() {
     <>
       {leaderboard ? (
         <LeaderboardWrapper />
-      ) : (
+      ) : isLaunched ? (
         <>
           <main className={styles.main}>
             <VideoBackground />
@@ -813,6 +820,22 @@ export default function Home() {
             <>{errorMsg}</>
           </Notification>
         </>
+      ) : (
+        <main className={styles.main}>
+          <VideoBackground />
+          <div className={styles.centralSection}>
+            <div className={styles.backgroundWrapper}>
+              <h1 className={styles.title}>
+                STARTING <span className={styles.pinkTitle}>IN</span>
+              </h1>
+              <div className={styles.countdownContainerWithDays}>
+                <CountdownWithDays
+                  timestamp={Number(process.env.NEXT_PUBLIC_LAUNCH_TIME)}
+                />
+              </div>
+            </div>
+          </div>
+        </main>
       )}
     </>
   );

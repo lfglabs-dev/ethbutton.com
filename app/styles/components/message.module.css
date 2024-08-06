@@ -1,0 +1,39 @@
+.messageContainer {
+  color: var(--content);
+  font-family: "JetBrains";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+  display: flex;
+  width: 173px;
+  padding: 1rem 8px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  border-radius: 8px;
+  background: #111827;
+  box-shadow: 0px 2.061px 30.911px 0px rgba(29, 94, 123, 0.24);
+  width: 230px;
+  margin-top: 4rem;
+}
+
+.messageContainer::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: var(--gradient-color);
+  z-index: -1;
+  border-radius: 8px;
+}
+
+@media screen and (max-width: 1024px) {
+  .messageContainer {
+    margin-top: 1rem;
+  }
+}
