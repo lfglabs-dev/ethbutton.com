@@ -30,7 +30,6 @@ import { getTypedData, getTypedDataV2 } from "@/utils/callData/typedData";
 import {
   altStarknetNewAccount,
   ethResetButton,
-  resetTimer,
   starknetDomainResetButton,
   starknetResetButton,
   starknetResetButtonFromEth,
@@ -651,11 +650,6 @@ export default function Home() {
                   ) : null}
                 </>
               )}
-
-              {/* // todo: remove after testing is over */}
-              {isFinished && isLoaded ? (
-                <Button onClick={resetTimer}>TEST: start timer</Button>
-              ) : null}
             </div>
             <div className={styles.centralSection}>
               <div className={styles.backgroundWrapper}>
