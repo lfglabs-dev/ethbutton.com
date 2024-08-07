@@ -3,9 +3,8 @@ import React, { CSSProperties } from "react";
 const VideoBackground = () => {
   return (
     <div style={containerStyle}>
-      <video autoPlay muted loop style={videoStyle}>
+      <video autoPlay muted loop playsInline style={videoStyle}>
         <source src="/background/output.webm" type="video/webm" />
-        Your browser does not support HTML5 video.
       </video>
       <div style={overlayStyle} />
     </div>
@@ -13,6 +12,9 @@ const VideoBackground = () => {
 };
 
 const videoStyle: CSSProperties = {
+  position: "fixed",
+  top: "0",
+  left: "0",
   width: "100%",
   height: "100%",
   objectFit: "cover",
@@ -20,10 +22,10 @@ const videoStyle: CSSProperties = {
 
 const containerStyle: CSSProperties = {
   position: "fixed",
-  right: "0",
-  bottom: "0",
-  minWidth: "100%",
-  minHeight: "100%",
+  top: "0",
+  left: "0",
+  width: "100%",
+  height: "100%",
   zIndex: "0",
   overflow: "hidden",
 };
