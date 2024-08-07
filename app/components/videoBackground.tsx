@@ -39,6 +39,7 @@ const overlayStyle: CSSProperties = {
   background: "rgba(17, 24, 39, 0.80)",
   boxShadow: "0px 2.488px 30.481px 0px rgba(0, 7, 72, 0.08)",
   backdropFilter: "blur(7.77584171295166px)",
+  WebkitBackdropFilter: "blur(7.77584171295166px)",
   zIndex: "1",
 };
 
