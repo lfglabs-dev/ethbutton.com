@@ -66,7 +66,7 @@ export type SearchResult = {
   error?: string;
 };
 
-export type WalletType = "Argent" | "Braavos";
+export type WalletType = "argent" | "braavos";
 
 export type WalletState = {
   id: string;

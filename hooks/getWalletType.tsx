@@ -27,9 +27,9 @@ export default function getWalletType(network?: NetworkType, address?: string) {
             connectedWallet.isConnected
           ) {
             if (connectedWallet.id.includes("argent")) {
-              setWalletType("Argent");
+              setWalletType("argent");
             } else if (connectedWallet.id === "braavos") {
-              setWalletType("Braavos");
+              setWalletType("braavos");
             }
           }
         });
