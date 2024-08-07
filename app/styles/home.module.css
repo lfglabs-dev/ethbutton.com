@@ -200,7 +200,7 @@
   .centralSection {
     width: 450px;
     height: 621px;
-    margin: 0;
+    margin: 0 auto;
   }
   .backgroundWrapper {
     width: 450px;
