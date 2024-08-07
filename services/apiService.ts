@@ -4,16 +4,6 @@ import { Signature, stark } from "starknet";
 const baseurl = process.env.NEXT_PUBLIC_ETH_BUTTON_API;
 const starknetIdBaseUrl = process.env.NEXT_PUBLIC_STARKNET_ID_API;
 
-// todo: Test function to remove
-export const resetTimer = async () => {
-  try {
-    const response = await fetch(`${baseurl}/test_reset`);
-    return await response.json();
-  } catch (err) {
-    console.log("Error while reseting timer", err);
-  }
-};
-
 export const trackId = async (virtualTxId: string) => {
   try {
     const response = await fetch(
