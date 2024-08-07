@@ -189,6 +189,7 @@
     justify-content: center;
     flex-direction: column;
     padding: 4px;
+    gap: 20px;
   }
   .leftContainer {
     flex: 0;
@@ -199,6 +200,7 @@
   .centralSection {
     width: 450px;
     height: 621px;
+    margin: 0;
   }
   .backgroundWrapper {
     width: 450px;
