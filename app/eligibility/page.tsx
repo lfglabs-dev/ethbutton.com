@@ -230,7 +230,7 @@ export default function Eligibility() {
             </h1>
             <div className={styles.container}>
               {isConnected ? (
-                progress === "eligibility" ? (
+                progress === "verification" ? (
                   <VerificationSteps next={() => setProgress("eligibility")} />
                 ) : (
                   <EligibilitySteps
