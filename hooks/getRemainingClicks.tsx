@@ -89,10 +89,10 @@ export default function getRemainingClicks(
 
     if (network === NetworkType.STARKNET) {
       fetchStarknetData();
-      intervalId = setInterval(fetchStarknetData, 5000); // Set interval for fetching Starknet data
+      intervalId = setInterval(fetchStarknetData, 120000); // Set interval for fetching Starknet data
     } else if (network === NetworkType.EVM) {
       fetchEvmData();
-      intervalId = setInterval(fetchEvmData, 5000); // Set interval for fetching EVM data
+      intervalId = setInterval(fetchEvmData, 120000); // Set interval for fetching EVM data
     }
 
     // Clean up interval on component unmount or when network/address changes

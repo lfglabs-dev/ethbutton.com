@@ -78,10 +78,14 @@ const EligibilitySteps: FunctionComponent<EligibilityStepsProps> = ({
         process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? EthSepolia : EthMainnet,
       ],
     });
-    getEnsAddress(config, { name: ensDomain }).then((ensAddress) => {
-      setLoadingEthAddress(false);
-      if (ensAddress) setEthAddress(ensAddress);
-    });
+    getEnsAddress(config, { name: ensDomain })
+      .then((ensAddress) => {
+        setLoadingEthAddress(false);
+        if (ensAddress) setEthAddress(ensAddress);
+      })
+      .catch(() => {
+        setLoadingEthAddress(false);
+      });
   }, [address, network, starkProfile]);
 
   useEffect(() => {
