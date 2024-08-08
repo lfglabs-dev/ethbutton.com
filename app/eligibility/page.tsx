@@ -11,11 +11,7 @@ import ConnectModal from "../components/connection/connectModal";
 import { minifyAddress } from "@/utils/stringService";
 import WalletIcon from "../components/iconComponents/walletIcon";
 import { useEnsName, useAccount as useWagmiAccount } from "wagmi";
-import getRemainingClicks from "@/hooks/getRemainingClicks";
 import { Provider, constants } from "starknet";
-import canPlayOnStarknet from "@/hooks/canPlayOnStarknet";
-import TryAgainModal from "../components/tryAgainModal";
-import RecoverTokenModal from "../components/recoverTokenModal";
 import WrongNetworkModal from "../components/wrongNetwork";
 import { StarknetIdNavigator } from "starknetid.js";
 import VideoBackground from "../components/videoBackground";
@@ -45,9 +41,7 @@ export default function Eligibility() {
   // state variables
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [openStarknetModal, setOpenStarknetModal] = useState(false);
-  const [tryAgainModal, setTryAgainModal] = useState(false);
   const [wrongNetworkModal, setWrongNetworkModal] = useState(false);
-  const [recoverTokenModal, setRecoverTokenModal] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [network, setNetwork] = useState<NetworkType>();
   const [progress, setProgress] = useState("verification");
@@ -56,9 +50,6 @@ export default function Eligibility() {
   const starknetNetwork =
     process.env.NEXT_PUBLIC_IS_TESTNET === "true" ? "testnet" : "mainnet";
   const [isWrongStarknetNetwork, setIsWrongStarknetNetwork] = useState(false);
-
-  const { isFirstLoad } = getRemainingClicks(network, address);
-  const { hasEthTokens } = canPlayOnStarknet(network);
 
   const starknetIdNavigator = useMemo(() => {
     return new StarknetIdNavigator(
@@ -95,11 +86,11 @@ export default function Eligibility() {
   }, [evmConnected]);
 
   useEffect(() => {
-    if (network && isConnected && !isFirstLoad) {
+    if (network && isConnected) {
       if (network === NetworkType.STARKNET && isWrongStarknetNetwork)
         setWrongNetworkModal(true);
     }
-  }, [isFirstLoad, network, isConnected, isWrongStarknetNetwork]);
+  }, [network, isConnected, isWrongStarknetNetwork]);
 
   useEffect(() => {
     if (network === NetworkType.EVM || !isConnected || !starknetAccount) return;
@@ -239,7 +230,7 @@ export default function Eligibility() {
             </h1>
             <div className={styles.container}>
               {isConnected ? (
-                progress === "verification" ? (
+                progress === "eligibility" ? (
                   <VerificationSteps next={() => setProgress("eligibility")} />
                 ) : (
                   <EligibilitySteps
@@ -274,18 +265,6 @@ export default function Eligibility() {
         closeModal={() => setOpenConnectModal(false)}
         open={openConnectModal}
         onWalletConnected={onWalletConnected}
-      />
-      <TryAgainModal
-        closeModal={() => setTryAgainModal(false)}
-        open={tryAgainModal}
-        network={network}
-        hasEthTokens={hasEthTokens}
-        openWalletModal={openWalletModal}
-      />
-      <RecoverTokenModal
-        closeModal={() => setRecoverTokenModal(false)}
-        open={recoverTokenModal}
-        addr={evmAddress}
       />
       <WrongNetworkModal
         closeModal={() => setWrongNetworkModal(false)}
