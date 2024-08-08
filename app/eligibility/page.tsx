@@ -111,11 +111,6 @@ export default function Eligibility() {
     setIsConnected(true);
   };
 
-  const openWalletModal = () => {
-    disconnectUser();
-    setOpenConnectModal(true);
-  };
-
   const getConnectionBtnText = () => {
     if (!isConnected || !network) return "Connect wallet";
     return getUserNameOrAddress() ?? "Connect wallet";
