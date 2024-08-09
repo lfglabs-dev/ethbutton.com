@@ -29,15 +29,54 @@ export const getConnectors = (): any[] => {
   return connectors;
 };
 
+const isPartner = (connector: Connector) => {
+  return connector.id === "argentX" || connector.id === "braavos";
+};
+
+// Helper function to randomize the order of an array
+const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 export const sortConnectors = (connectors: Connector[]) => {
-  const available: Connector[] = [];
-  const notAvailable: Connector[] = [];
+  const available: { partners: Connector[]; others: Connector[] } = {
+    partners: [],
+    others: [],
+  };
+  const notAvailable: { partners: Connector[]; others: Connector[] } = {
+    partners: [],
+    others: [],
+  };
+  const mobileConnectors: Connector[] = [];
   connectors.forEach((connector) => {
-    if (connector.available()) available.push(connector);
-    else notAvailable.push(connector);
+    if (connector.id === "argentWebWallet" || connector.id === "argentMobile")
+      mobileConnectors.push(connector);
+    else if (connector.available()) {
+      if (isPartner(connector)) available.partners.push(connector);
+      else available.others.push(connector);
+    } else {
+      if (isPartner(connector)) notAvailable.partners.push(connector);
+      else notAvailable.others.push(connector);
+    }
   });
 
-  return available.concat(notAvailable);
+  const availablePartnersRand = shuffleArray(available.partners);
+  const notAvailablePartnersRand = shuffleArray(notAvailable.partners);
+
+  const sortedConnectors: Connector[] = [
+    ...availablePartnersRand, // Randomized order of installed partners wallets
+    ...available.others, // non partner wallets installed (i.e Bitget)
+    ...notAvailablePartnersRand, // Randomized order of non installed partners wallets
+    ...mobileConnectors, // Argent mobile and web wallet
+    ...notAvailable.others, // other non installed wallets (i.e Bitget)
+  ];
+
+  return sortedConnectors;
 };
 
 export const getConnectorIcon = (id: string) => {
