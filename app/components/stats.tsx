@@ -15,7 +15,6 @@ type StatsProps = {
   currentWinner?: string;
   isLoaded: boolean;
   starknetIdNavigator: StarknetIdNavigator;
-  address?: string;
 };
 
 const Stats: FunctionComponent<StatsProps> = ({
@@ -27,7 +26,6 @@ const Stats: FunctionComponent<StatsProps> = ({
   currentWinner,
   isLoaded,
   starknetIdNavigator,
-  address,
 }) => {
   const [lastWinner, setLastWinner] = useState<string | undefined>(undefined);
 

@@ -12,7 +12,6 @@ type ExtraClickModalProps = {
   closeModal: () => void;
   open: boolean;
   network?: NetworkType;
-  openWalletModal?: () => void;
   addrOrName?: string;
   address?: string;
   hasClaimed2FA?: boolean;
@@ -26,7 +25,6 @@ const ExtraClickModal: FunctionComponent<ExtraClickModalProps> = ({
   closeModal,
   open,
   network,
-  openWalletModal,
   addrOrName,
   address,
   hasClaimed2FA,
@@ -54,7 +52,7 @@ const ExtraClickModal: FunctionComponent<ExtraClickModalProps> = ({
     setHasClicked(true);
   };
 
-  if (network !== NetworkType.STARKNET) return null;
+  if (network !== NetworkType.STARKNET || !address) return null;
 
   return (
     <Modal

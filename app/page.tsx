@@ -381,7 +381,7 @@ export default function Home() {
       if (!hasClaimed2FA || !hasClaimedX) setExtraClickModal(true);
     } catch (error) {
       console.error("Error during starknet reset:", error);
-      let errorMsg = `Error while resetting eth button: ${error}`;
+      const errorMsg = `Error while resetting eth button: ${error}`;
       setErrorMsg(getError(error, errorMsg));
       setShowErrorMsg(true);
       return;
@@ -428,7 +428,7 @@ export default function Home() {
       if (!hasClaimed2FA || !hasClaimedX) setExtraClickModal(true);
     } catch (error) {
       console.error("Error during starknet domain reset:", error);
-      let errorMsg = `Error while resetting eth button: ${error}`;
+      const errorMsg = `Error while resetting eth button: ${error}`;
       setErrorMsg(getError(error, errorMsg));
       setShowErrorMsg(true);
       return;
@@ -477,7 +477,7 @@ export default function Home() {
         if (!hasClaimed2FA || !hasClaimedX) setExtraClickModal(true);
       } catch (error) {
         console.error("Error during eth reset from starknet:", error);
-        let errorMsg = `Error while resetting eth button: ${error}`;
+        const errorMsg = `Error while resetting eth button: ${error}`;
         setErrorMsg(getError(error, errorMsg));
         setShowErrorMsg(true);
         return;
@@ -523,7 +523,7 @@ export default function Home() {
           if (!hasClaimed2FA || !hasClaimedX) setExtraClickModal(true);
         } catch (error) {
           console.error("Error during alt starknet new reset:", error);
-          let errorMsg = `Error while resetting eth button: ${error}`;
+          const errorMsg = `Error while resetting eth button: ${error}`;
           setErrorMsg(getError(error, errorMsg));
           setShowErrorMsg(true);
           return;
@@ -783,7 +783,6 @@ export default function Home() {
               currentWinner={currentWinner}
               isLoaded={isLoaded}
               starknetIdNavigator={starknetIdNavigator}
-              address={address}
             />
           </main>
           <ConnectModal
@@ -807,7 +806,6 @@ export default function Home() {
           <ExtraClickModal
             closeModal={() => setExtraClickModal(false)}
             open={extraClickModal}
-            openWalletModal={openWalletModal}
             network={network}
             addrOrName={getConnectionBtnText()}
             address={address}
