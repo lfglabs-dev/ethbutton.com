@@ -10,7 +10,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { NetworkType, RemainingClicks } from "@/constants/types";
 import ConnectModal from "./components/connection/connectModal";
-import { minifyAddress } from "@/utils/stringService";
+import { getError, minifyAddress } from "@/utils/stringService";
 import WalletIcon from "./components/iconComponents/walletIcon";
 import {
   useEnsName,
@@ -69,6 +69,7 @@ import VideoBackground from "./components/videoBackground";
 import getWalletType from "@/hooks/getWalletType";
 import CountdownWithDays from "./components/countdownWithDays";
 import ClaimXTicket from "./components/claimXTicket";
+import ExtraClickModal from "./components/extraClickModal";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -87,6 +88,7 @@ export default function Home() {
   // state variables
   const [openConnectModal, setOpenConnectModal] = useState(false);
   const [welcomeModal, setWelcomeModal] = useState(false);
+  const [extraClickModal, setExtraClickModal] = useState(false);
   const [tryAgainModal, setTryAgainModal] = useState(false);
   const [wrongNetworkModal, setWrongNetworkModal] = useState(false);
   const [recoverTokenModal, setRecoverTokenModal] = useState(false);
@@ -354,7 +356,6 @@ export default function Home() {
       const signature = (await starknetAccount.signMessage(
         typedData
       )) as WeierstrassSignatureType;
-      console.log("signature", signature);
       if (!signature) {
         setErrorMsg(
           "Click reset not taken into account, please contact your wallet provider."
@@ -369,12 +370,19 @@ export default function Home() {
         executeBefore,
         txVersion as number
       );
+      if (!virtualTxId && !virtualTxId.virtual_tx_id) {
+        setErrorMsg("Error while resetting eth button");
+        setShowErrorMsg(true);
+        return;
+      }
       storeVirtualTxId(virtualTxId.virtual_tx_id);
       setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
       setShowNotifPlayed(true);
+      if (!hasClaimed2FA || !hasClaimedX) setExtraClickModal(true);
     } catch (error) {
       console.error("Error during starknet reset:", error);
-      setErrorMsg(`Error while resetting eth button: ${error}`);
+      let errorMsg = `Error while resetting eth button: ${error}`;
+      setErrorMsg(getError(error, errorMsg));
       setShowErrorMsg(true);
       return;
     }
@@ -409,12 +417,19 @@ export default function Home() {
         availableDomain,
         txVersion as number
       );
+      if (!virtualTxId && !virtualTxId.virtual_tx_id) {
+        setErrorMsg("Error while resetting eth button");
+        setShowErrorMsg(true);
+        return;
+      }
       storeVirtualTxId(virtualTxId.virtual_tx_id);
       setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
       setShowNotifPlayed(true);
+      if (!hasClaimed2FA || !hasClaimedX) setExtraClickModal(true);
     } catch (error) {
       console.error("Error during starknet domain reset:", error);
-      setErrorMsg(`Error while resetting eth button: ${error}`);
+      let errorMsg = `Error while resetting eth button: ${error}`;
+      setErrorMsg(getError(error, errorMsg));
       setShowErrorMsg(true);
       return;
     }
@@ -450,13 +465,20 @@ export default function Home() {
           deploymentData
         );
         console.log("virtualTxId", virtualTxId);
+        if (!virtualTxId && !virtualTxId.virtual_tx_id) {
+          setErrorMsg("Error while resetting eth button");
+          setShowErrorMsg(true);
+          return;
+        }
         storeVirtualTxId(virtualTxId.virtual_tx_id);
         clearEthTokens();
         setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
         setShowNotifPlayed(true);
+        if (!hasClaimed2FA || !hasClaimedX) setExtraClickModal(true);
       } catch (error) {
         console.error("Error during eth reset from starknet:", error);
-        setErrorMsg(`Error while resetting eth button: ${error}`);
+        let errorMsg = `Error while resetting eth button: ${error}`;
+        setErrorMsg(getError(error, errorMsg));
         setShowErrorMsg(true);
         return;
       }
@@ -471,7 +493,6 @@ export default function Home() {
             // @ts-expect-error we should skip deploy
             { skipDeploy: needSkipDeploy() }
           );
-          console.log("signature", signature);
           if (!signature) {
             setErrorMsg(
               "Click reset not taken into account, please contact your wallet provider."
@@ -490,13 +511,20 @@ export default function Home() {
             deploymentData
           );
           console.log("virtualTxId", virtualTxId);
+          if (!virtualTxId && !virtualTxId.virtual_tx_id) {
+            setErrorMsg("Error while resetting eth button");
+            setShowErrorMsg(true);
+            return;
+          }
           storeVirtualTxId(virtualTxId.virtual_tx_id);
           clearEthTokens();
           setTrackingList([...trackingList, virtualTxId.virtual_tx_id]);
           setShowNotifPlayed(true);
+          if (!hasClaimed2FA || !hasClaimedX) setExtraClickModal(true);
         } catch (error) {
           console.error("Error during alt starknet new reset:", error);
-          setErrorMsg(`Error while resetting eth button: ${error}`);
+          let errorMsg = `Error while resetting eth button: ${error}`;
+          setErrorMsg(getError(error, errorMsg));
           setShowErrorMsg(true);
           return;
         }
@@ -756,8 +784,6 @@ export default function Home() {
               isLoaded={isLoaded}
               starknetIdNavigator={starknetIdNavigator}
               address={address}
-              hasClaimedX={hasClaimedX}
-              setHasClaimedX={setHasClaimedX}
             />
           </main>
           <ConnectModal
@@ -777,6 +803,19 @@ export default function Home() {
             walletType={walletType}
             hasClaimed2FA={hasClaimed2FA}
             claim2FATicket={claim2FATicket}
+          />
+          <ExtraClickModal
+            closeModal={() => setExtraClickModal(false)}
+            open={extraClickModal}
+            openWalletModal={openWalletModal}
+            network={network}
+            addrOrName={getConnectionBtnText()}
+            address={address}
+            hasClaimed2FA={hasClaimed2FA}
+            claim2FATicket={claim2FATicket}
+            hasClaimedX={hasClaimedX}
+            setHasClaimedX={setHasClaimedX}
+            isFinished={isFinished}
           />
           <TryAgainModal
             closeModal={() => setTryAgainModal(false)}

@@ -62,3 +62,15 @@ export function isHexString(str: string): boolean {
   if (str === "") return true;
   return /^0x[0123456789abcdefABCDEF]+$/.test(str);
 }
+
+export function getError(error: any, errMsg: string): string {
+  if (error instanceof Error) {
+    return error.message;
+  } else if (typeof error === "string") {
+    return error;
+  } else if (error && typeof error === "object") {
+    return JSON.stringify(error);
+  } else {
+    return errMsg;
+  }
+}

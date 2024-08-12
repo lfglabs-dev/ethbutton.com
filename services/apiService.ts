@@ -3,6 +3,7 @@ import {
   GetDeploymentDataResult,
   WalletType,
 } from "@/constants/types";
+import { getError } from "@/utils/stringService";
 import { Signature, stark } from "starknet";
 
 const baseurl = process.env.NEXT_PUBLIC_ETH_BUTTON_API;
@@ -90,8 +91,9 @@ export const starknetResetButton = async (
       }),
     });
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while calling starknet_reset_button", err);
+    throw new Error(err.message);
   }
 };
 
@@ -118,8 +120,9 @@ export const starknetDomainResetButton = async (
       }),
     });
     return await response.json();
-  } catch (err) {
-    console.log("Error while calling starknet_domain_reset_button", err);
+  } catch (err: any) {
+    console.log("Error while calling starknet_reset_button_from_eth", err);
+    throw new Error(err.message);
   }
 };
 
@@ -152,8 +155,9 @@ export const starknetResetButtonFromEth = async (
       }),
     });
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while calling starknet_reset_button_from_eth", err);
+    throw new Error(err.message);
   }
 };
 
@@ -188,8 +192,9 @@ export const altStarknetNewAccount = async (
       }),
     });
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while calling starknet_reset_button_from_eth", err);
+    throw new Error(err.message);
   }
 };
 
@@ -200,8 +205,9 @@ export const getEthEligibility = async (address: string) => {
       `${baseurl}/get_eth_eligibility?addr=${address}`
     );
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while fetching ethereum eligibility", err);
+    throw new Error(err.message);
   }
 };
 
@@ -215,8 +221,9 @@ export const ethResetButton = async (addr: string, sig: string) => {
       body: JSON.stringify({ addr, sig }),
     });
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while calling eth_reset_button", err);
+    throw new Error(err.message);
   }
 };
 

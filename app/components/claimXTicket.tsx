@@ -59,7 +59,7 @@ const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
     <>
       {isConnected && !isFinished && hasClaimedX !== undefined && address ? (
         <div className={styles.statsSection}>
-          <p>Get your extra ticket</p>
+          <p>Retweet to get an extra ticket</p>
           {!hasClaimedX ? (
             <Button
               onClick={() => getExtraTicket(address)}
@@ -72,7 +72,7 @@ const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
               }
               width={width}
             >
-              Retweet
+              Claim
             </Button>
           ) : showClaimed ? (
             <div className={styles.winnerWrapper}>
