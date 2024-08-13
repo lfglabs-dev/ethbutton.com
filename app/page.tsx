@@ -632,6 +632,8 @@ export default function Home() {
           // store in local storage
           storeHasClaimed2FATicket(address);
           setHasClaimed2FA(true);
+          setErrorMsg("2FA ticket claimed successfully");
+          setShowErrorMsg(true);
         }
       })
       .catch((err) => {
