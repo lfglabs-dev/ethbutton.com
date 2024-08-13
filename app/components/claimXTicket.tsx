@@ -58,19 +58,20 @@ const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
   return (
     <>
       {isConnected && !isFinished && hasClaimedX !== undefined && address ? (
-        <div className={styles.statsSection}>
-          <p>Retweet to get an extra ticket</p>
+        <div className={styles.statsSection} style={{ marginTop: "10px" }}>
+          <p>Claim your extra ticket</p>
           {!hasClaimedX ? (
             <Button
               onClick={() => getExtraTicket(address)}
-              icon={
-                <img
-                  src="/visuals/twitterIcon.svg"
-                  alt="Twitter Icon"
-                  width={20}
-                />
-              }
+              // icon={
+              //   <img
+              //     src="/visuals/twitterIcon.svg"
+              //     alt="Twitter Icon"
+              //     width={20}
+              //   />
+              // }
               width={width}
+              variation="white"
             >
               Claim
             </Button>

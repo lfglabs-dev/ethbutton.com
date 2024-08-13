@@ -12,7 +12,6 @@ type ExtraClickModalProps = {
   closeModal: () => void;
   open: boolean;
   network?: NetworkType;
-  addrOrName?: string;
   address?: string;
   hasClaimed2FA?: boolean;
   claim2FATicket: () => void;
@@ -25,7 +24,6 @@ const ExtraClickModal: FunctionComponent<ExtraClickModalProps> = ({
   closeModal,
   open,
   network,
-  addrOrName,
   address,
   hasClaimed2FA,
   claim2FATicket,
@@ -34,7 +32,6 @@ const ExtraClickModal: FunctionComponent<ExtraClickModalProps> = ({
   setHasClaimedX,
 }) => {
   const [hasClicked, setHasClicked] = useState(false);
-  const btnIcon = <img src="/visuals/starknetIcon.svg" />;
 
   const modalTitle =
     hasClaimed2FA && hasClaimedX ? (
@@ -76,12 +73,6 @@ const ExtraClickModal: FunctionComponent<ExtraClickModalProps> = ({
             <div className={`${modalStyles.menu_title} primary`}>
               {modalTitle}
             </div>
-
-            {addrOrName ? (
-              <Button icon={btnIcon} width={260} variation="white">
-                {addrOrName}
-              </Button>
-            ) : null}
 
             {!hasClaimed2FA ? (
               <>

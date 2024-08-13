@@ -3,7 +3,6 @@ import {
   GetDeploymentDataResult,
   WalletType,
 } from "@/constants/types";
-import { getError } from "@/utils/stringService";
 import { Signature, stark } from "starknet";
 
 const baseurl = process.env.NEXT_PUBLIC_ETH_BUTTON_API;

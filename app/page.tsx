@@ -6,7 +6,7 @@ import Button from "./components/button";
 import EthButton from "./components/ethButton";
 import Stats from "./components/stats";
 import Countdown from "./components/countdown";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { NetworkType, RemainingClicks } from "@/constants/types";
 import ConnectModal from "./components/connection/connectModal";
@@ -68,7 +68,6 @@ import LeaderboardWrapper from "./components/leaderboard/leaderboardWrapper";
 import VideoBackground from "./components/videoBackground";
 import getWalletType from "@/hooks/getWalletType";
 import CountdownWithDays from "./components/countdownWithDays";
-import ClaimXTicket from "./components/claimXTicket";
 import ExtraClickModal from "./components/extraClickModal";
 
 export default function Home() {
@@ -464,7 +463,6 @@ export default function Home() {
           txVersion as number,
           deploymentData
         );
-        console.log("virtualTxId", virtualTxId);
         if (!virtualTxId && !virtualTxId.virtual_tx_id) {
           setErrorMsg("Error while resetting eth button");
           setShowErrorMsg(true);
@@ -510,7 +508,6 @@ export default function Home() {
             txVersion as number,
             deploymentData
           );
-          console.log("virtualTxId", virtualTxId);
           if (!virtualTxId && !virtualTxId.virtual_tx_id) {
             setErrorMsg("Error while resetting eth button");
             setShowErrorMsg(true);
@@ -625,6 +622,7 @@ export default function Home() {
 
   const claim2FATicket = () => {
     if (!walletType || network === NetworkType.EVM || !address) return;
+    console.log("walletType", walletType);
     claim2FATicketQuery(address, walletType)
       .then((res) => {
         if (res.error) {
@@ -677,19 +675,6 @@ export default function Home() {
                 </>
               ) : (
                 <>
-                  <Suspense>
-                    <div className={styles.remainingClicksMobile}>
-                      <ClaimXTicket
-                        isConnected={isConnected}
-                        isFinished={isFinished}
-                        hasClaimedX={hasClaimedX}
-                        address={address}
-                        showClaimed={false}
-                        width={230}
-                        setHasClaimedX={setHasClaimedX}
-                      />
-                    </div>
-                  </Suspense>
                   <Button
                     onClick={connectBtnAction}
                     icon={
@@ -807,7 +792,6 @@ export default function Home() {
             closeModal={() => setExtraClickModal(false)}
             open={extraClickModal}
             network={network}
-            addrOrName={getConnectionBtnText()}
             address={address}
             hasClaimed2FA={hasClaimed2FA}
             claim2FATicket={claim2FATicket}
