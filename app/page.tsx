@@ -275,7 +275,6 @@ export default function Home() {
   }, [starknetAccount, network, isConnected, starknetNetwork]);
 
   const onWalletConnected = (network: NetworkType) => {
-    console.log("onWalletConnected", network);
     setNetwork(network);
     setOpenConnectModal(false);
     setIsConnected(true);

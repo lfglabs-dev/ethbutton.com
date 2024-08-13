@@ -25,7 +25,6 @@ export default function isStarknetDeployed(
         provider
           .getClassHashAt(address)
           .then((classHash) => {
-            console.log("Class hash", classHash);
             setIsDeployed(true);
             setDeploymentData(undefined);
             return;
