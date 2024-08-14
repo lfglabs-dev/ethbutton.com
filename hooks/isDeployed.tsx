@@ -25,7 +25,6 @@ export default function isStarknetDeployed(
         provider
           .getClassHashAt(address)
           .then((classHash) => {
-            console.log("Class hash", classHash);
             setIsDeployed(true);
             setDeploymentData(undefined);
             return;
@@ -45,7 +44,7 @@ export default function isStarknetDeployed(
           if (
             connectedWallet.id === connector?.id &&
             connectedWallet.isConnected &&
-            connectedWallet.id !== "braavos" // we cannot deploye braavos account for the user for now
+            connectedWallet.id !== "braavos" // we cannot deploy braavos account for the user for now
           ) {
             const data = await wallet.deploymentData(
               // @ts-ignore

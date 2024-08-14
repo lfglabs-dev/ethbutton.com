@@ -103,7 +103,7 @@ const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
                     onClick={() => tryConnect(connector, isAvailable)}
                   >
                     <Button
-                      onClick={() => console.log("Open connect wallet modal")}
+                      onClick={() => console.log("Connecting to starknet")}
                       icon={
                         <img
                           src={getConnectorIcon(connector.id)}

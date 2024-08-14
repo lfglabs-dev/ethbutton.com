@@ -1,4 +1,8 @@
-import { EthToken, GetDeploymentDataResult } from "@/constants/types";
+import {
+  EthToken,
+  GetDeploymentDataResult,
+  WalletType,
+} from "@/constants/types";
 import { Signature, stark } from "starknet";
 
 const baseurl = process.env.NEXT_PUBLIC_ETH_BUTTON_API;
@@ -76,8 +80,9 @@ export const starknetResetButton = async (
       }),
     });
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while calling starknet_reset_button", err);
+    throw new Error(err.message);
   }
 };
 
@@ -104,8 +109,9 @@ export const starknetDomainResetButton = async (
       }),
     });
     return await response.json();
-  } catch (err) {
-    console.log("Error while calling starknet_domain_reset_button", err);
+  } catch (err: any) {
+    console.log("Error while calling starknet_reset_button_from_eth", err);
+    throw new Error(err.message);
   }
 };
 
@@ -138,8 +144,9 @@ export const starknetResetButtonFromEth = async (
       }),
     });
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while calling starknet_reset_button_from_eth", err);
+    throw new Error(err.message);
   }
 };
 
@@ -174,8 +181,9 @@ export const altStarknetNewAccount = async (
       }),
     });
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while calling starknet_reset_button_from_eth", err);
+    throw new Error(err.message);
   }
 };
 
@@ -186,8 +194,9 @@ export const getEthEligibility = async (address: string) => {
       `${baseurl}/get_eth_eligibility?addr=${address}`
     );
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while fetching ethereum eligibility", err);
+    throw new Error(err.message);
   }
 };
 
@@ -201,7 +210,39 @@ export const ethResetButton = async (addr: string, sig: string) => {
       body: JSON.stringify({ addr, sig }),
     });
     return await response.json();
-  } catch (err) {
+  } catch (err: any) {
     console.log("Error while calling eth_reset_button", err);
+    throw new Error(err.message);
+  }
+};
+
+export const claim2FATicketQuery = async (
+  address: string,
+  walletType: WalletType
+) => {
+  try {
+    const response = await fetch(`${baseurl}/claim_2fa_ticket`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        addr: address,
+        wallet_type: walletType,
+      }),
+    });
+
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json();
+    } else {
+      // If the content type is not JSON, read the response as text
+      const errorMessage = await response.text();
+      return { error: errorMessage }; // Return a custom object containing the error message
+    }
+  } catch (error: any) {
+    console.error("Error fetching data: ", error.message);
+    throw new Error(error.message);
   }
 };

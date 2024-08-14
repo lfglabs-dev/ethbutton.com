@@ -125,3 +125,40 @@ export const getEthSig = (): { eth_addr: string; sig: string } | null => {
 export const clearEthSig = (): void => {
   localStorage.removeItem("ethbutton-ethSig");
 };
+
+export const storeHasClaimedXTicket = (): void => {
+  localStorage.setItem("ethbutton-hasClaimedTwitter", "true");
+};
+
+export const getHasClaimedXTicket = (): boolean => {
+  const hasClaimed = localStorage.getItem("ethbutton-hasClaimedTwitter");
+  if (!hasClaimed) {
+    return false;
+  }
+
+  try {
+    if (typeof hasClaimed === "string" && hasClaimed === "true") {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error parsing JSON from local storage", error);
+    return false;
+  }
+};
+
+export const storeHasClaimed2FATicket = (addr: string): void => {
+  const currentClaims = JSON.parse(
+    localStorage.getItem("ethbutton-2faClaims") || "{}"
+  );
+  currentClaims[addr] = true;
+  localStorage.setItem("ethbutton-2faClaims", JSON.stringify(currentClaims));
+};
+
+export const getHasClaimed2FA = (addr: string): boolean => {
+  const claims = JSON.parse(
+    localStorage.getItem("ethbutton-2faClaims") || "{}"
+  );
+  return !!claims[addr];
+};

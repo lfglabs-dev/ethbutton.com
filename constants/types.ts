@@ -65,3 +65,13 @@ export type SearchResult = {
   addr?: string;
   error?: string;
 };
+
+export type WalletType = "argent" | "braavos";
+
+export type WalletState = {
+  id: string;
+  isInstalled: boolean;
+  label: string;
+  website: string;
+  icon: string;
+};

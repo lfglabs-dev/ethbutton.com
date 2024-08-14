@@ -5,12 +5,9 @@ import { Modal } from "@mui/material";
 import styles from "../styles/components/welcomeModal.module.css";
 import modalStyles from "../styles/components/modal.module.css";
 import Button from "./button";
-import { NetworkType } from "@/constants/types";
+import { NetworkType, WalletType } from "@/constants/types";
 import WalletIcon from "./iconComponents/walletIcon";
-import {
-  getArgentIcon,
-  getArgentWebsite,
-} from "@/utils/starknetConnectorsWrapper";
+import hasStarknetWallets from "@/hooks/hasStarknetWallets";
 
 type TryAgainModalProps = {
   closeModal: () => void;
@@ -18,6 +15,9 @@ type TryAgainModalProps = {
   network?: NetworkType;
   hasEthTokens: boolean;
   openWalletModal?: () => void;
+  walletType?: WalletType;
+  hasClaimed2FA?: boolean;
+  claim2FATicket?: () => void;
 };
 
 const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
@@ -26,7 +26,20 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
   network,
   hasEthTokens,
   openWalletModal,
+  walletType,
+  hasClaimed2FA,
+  claim2FATicket,
 }) => {
+  const wallets = hasStarknetWallets();
+  const canClaim2FA =
+    walletType && !hasClaimed2FA && network === NetworkType.STARKNET;
+
+  const get2FAText = () => {
+    if (canClaim2FA) {
+      return "Enable 2FA on your wallet and claim a free ticket. ";
+    } else return "";
+  };
+
   const modalDescription =
     network === NetworkType.EVM && hasEthTokens ? (
       <>
@@ -35,8 +48,8 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
       </>
     ) : (
       <>
-        Unfortunately, you don&apos;t have clicks left. You get another click
-        for each Starknet domain purchased.
+        Unfortunately, you don&apos;t have clicks left. {get2FAText}You get
+        another click for each Starknet domain purchased.
       </>
     );
 
@@ -67,23 +80,34 @@ const TryAgainModal: FunctionComponent<TryAgainModalProps> = ({
 
             {network === NetworkType.EVM && hasEthTokens ? (
               <div className="gap-3 flex flex-col">
-                <Button
-                  icon={<img src={getArgentIcon()} width={22} />}
-                  width={260}
-                  onClick={() => window.open(getArgentWebsite())}
-                >
-                  Argent
-                </Button>
-                {/* <Button
-                  icon={<img src={getBraavosIcon()} width={22} />}
-                  width={260}
-                  onClick={() => window.open(getBraavosWebsite())}
-                >
-                  Braavos
-                </Button> */}
+                {wallets.map((wallet) => (
+                  <Button
+                    key={wallet.id}
+                    width={260}
+                    onClick={
+                      wallet.isInstalled
+                        ? openWalletModal
+                        : () => window.open(`${wallet.label}Website()`)
+                    }
+                    icon={<img src={wallet.icon} width={22} />}
+                  >
+                    {wallet.isInstalled
+                      ? `Connect with ${wallet.label}`
+                      : `Install ${wallet.label}`}
+                  </Button>
+                ))}
               </div>
             ) : (
               <div className="gap-3 flex flex-col">
+                {canClaim2FA && claim2FATicket ? (
+                  <Button
+                    icon={<img src="/visuals/2FA.svg" width={22} />}
+                    width={260}
+                    onClick={claim2FATicket}
+                  >
+                    Claim 2FA ticket
+                  </Button>
+                ) : null}
                 <Button
                   icon={<img src="/visuals/starknetIdIcon.svg" />}
                   width={260}
