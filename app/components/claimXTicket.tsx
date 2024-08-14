@@ -39,6 +39,8 @@ const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
       if (!hasClaimedX) {
         storeHasClaimedXTicket();
         setHasClaimedX(true);
+        setErrorMsg("Successfully claimed extra ticket");
+        setShowErrorMsg(true);
       }
     } else if (claimXStatus === "false" && claimXError) {
       // show error message

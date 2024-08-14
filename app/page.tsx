@@ -370,7 +370,9 @@ export default function Home() {
         txVersion as number
       );
       if (!virtualTxId && !virtualTxId.virtual_tx_id) {
-        setErrorMsg("Error while resetting eth button");
+        setErrorMsg(
+          "Click reset not taken into account, please contact your wallet provider."
+        );
         setShowErrorMsg(true);
         return;
       }
@@ -417,7 +419,9 @@ export default function Home() {
         txVersion as number
       );
       if (!virtualTxId && !virtualTxId.virtual_tx_id) {
-        setErrorMsg("Error while resetting eth button");
+        setErrorMsg(
+          "Click reset not taken into account, please contact your wallet provider."
+        );
         setShowErrorMsg(true);
         return;
       }
@@ -464,7 +468,9 @@ export default function Home() {
           deploymentData
         );
         if (!virtualTxId && !virtualTxId.virtual_tx_id) {
-          setErrorMsg("Error while resetting eth button");
+          setErrorMsg(
+            "Click reset not taken into account, please contact your wallet provider."
+          );
           setShowErrorMsg(true);
           return;
         }
@@ -509,7 +515,9 @@ export default function Home() {
             deploymentData
           );
           if (!virtualTxId && !virtualTxId.virtual_tx_id) {
-            setErrorMsg("Error while resetting eth button");
+            setErrorMsg(
+              "Click reset not taken into account, please contact your wallet provider."
+            );
             setShowErrorMsg(true);
             return;
           }
