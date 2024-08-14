@@ -69,6 +69,7 @@ import VideoBackground from "./components/videoBackground";
 import getWalletType from "@/hooks/getWalletType";
 import CountdownWithDays from "./components/countdownWithDays";
 import ExtraClickModal from "./components/extraClickModal";
+import NotifXTicket from "./components/NotifXTicket";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -839,6 +840,10 @@ export default function Home() {
           <Notification visible={showErrorMsg} onClose={closeErrorMsg}>
             <>{errorMsg}</>
           </Notification>
+          <NotifXTicket
+            hasClaimedX={hasClaimedX}
+            setHasClaimedX={setHasClaimedX}
+          />
         </>
       ) : (
         <main className={styles.main}>
