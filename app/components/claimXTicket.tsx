@@ -61,20 +61,22 @@ const ClaimXTicket: FunctionComponent<ClaimXTicketProps> = ({
         <div className={styles.statsSection} style={{ marginTop: "10px" }}>
           <p>Retweet to get an extra ticket !</p>
           {!hasClaimedX ? (
-            <Button
-              onClick={() => getExtraTicket(address)}
-              // icon={
-              //   <img
-              //     src="/visuals/twitterIcon.svg"
-              //     alt="Twitter Icon"
-              //     width={20}
-              //   />
-              // }
-              width={width}
-              variation="white"
-            >
-              Claim now
-            </Button>
+            <div className="mx-auto">
+              <Button
+                onClick={() => getExtraTicket(address)}
+                // icon={
+                //   <img
+                //     src="/visuals/twitterIcon.svg"
+                //     alt="Twitter Icon"
+                //     width={20}
+                //   />
+                // }
+                width={width}
+                variation="white"
+              >
+                Claim now
+              </Button>
+            </div>
           ) : showClaimed ? (
             <div className={styles.winnerWrapper}>
               <div className={styles.winnerSection} style={{ margin: "auto" }}>

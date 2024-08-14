@@ -49,13 +49,18 @@ const ExtraClickModal: FunctionComponent<ExtraClickModalProps> = ({
     setHasClicked(true);
   };
 
+  const close = () => {
+    setHasClicked(false);
+    closeModal();
+  };
+
   if (network !== NetworkType.STARKNET || !address) return null;
 
   return (
     <Modal
       disableAutoFocus
       open={open}
-      onClose={closeModal}
+      onClose={close}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       componentsProps={{
@@ -117,7 +122,7 @@ const ExtraClickModal: FunctionComponent<ExtraClickModalProps> = ({
                 )}
               </>
             ) : null}
-            <div onClick={closeModal} className={modalStyles.menu_close}>
+            <div onClick={close} className={modalStyles.menu_close}>
               Close
             </div>
           </div>
