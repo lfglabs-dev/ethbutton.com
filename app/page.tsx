@@ -6,7 +6,7 @@ import Button from "./components/button";
 import EthButton from "./components/ethButton";
 import Stats from "./components/stats";
 import Countdown from "./components/countdown";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { NetworkType, RemainingClicks } from "@/constants/types";
 import ConnectModal from "./components/connection/connectModal";
@@ -66,9 +66,11 @@ import { StarknetIdNavigator } from "starknetid.js";
 import LeaderboardWrapper from "./components/leaderboard/leaderboardWrapper";
 import VideoBackground from "./components/videoBackground";
 import getWalletType from "@/hooks/getWalletType";
-import CountdownWithDays from "./components/countdownWithDays";
 import ExtraClickModal from "./components/extraClickModal";
 import NotifXTicket from "./components/NotifXTicket";
+import Maintenance from "./components/maintenance/maintenance";
+import UnexpectedError from "./components/maintenance/unexpectedError";
+import isUnexpectedError from "@/hooks/isUnexpectedError";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -108,6 +110,8 @@ export default function Home() {
   const [showErrorMsg, setShowErrorMsg] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [leaderboard, setLeaderboard] = useState<boolean>(false);
+  const [maintenance, setMaintenance] = useState<boolean>(false);
+  const unexpectedError = isUnexpectedError();
 
   const priceValue = getPriceValue();
   const { isFirstLoad, remainingClicks } = getRemainingClicks(network, address);
@@ -116,7 +120,6 @@ export default function Home() {
   const isFinished = isOver5mn(countdownTimestamp);
   const txVersion = getTxVersion(network, address);
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const [isLaunched, setIsLaunched] = useState(false);
 
   // Claim X ticket
   const [hasClaimedX, setHasClaimedX] = useState<boolean | undefined>();
@@ -135,11 +138,6 @@ export default function Home() {
         : constants.StarknetChainId.SN_MAIN
     );
   }, [starknetNetwork]);
-
-  useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_LAUNCH_TIME) return;
-    setIsLaunched(Number(process.env.NEXT_PUBLIC_LAUNCH_TIME) < Date.now());
-  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -188,6 +186,13 @@ export default function Home() {
   useEffect(() => {
     if (!isLoaded && process.env.NEXT_PUBLIC_ENABLE_LEADERBOARD === "true") {
       setLeaderboard(true);
+      setIsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded && process.env.NEXT_PUBLIC_ENABLE_MAINTENANCE === "true") {
+      setMaintenance(true);
       setIsLoaded(true);
     }
   }, []);
@@ -643,9 +648,21 @@ export default function Home() {
 
   return (
     <>
-      {leaderboard ? (
+      {maintenance ? (
+        <Maintenance
+          isLoaded={isLoaded}
+          isMobile={isMobile}
+          priceValue={priceValue}
+        />
+      ) : unexpectedError ? (
+        <UnexpectedError
+          isLoaded={isLoaded}
+          isMobile={isMobile}
+          priceValue={priceValue}
+        />
+      ) : leaderboard ? (
         <LeaderboardWrapper />
-      ) : isLaunched ? (
+      ) : (
         <>
           <main className={styles.main}>
             <VideoBackground />
@@ -818,8 +835,11 @@ export default function Home() {
           <Notification visible={showNotif} onClose={() => setShowNotif(false)}>
             <>
               Try again! You still have{" "}
-              {getTotalClicks(remainingClicks, network, ethTokens)} chance to
-              press the button.
+              {getTotalClicks(remainingClicks, network, ethTokens)} chance
+              {getTotalClicks(remainingClicks, network, ethTokens) > 1
+                ? "s"
+                : ""}{" "}
+              to press the button.
             </>
           </Notification>
           <Notification
@@ -834,27 +854,13 @@ export default function Home() {
           <Notification visible={showErrorMsg} onClose={closeErrorMsg}>
             <>{errorMsg}</>
           </Notification>
-          <NotifXTicket
-            hasClaimedX={hasClaimedX}
-            setHasClaimedX={setHasClaimedX}
-          />
+          <Suspense>
+            <NotifXTicket
+              hasClaimedX={hasClaimedX}
+              setHasClaimedX={setHasClaimedX}
+            />
+          </Suspense>
         </>
-      ) : (
-        <main className={styles.main}>
-          <VideoBackground />
-          <div className={styles.centralSection}>
-            <div className={styles.backgroundWrapper}>
-              <h1 className={styles.title}>
-                STARTING <span className={styles.pinkTitle}>IN</span>
-              </h1>
-              <div className={styles.countdownContainerWithDays}>
-                <CountdownWithDays
-                  timestamp={Number(process.env.NEXT_PUBLIC_LAUNCH_TIME)}
-                />
-              </div>
-            </div>
-          </div>
-        </main>
       )}
     </>
   );
