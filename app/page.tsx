@@ -66,7 +66,6 @@ import { StarknetIdNavigator } from "starknetid.js";
 import LeaderboardWrapper from "./components/leaderboard/leaderboardWrapper";
 import VideoBackground from "./components/videoBackground";
 import getWalletType from "@/hooks/getWalletType";
-import CountdownWithDays from "./components/countdownWithDays";
 import ExtraClickModal from "./components/extraClickModal";
 import NotifXTicket from "./components/NotifXTicket";
 import Maintenance from "./components/maintenance/maintenance";
