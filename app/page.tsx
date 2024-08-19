@@ -836,8 +836,11 @@ export default function Home() {
           <Notification visible={showNotif} onClose={() => setShowNotif(false)}>
             <>
               Try again! You still have{" "}
-              {getTotalClicks(remainingClicks, network, ethTokens)} chance to
-              press the button.
+              {getTotalClicks(remainingClicks, network, ethTokens)} chance
+              {getTotalClicks(remainingClicks, network, ethTokens) > 1
+                ? "s"
+                : ""}{" "}
+              to press the button.
             </>
           </Notification>
           <Notification
