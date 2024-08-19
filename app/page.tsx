@@ -6,7 +6,7 @@ import Button from "./components/button";
 import EthButton from "./components/ethButton";
 import Stats from "./components/stats";
 import Countdown from "./components/countdown";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { NetworkType, RemainingClicks } from "@/constants/types";
 import ConnectModal from "./components/connection/connectModal";
@@ -854,10 +854,12 @@ export default function Home() {
           <Notification visible={showErrorMsg} onClose={closeErrorMsg}>
             <>{errorMsg}</>
           </Notification>
-          <NotifXTicket
-            hasClaimedX={hasClaimedX}
-            setHasClaimedX={setHasClaimedX}
-          />
+          <Suspense>
+            <NotifXTicket
+              hasClaimedX={hasClaimedX}
+              setHasClaimedX={setHasClaimedX}
+            />
+          </Suspense>
         </>
       )}
     </>
