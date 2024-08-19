@@ -19,3 +19,9 @@ export function hexToDecimal(hex: string | undefined): string {
 
   return new BN(hex.slice(2), 16).toString(10);
 }
+
+export function decimalToHex(element: string | number | undefined): string {
+  if (element === undefined) return "";
+
+  return "0x" + new BN(element).toString(16).padStart(64, "0");
+}

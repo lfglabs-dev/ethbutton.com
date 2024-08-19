@@ -69,6 +69,9 @@ import getWalletType from "@/hooks/getWalletType";
 import CountdownWithDays from "./components/countdownWithDays";
 import ExtraClickModal from "./components/extraClickModal";
 import NotifXTicket from "./components/NotifXTicket";
+import Maintenance from "./components/maintenance/maintenance";
+import UnexpectedError from "./components/maintenance/unexpectedError";
+import isUnexpectedError from "@/hooks/isUnexpectedError";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -108,6 +111,8 @@ export default function Home() {
   const [showErrorMsg, setShowErrorMsg] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [leaderboard, setLeaderboard] = useState<boolean>(false);
+  const [maintenance, setMaintenance] = useState<boolean>(false);
+  const unexpectedError = isUnexpectedError();
 
   const priceValue = getPriceValue();
   const { isFirstLoad, remainingClicks } = getRemainingClicks(network, address);
@@ -188,6 +193,13 @@ export default function Home() {
   useEffect(() => {
     if (!isLoaded && process.env.NEXT_PUBLIC_ENABLE_LEADERBOARD === "true") {
       setLeaderboard(true);
+      setIsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded && process.env.NEXT_PUBLIC_ENABLE_MAINTENANCE === "true") {
+      setMaintenance(true);
       setIsLoaded(true);
     }
   }, []);
@@ -643,7 +655,19 @@ export default function Home() {
 
   return (
     <>
-      {leaderboard ? (
+      {maintenance ? (
+        <Maintenance
+          isLoaded={isLoaded}
+          isMobile={isMobile}
+          priceValue={priceValue}
+        />
+      ) : unexpectedError ? (
+        <UnexpectedError
+          isLoaded={isLoaded}
+          isMobile={isMobile}
+          priceValue={priceValue}
+        />
+      ) : leaderboard ? (
         <LeaderboardWrapper />
       ) : isLaunched ? (
         <>
