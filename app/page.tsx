@@ -121,7 +121,6 @@ export default function Home() {
   const isFinished = isOver5mn(countdownTimestamp);
   const txVersion = getTxVersion(network, address);
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const [isLaunched, setIsLaunched] = useState(false);
 
   // Claim X ticket
   const [hasClaimedX, setHasClaimedX] = useState<boolean | undefined>();
@@ -140,11 +139,6 @@ export default function Home() {
         : constants.StarknetChainId.SN_MAIN
     );
   }, [starknetNetwork]);
-
-  useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_LAUNCH_TIME) return;
-    setIsLaunched(Number(process.env.NEXT_PUBLIC_LAUNCH_TIME) < Date.now());
-  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -669,7 +663,7 @@ export default function Home() {
         />
       ) : leaderboard ? (
         <LeaderboardWrapper />
-      ) : isLaunched ? (
+      ) : (
         <>
           <main className={styles.main}>
             <VideoBackground />
@@ -863,22 +857,6 @@ export default function Home() {
             setHasClaimedX={setHasClaimedX}
           />
         </>
-      ) : (
-        <main className={styles.main}>
-          <VideoBackground />
-          <div className={styles.centralSection}>
-            <div className={styles.backgroundWrapper}>
-              <h1 className={styles.title}>
-                STARTING <span className={styles.pinkTitle}>IN</span>
-              </h1>
-              <div className={styles.countdownContainerWithDays}>
-                <CountdownWithDays
-                  timestamp={Number(process.env.NEXT_PUBLIC_LAUNCH_TIME)}
-                />
-              </div>
-            </div>
-          </div>
-        </main>
       )}
     </>
   );
