@@ -70,7 +70,7 @@ const Stats: FunctionComponent<StatsProps> = ({
   return (
     <div className={styles.statsSections}>
       <div className={styles.statsSection}>
-        <p>Time clicked</p>
+        <p>Total clicks</p>
         <p>{totalClicks !== 0 ? totalClicks.toLocaleString("en-US") : "--"}</p>
       </div>
       <div className={styles.statsSection}>

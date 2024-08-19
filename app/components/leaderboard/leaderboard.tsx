@@ -151,7 +151,7 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
                     <TableRow>
                       <TableHead>Ranking</TableHead>
                       <TableHead>Address</TableHead>
-                      <TableHead>Time clicked</TableHead>
+                      <TableHead>Total clicks</TableHead>
                       <TableHead>Reward</TableHead>
                     </TableRow>
                   </TableHeader>
