@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Modal, useMediaQuery } from "@mui/material";
 import { Connector } from "starknetkit";
 import styles from "../../styles/components/walletConnect.module.css";
@@ -9,6 +9,7 @@ import {
   getConnectorDiscovery,
   getConnectorIcon,
   getConnectorName,
+  isInArgentMobileAppBrowser,
   sortConnectors,
 } from "@/utils/starknetConnectorsWrapper";
 import Button from "../button";
@@ -29,6 +30,12 @@ const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
   onWalletConnected,
 }) => {
   const { connectAsync } = useConnect();
+  const [isArgentMobile, setIsArgentMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined")
+      setIsArgentMobile(isInArgentMobileAppBrowser());
+  }, []);
 
   const connect = async (connector: Connector) => {
     await connectAsync({ connector });
@@ -38,6 +45,9 @@ const StarknetWalletConnect: FunctionComponent<StarknetWalletConnectProps> = ({
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const filterConnectors = (connectors: Connector[]) => {
+    if (isArgentMobile) {
+      return connectors.filter((connector) => connector.id === "argentMobile");
+    }
     if (!isMobile) return connectors;
     return connectors.filter((connector) => connector.id !== "argentX");
   };
