@@ -33,9 +33,7 @@ const countdownWithHours: FunctionComponent<countdownWithHoursProps> = ({
   useEffect(() => {
     // any time the timestamp is updated we update the timeRemaining
     const now = new Date().getTime(); // Current time in milliseconds
-    const timestampExpiration =
-      timestamp +
-      parseInt(process.env.NEXT_PUBLIC_GAME_DURATION as string) * 1000; // Expiration time based on the received timestamp
+    const timestampExpiration = timestamp; // Expiration time based on the received timestamp
     const secondsUntilExpiration = Math.floor(
       (timestampExpiration - now) / 1000
     );
