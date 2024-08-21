@@ -192,8 +192,13 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoaded && process.env.NEXT_PUBLIC_ENABLE_MAINTENANCE === "true") {
-      setMaintenance(true);
-      setIsLoaded(true);
+      const maintenantEnd = parseInt(
+        process.env.NEXT_PUBLIC_MAINTENANCE_END_MS as string
+      );
+      if (maintenantEnd > new Date().getTime()) {
+        setMaintenance(true);
+        setIsLoaded(true);
+      }
     }
   }, []);
 
