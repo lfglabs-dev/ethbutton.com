@@ -182,7 +182,7 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
                               ) : (
                                 <div></div>
                               )}
-                              ${row?.reward ?? 0}
+                              {row?.reward ?? 0}
                             </div>
                           </TableCell>
                         </TableRow>
