@@ -110,6 +110,7 @@ export default function Home() {
   const [showErrorMsg, setShowErrorMsg] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   // const [leaderboard, setLeaderboard] = useState<boolean>(false);
+  const leaderboard = true;
   const [maintenance, setMaintenance] = useState<boolean>(false);
   const unexpectedError = isUnexpectedError();
 
@@ -653,7 +654,7 @@ export default function Home() {
 
   return (
     <>
-      {true ? (
+      {leaderboard ? (
         <LeaderboardWrapper />
       ) : maintenance ? (
         <Maintenance
