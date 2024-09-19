@@ -1,7 +1,7 @@
 "use client";
 
 import React from "next";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent } from "react";
 import { LeaderboardData } from "@/constants/types";
 import Leaderboard from "./leaderboard";
 
