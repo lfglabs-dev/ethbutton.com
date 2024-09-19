@@ -653,7 +653,9 @@ export default function Home() {
 
   return (
     <>
-      {maintenance ? (
+      {true ? (
+        <LeaderboardWrapper />
+      ) : maintenance ? (
         <Maintenance
           isLoaded={isLoaded}
           isMobile={isMobile}
@@ -665,8 +667,6 @@ export default function Home() {
           isMobile={isMobile}
           priceValue={priceValue}
         />
-      ) : leaderboard ? (
-        <LeaderboardWrapper />
       ) : (
         <>
           <main className={styles.main}>
@@ -741,7 +741,7 @@ export default function Home() {
                         icon={<img src="/visuals/eth.svg" width={14} />}
                         enableHover={false}
                       >
-                        {priceValue}
+                        {priceValue as string}
                       </Button>
                     )
                   ) : null}

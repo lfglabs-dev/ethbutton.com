@@ -38,6 +38,7 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
   );
   const [error, setError] = useState<string | undefined>(undefined);
   const [currentResult, setCurrentResult] = useState<SearchResult | null>();
+  const enableSearch = false;
 
   useEffect(() => {
     if (!isLoaded || isInit) return;
@@ -128,11 +129,14 @@ const Leaderboard: FunctionComponent<DataTableProps> = ({
   return (
     <div className={styles.main}>
       <div className={styles.searchSection}>
-        <SearchBar
-          starknetIdNavigator={starknetIdNavigator}
-          setCurrentResult={setCurrentResult}
-          onSearch={onSearch}
-        />
+        <div className={styles.searchTitle}>The game has ended</div>
+        {enableSearch ? (
+          <SearchBar
+            starknetIdNavigator={starknetIdNavigator}
+            setCurrentResult={setCurrentResult}
+            onSearch={onSearch}
+          />
+        ) : null}
       </div>
       <div className={styles.tableSection}>
         <div className={styles.titleSection}>
