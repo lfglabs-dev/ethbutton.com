@@ -109,7 +109,8 @@ export default function Home() {
   const [showNotifPlayed, setShowNotifPlayed] = useState<boolean>(false);
   const [showErrorMsg, setShowErrorMsg] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const [leaderboard, setLeaderboard] = useState<boolean>(false);
+  // const [leaderboard, setLeaderboard] = useState<boolean>(false);
+  const leaderboard = true;
   const [maintenance, setMaintenance] = useState<boolean>(false);
   const unexpectedError = isUnexpectedError();
 
@@ -185,7 +186,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoaded && process.env.NEXT_PUBLIC_ENABLE_LEADERBOARD === "true") {
-      setLeaderboard(true);
+      // setLeaderboard(true);
       setIsLoaded(true);
     }
   }, []);
@@ -653,7 +654,9 @@ export default function Home() {
 
   return (
     <>
-      {maintenance ? (
+      {leaderboard ? (
+        <LeaderboardWrapper />
+      ) : maintenance ? (
         <Maintenance
           isLoaded={isLoaded}
           isMobile={isMobile}
@@ -665,8 +668,6 @@ export default function Home() {
           isMobile={isMobile}
           priceValue={priceValue}
         />
-      ) : leaderboard ? (
-        <LeaderboardWrapper />
       ) : (
         <>
           <main className={styles.main}>
@@ -741,7 +742,7 @@ export default function Home() {
                         icon={<img src="/visuals/eth.svg" width={14} />}
                         enableHover={false}
                       >
-                        {priceValue}
+                        {priceValue as string}
                       </Button>
                     )
                   ) : null}
